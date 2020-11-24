@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
-	<persistence-unit name="PetriPinariRomeoSbrolliEJB">
+<persistence version="2.2"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+	<persistence-unit name="PetriPinariRomeoSbrolliEJB"
+		transaction-type="JTA">
+		<jta-data-source>MissionDB</jta-data-source>
+		<class>database.PersonalAnswer</class>
+		<class>database.PossibleAnswer</class>
+		<class>database.Creation</class>
+		<class>database.Inclusion</class>
+		<class>database.OffensiveWord</class>
+		<class>database.ProductAnswer</class>
+		<class>database.Question</class>
+		<class>database.Questionnaire</class>
+		<class>database.Submission</class>
+		<class>database.User</class>
+		<properties>
+			<property name="eclipselink.logging.level" value="FINE" />
+		</properties>
 	</persistence-unit>
 </persistence>

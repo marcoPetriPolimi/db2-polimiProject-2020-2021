@@ -48,12 +48,12 @@ CREATE TABLE IF NOT EXISTS Question (
 -- TABLE FOR PRODUCT ANSWERS
 --
 CREATE TABLE IF NOT EXISTS ProductAnswer (
-	questionnaireId INT UNSIGNED,
-	questionId INT UNSIGNED,
-	userId INT UNSIGNED,
-	number INT UNSIGNED,
+	id INT UNSIGNED,
+	questionnaireId INT UNSIGNED NOT NULL,
+	questionId INT UNSIGNED NOT NULL,
+	userId INT UNSIGNED NOT NULL,
 	word VARCHAR(50) NOT NULL,
-	PRIMARY KEY (questionnaireId,questionId,userId,number),
+	PRIMARY KEY (id),
 	FOREIGN KEY (questionnaireId) REFERENCES Questionnaire(id) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY (questionId) REFERENCES Question(id) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY (userId) REFERENCES User(id) ON UPDATE CASCADE ON DELETE CASCADE
@@ -93,12 +93,14 @@ CREATE TABLE IF NOT EXISTS PossibleAnswer (
 -- Additional info Expertise: 0 = none, 1 = low, 2 = medium, 3 = high
 --
 CREATE TABLE IF NOT EXISTS PersonalAnswer (
+	id INT UNSIGNED,
 	questionnaireId INT UNSIGNED,
 	userId INT UNSIGNED,
 	age SMALLINT UNSIGNED,
 	sex CHAR(1),
 	expertise SMALLINT UNSIGNED,
-	PRIMARY KEY (questionnaireId,userId),
+	PRIMARY KEY (id),
+    UNIQUE KEY(questionnaireId,userId),
 	FOREIGN KEY (questionnaireId) REFERENCES Questionnaire(id) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY (userId) REFERENCES User(id) ON UPDATE CASCADE ON DELETE CASCADE,
 	CHECK(sex = 'M' OR sex = 'F' OR sex = 'U'),
