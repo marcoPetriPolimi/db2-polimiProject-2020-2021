@@ -69,11 +69,9 @@ local.properties
 .sts4-cache/
 
 ## Personal ignored files
-/CODE/PetriPinariRomeoSbrolliEJB/build
-/CODE/PetriPinariRomeoSbrolliEJB/.settings
-/CODE/PetriPinariRomeoSbrolliWeb/build
-/CODE/PetriPinariRomeoSbrolliWeb/.settings
-/CODE/PetriPinariRomeoSbrolliWeb/WebContent/WEB-INF/lib
+/CODE/PetriPinariRomeoSbrolli/build
+/CODE/PetriPinariRomeoSbrolli/.settings
+/CODE/PetriPinariRomeoSbrolli/WebContent/WEB-INF/lib
 *.classpath
 *.project
 

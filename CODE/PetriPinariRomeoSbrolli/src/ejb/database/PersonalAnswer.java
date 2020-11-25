@@ -1,4 +1,4 @@
-	package database;
+package ejb.database;
 
 import java.io.Serializable;
 

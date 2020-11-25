@@ -1,14 +1,11 @@
-package database;
+package ejb.database;
+
+import java.io.Serializable;
+import javax.persistence.*;
 
 /**
  * The persistent class for the productanswer database table.
- * 
  */
-
-import java.io.Serializable;
-
-import javax.persistence.*;
-
 @Entity
 public class ProductAnswer implements Serializable{
 	private static final long serialVersionUID = 1L;
