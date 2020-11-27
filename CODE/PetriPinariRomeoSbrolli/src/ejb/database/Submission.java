@@ -12,8 +12,10 @@ import javax.persistence.*;
 @Entity
 @Table(name = "submission", schema = "db2_project")
 public class Submission implements Serializable {
-	private static final long serialVersionId = 1;
-	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;

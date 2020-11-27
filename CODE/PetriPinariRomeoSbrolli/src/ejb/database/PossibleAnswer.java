@@ -13,4 +13,9 @@ import javax.persistence.*;
 @Entity
 public class PossibleAnswer implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 }

@@ -5,6 +5,7 @@ import javax.persistence.*;
 
 /**
  * The persistent class for the productanswer database table.
+ * @author Cristian Sbrolli
  */
 @Entity
 public class ProductAnswer implements Serializable{
@@ -34,36 +35,53 @@ public class ProductAnswer implements Serializable{
 		this.word = word;
 	}
 	
-	public Questionnaire getQuestionnaireId() {
-		return questionnaireId;
-	}
+	/* ******************
+	 * 		SETTERS		*
+	 ********************/
+	
 	public void setQuestionnaireId(Questionnaire questionnaireId) {
 		this.questionnaireId = questionnaireId;
 	}
-	public Question getQuestionId() {
-		return questionId;
-	}
+	
 	public void setQuestionId(Question questionId) {
 		this.questionId = questionId;
 	}
-	public User getUserId() {
-		return userId;
-	}
+	
 	public void setUserId(User userId) {
 		this.userId = userId;
 	}
-	public String getWord() {
-		return word;
-	}
+	
 	public void setWord(String word) {
 		this.word = word;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	/* ******************
+	 * 		GETTERS		*
+	 ********************/
+	
+	public Questionnaire getQuestionnaireId() {
+		return questionnaireId;
+	}
+	
+	public Question getQuestionId() {
+		return questionId;
+	}
+
+	public User getUserId() {
+		return userId;
+	}
+
+	public String getWord() {
+		return word;
 	}
 
 	public int getId() {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
+
 }

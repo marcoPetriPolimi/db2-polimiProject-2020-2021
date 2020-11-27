@@ -6,8 +6,9 @@ import javax.persistence.*;
 
 /**
  * The persistent class for the personalanswer database table.
- * 
+ * @author Cristian Sbrolli
  */
+
 
 @Entity
 @Table(name = "personalanswer", schema = "db2_project")
@@ -40,53 +41,68 @@ public class PersonalAnswer implements Serializable{
 	
 	public PersonalAnswer() {}
 	
-	public int getAge() {
-		return age;
-	}
-
+	
+	/* ******************
+	 * 		SETTERS		*
+	 ********************/
 	public void setAge(int age) {
 		this.age = age;
-	}
-
-	public char getSex() {
-		return sex;
 	}
 
 	public void setSex(char sex) {
 		this.sex = sex;
 	}
-
-	public int getExpertise() {
-		return expertise;
-	}
-
+	
 	public void setExpertise(int expertise) {
 		this.expertise = expertise;
 	}
 	
-	
-	public int getId() {
-		return id;
-	}
-
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public User getUserId() {
-		return userId;
 	}
 
 	public void setUserId(User userId) {
 		this.userId = userId;
 	}
 
+	public void setQuestionnaireId(Questionnaire questionnaireId) {
+		this.questionnaireId = questionnaireId;
+	}
+	
+	/* ******************
+	 * 		GETTERS		*
+	 ********************/
+	
+	public int getAge() {
+		return age;
+	}
+
+
+	public char getSex() {
+		return sex;
+	}
+
+
+	public int getExpertise() {
+		return expertise;
+	}
+
+
+	
+	public int getId() {
+		return id;
+	}
+
+
+	public User getUserId() {
+		return userId;
+	}
+
+
 	public Questionnaire getQuestionnaireId() {
 		return questionnaireId;
 	}
 
-	public void setQuestionnaireId(Questionnaire questionnaireId) {
-		this.questionnaireId = questionnaireId;
-	}
+
 	
 }
