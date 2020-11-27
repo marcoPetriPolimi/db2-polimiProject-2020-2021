@@ -3,7 +3,7 @@ package ejb.database;
 import javax.persistence.*;
 
 // The persistent class for the offensiveWord database table.
-// @author Etion
+// @author Etion Pinari
 
 @Entity
 @Table(name = "OffensiveWord", schema = "db2_project")

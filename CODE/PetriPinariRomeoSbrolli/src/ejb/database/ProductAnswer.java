@@ -4,7 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 /**
- * The persistent class for the productanswer database table.
+ * The persistent class for the ProductAnswer database table.
  * @author Cristian Sbrolli
  */
 @Entity

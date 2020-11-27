@@ -3,7 +3,7 @@ package ejb.database;
 import javax.persistence.*;
 
 //The persistent class for the question database table.
-//@author Etion
+//@author Etion Pinari
 
 @Entity
 @Table(name = "question", schema = "db2_project")
