@@ -1,4 +1,4 @@
-CREATE SCHEMA db2_project DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
+-- CREATE SCHEMA db2_project DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
 
 --------------------------------------------------
 --												--
@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS User (
 	blocked BOOL NOT NULL,
 	role INT UNSIGNED NOT NULL,
 	UNIQUE KEY(nickname),
+	UNIQUE KEY(email),
 	CHECK(role = 1 OR role = 2)
 ) AUTO_INCREMENT = 1;
 
@@ -33,6 +34,8 @@ CREATE TABLE IF NOT EXISTS Questionnaire (
 	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 	date DATE NOT NULL,
 	name VARCHAR(50) NOT NULL,
+	creatorId INT UNSIGNED,
+    	FOREIGN KEY(creatorId) REFERENCES User(id) ON UPDATE CASCADE ON DELETE CASCADE,
 	UNIQUE KEY(name)
 ) AUTO_INCREMENT = 1;
 
@@ -109,18 +112,6 @@ CREATE TABLE IF NOT EXISTS PersonalAnswer (
 ) AUTO_INCREMENT = 1;
 
 --
--- TABLE FOR QUESTIONNAIRES CREATIONS
---
-CREATE TABLE IF NOT EXISTS Creation (
-	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-	questionnaireId INT UNSIGNED,
-	creatorId INT UNSIGNED,
-	UNIQUE KEY(questionnaireId,creatorId),
-	FOREIGN KEY (questionnaireId) REFERENCES Questionnaire(id) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY (creatorId) REFERENCES User(id) ON UPDATE CASCADE ON DELETE CASCADE
-) AUTO_INCREMENT = 1;
-
---
 -- TABLE FOR QUESTIONNAIRE SUBMISSIONS
 --
 CREATE TABLE IF NOT EXISTS Submission (
@@ -142,7 +133,7 @@ CREATE TABLE IF NOT EXISTS Inclusion (
 	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 	questionnaireId INT UNSIGNED,
 	questionId INT UNSIGNED,
-    UNIQUE KEY(questionnaireId,questionId),
+    	UNIQUE KEY(questionnaireId,questionId),
 	FOREIGN KEY (questionnaireId) REFERENCES Questionnaire(id) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY (questionId) REFERENCES Question(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -155,24 +146,22 @@ CREATE TABLE IF NOT EXISTS Inclusion (
 --												--
 --												--
 --------------------------------------------------
-DELIMITER $$
-
-CREATE TRIGGER QuestionnairesHaveOneCreator
--- TODO
-BEGIN
-	-- TODO
-END$$
-
-DELIMITER ;
 
 DELIMITER $$
 
 CREATE TRIGGER QuestionnairesCreatorIsAdministrator
--- TODO
+BEFORE INSERT ON Questionnaire
+FOR EACH ROW
 BEGIN
-	-- TODO
+	DECLARE isAdmin INT;
+    
+    	SELECT `role` into isAdmin FROM User WHERE id = NEW.creatorId;
+    	
+	IF (isAdmin <> 2) THEN
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Only admins can create questionnaires';
+	END IF;
 END$$
-
+    
 DELIMITER ;
 
 DELIMITER $$
@@ -195,40 +184,47 @@ DELIMITER ;
 DELIMITER $$
 
 CREATE TRIGGER AdministratorCreatesQuestionnairesAfterRegistration
--- TODO
+BEFORE INSERT ON Questionnaire
+FOR EACH ROW
 BEGIN
-	-- TODO
+	DECLARE regDate DATE;
+
+	SELECT registration into regDate FROM User WHERE id = NEW.creatorId;
+
+	IF (NEW.date < regDate) THEN
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Admins cannot create questionnaires before registration.';
+	END IF;
 END$$
 
 DELIMITER ;
 
 DELIMITER $$
 
-CREATE TRIGGER NicknamesDoNotContainOffensiveWord
+-- CREATE TRIGGER NicknamesDoNotContainOffensiveWord
 -- TODO
-BEGIN
+-- BEGIN
 	-- TODO
-END$$
+-- END$$
 
 DELIMITER ;
 
 DELIMITER $$
 
-CREATE TRIGGER QuestionnairesResponsesDoNotContainOffensiveWord
+-- CREATE TRIGGER QuestionnairesResponsesDoNotContainOffensiveWord
 -- TODO
-BEGIN
+-- BEGIN
 	-- TODO
-END$$
+-- END$$
 
 DELIMITER ;
 
 DELIMITER $$
 
-CREATE TRIGGER QuestionnairesResponsesAreEqualToQuestions
+-- CREATE TRIGGER QuestionnairesResponsesAreEqualToQuestions
 -- TODO
-BEGIN
+-- BEGIN
 	-- TODO
-END$$
+-- END$$
 
 DELIMITER ;
 
@@ -241,12 +237,12 @@ BEGIN
 	DECLARE maximumResponses, givenResponses, responseType INT;
 
 	SELECT count(*) INTO maximumResponses FROM PossibleAnswer WHERE questionId = NEW.questionId;
-	SELECT count(*) INTO givenResponses FROM ProductAnswer WHERE questionId = NEW.questionId AND questionnaireId = NEW.questionnaireId AND userId = NEW.userId;
+	SELECT count(*) INTO givenResponses FROM ProductAnswer WHERE questionId = NEW.questionId AND questionnaireId = 	NEW.questionnaireId AND userId = NEW.userId;
 	SELECT type INTO responseType FROM Question WHERE id = NEW.questionId;
 
 	IF (responseType = 1) THEN
 		IF (givenResponses < 1 OR givenResponses > maximumResponses) THEN
-			SIGNAL SQLSTATE 'HV000' SET MESSAGE_TEXT = 'Responses to a multiple question must be less than the maximum number of responses and at least one.';
+			SIGNAL SQLSTATE 'HV000' SET MESSAGE_TEXT = 'Responses to a multiple question must be less than the 	maximum number of responses and at least one.';
 		END IF;
 	ELSE
 		IF (givenResponses <> 1) THEN
