@@ -265,12 +265,12 @@ DELIMITER $$
 CREATE TRIGGER NicknamesDoNotContainOffensiveWord
 AFTER UPDATE OF nickname ON user -- //( change )//
 FOR EACH ROW
- 
-	WHEN (new.nickname IN ( SELECT word FROM offensiveWord ) )
-	UPDATE user 
-	SET user.nickname =  old.nickname
-	WHERE user.id = new.id;
 
+WHEN (new.nickname IN ( SELECT word FROM offensiveWord ) )
+UPDATE user 
+SET user.nickname =  old.nickname
+WHERE user.id = new.id;
+raise_application_error(-20000, 'No offensive words are allowed as nicknames');
 
 DELIMITER ;
 
