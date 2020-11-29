@@ -200,7 +200,7 @@ DELIMITER ;
 
 DELIMITER $$
 
--- CREATE TRIGGER NicknamesDoNotContainOffensiveWord
+-- CREATE TRIGGER QuestionnairesResponsesAreEqualToQuestions
 -- TODO
 -- BEGIN
 	-- TODO
@@ -211,22 +211,13 @@ DELIMITER ;
 DELIMITER $$
 
 -- CREATE TRIGGER QuestionnairesResponsesDoNotContainOffensiveWord
--- TODO
+-- BEFORE INSERT ON productAnswer
 -- BEGIN
-	-- TODO
+-- 	-- TODO
 -- END$$
 
 DELIMITER ;
 
-DELIMITER $$
-
--- CREATE TRIGGER QuestionnairesResponsesAreEqualToQuestions
--- TODO
--- BEGIN
-	-- TODO
--- END$$
-
-DELIMITER ;
 
 DELIMITER $$
 
@@ -252,3 +243,34 @@ BEGIN
 END$$
 
 DELIMITER ;
+DELIMITER $$
+
+-- @author ETION
+CREATE TRIGGER QuestionnairesHaveOneCreator
+BEFORE INSERT on Questionnaire
+FOR EACH ROW
+WHEN (
+		1 <> (	SELECT count(c.id) -- count all the id's in table creation that
+		FROM user AS u, creation AS c  	
+		WHERE u.id = c.creatorId AND c.questionnaireId = new.id ) -- that join user to our questionnaire
+        )
+raise_application_error(-20000, 'Please insert only ONE admin as creator');
+
+DELIMITER ;
+
+DELIMITER $$
+
+
+-- @author ETION
+CREATE TRIGGER NicknamesDoNotContainOffensiveWord
+AFTER UPDATE OF nickname ON user -- //( change )//
+FOR EACH ROW
+ 
+	WHEN (new.nickname IN ( SELECT word FROM offensiveWord ) )
+	UPDATE user 
+	SET user.nickname =  old.nickname
+	WHERE user.id = new.id;
+
+
+DELIMITER ;
+
