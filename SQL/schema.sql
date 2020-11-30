@@ -155,7 +155,7 @@ FOR EACH ROW
 BEGIN
 	DECLARE isAdmin INT;
     
-    	SELECT `role` into isAdmin FROM User WHERE id = NEW.creatorId;
+    	SELECT role into isAdmin FROM User WHERE id = NEW.creatorId;
     	
 	IF (isAdmin <> 2) THEN
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Only admins can create questionnaires';
@@ -175,7 +175,7 @@ BEGIN
 	SELECT registration into regDate FROM User WHERE id = NEW.userId;
 
 	IF (NEW.date < regDate) THEN
-		SIGNAL SQLSTATE 'HV000' SET MESSAGE_TEXT = 'Users cannot fill questionnaires before registration.';
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Users cannot fill questionnaires before registration.';
 	END IF;
 END$$
 
@@ -233,44 +233,179 @@ BEGIN
 
 	IF (responseType = 1) THEN
 		IF (givenResponses < 1 OR givenResponses > maximumResponses) THEN
-			SIGNAL SQLSTATE 'HV000' SET MESSAGE_TEXT = 'Responses to a multiple question must be less than the 	maximum number of responses and at least one.';
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Responses to a multiple question must be less than the 	maximum number of responses and at least one.';
 		END IF;
 	ELSE
 		IF (givenResponses <> 1) THEN
-			SIGNAL SQLSTATE 'HV000' SET MESSAGE_TEXT = 'Response to a single question must be unique.';
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Response to a single question must be unique.';
 		END IF;
 	END IF;
 END$$
 
 DELIMITER ;
+
+
 DELIMITER $$
 
 -- @author ETION
-CREATE TRIGGER QuestionnairesHaveOneCreator
-BEFORE INSERT on Questionnaire
+CREATE TRIGGER NicknamesDoNotContainOffensiveWordOnUpdate
+BEFORE INSERT ON user -- //( change )//
 FOR EACH ROW
-WHEN (
-		1 <> (	SELECT count(c.id) -- count all the id's in table creation that
-		FROM user AS u, creation AS c  	
-		WHERE u.id = c.creatorId AND c.questionnaireId = new.id ) -- that join user to our questionnaire
-        )
-raise_application_error(-20000, 'Please insert only ONE admin as creator');
+BEGIN
+		DECLARE iteration INT DEFAULT 1; 
+        DECLARE offence VARCHAR(50);
+        DECLARE potentialOffence VARCHAR(50);
+        
+        SELECT LCASE(new.nickname) INTO potentialOffence; 
+        SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = 1;
+        
+        LABEL1: WHILE (offence IS NOT NULL) DO
+					IF ( LOCATE(offence, potentialOffence) <> 0 ) THEN -- function locate is position sensitive
+						SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Nickname should not contain offensive words. -UPD473';
+					END IF;
+                    
+                    SET iteration = iteration + 1;
+                    SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = iteration;
+                    
+				END WHILE LABEL1;
+END$$
+
+DELIMITER ;
+
+
+DELIMITER $$
+
+-- @author ETION
+CREATE TRIGGER NicknamesDoNotContainOffensiveWordOnCreation
+BEFORE INSERT ON user -- //( change )//
+FOR EACH ROW
+BEGIN
+		DECLARE iteration INT DEFAULT 1; 
+        DECLARE offence VARCHAR(50);
+        DECLARE potentialOffence VARCHAR(50);
+        
+        SELECT LCASE(new.nickname) INTO potentialOffence; 
+        SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = 1;
+        
+        LABEL1: WHILE (offence IS NOT NULL) DO
+					IF ( LOCATE(offence, potentialOffence) <> 0 ) THEN -- function locate is position sensitive
+						SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Nicknames should not contain offensive words. -1N53R7';
+					END IF;
+                    
+                    SET iteration = iteration + 1;
+                    SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = iteration;
+                    
+				END WHILE LABEL1;
+END$$
+
+
+DELIMITER ;
+
+
+DELIMITER $$
+
+-- @author ETION
+CREATE TRIGGER QuestionsDoNotContainOffensiveWordOnCreation
+BEFORE INSERT ON question -- //( change )//
+FOR EACH ROW
+BEGIN
+		DECLARE iteration INT DEFAULT 1; 
+        DECLARE offence VARCHAR(50);
+        DECLARE potentialOffence VARCHAR(50);
+        
+        SELECT LCASE(word) INTO potentialOffence from question; 
+        SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = 1;
+        
+        LABEL1: WHILE (offence IS NOT NULL) DO
+					IF ( LOCATE(offence, potentialOffence) <> 0 ) THEN -- function locate is position sensitive
+						SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Questions should not contain offensive words. Check specifications.';
+					END IF;
+                    
+                    SET iteration = iteration + 1;
+                    SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = iteration;
+                    
+				END WHILE LABEL1;
+END$$
+
+
+DELIMITER ;
+
+
+DELIMITER $$
+
+-- @author ETION
+CREATE TRIGGER ReviewDoNotContainOffensiveWordOnCreation
+BEFORE INSERT ON review -- //( change )//
+FOR EACH ROW
+BEGIN
+		DECLARE iteration INT DEFAULT 1; 
+        DECLARE offence VARCHAR(50);
+        DECLARE potentialOffence VARCHAR(50);
+        
+        SELECT LCASE(word) INTO potentialOffence from review; 
+        SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = 1;
+        
+        LABEL1: WHILE (offence IS NOT NULL) DO
+					IF ( LOCATE(offence, potentialOffence) <> 0 ) THEN -- function locate is position sensitive
+						SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Review must not contain offensive words.';
+					END IF;
+                    
+                    SET iteration = iteration + 1;
+                    SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = iteration;
+                    
+				END WHILE LABEL1;
+END$$
+
+DELIMITER ;
+
+
+DELIMITER $$
+
+-- @author ETION
+CREATE TRIGGER ResponsesDoNotContainOffensiveWordOnCreation
+BEFORE INSERT ON review -- //( change )//
+FOR EACH ROW
+BEGIN
+		DECLARE iteration INT DEFAULT 1; 
+        DECLARE offence VARCHAR(50);
+        DECLARE potentialOffence VARCHAR(50);
+        
+        SELECT LCASE(word) INTO potentialOffence from productAnswer; 
+        SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = 1;
+        
+        LABEL1: WHILE (offence IS NOT NULL) DO
+					IF ( LOCATE(offence, potentialOffence) <> 0 ) THEN -- function locate is position sensitive
+						SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Answers must not contain offensive words.';
+					END IF;
+                    
+                    SET iteration = iteration + 1;
+                    SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = iteration;
+                    
+				END WHILE LABEL1;
+END$$
 
 DELIMITER ;
 
 DELIMITER $$
 
-
--- @author ETION
-CREATE TRIGGER NicknamesDoNotContainOffensiveWord
-AFTER UPDATE OF nickname ON user -- //( change )//
+-- @AUTHOR ETION
+CREATE TRIGGER QuestionnairesResponsesAreEqualToQuestions
+BEFORE INSERT ON ProductAnswer
 FOR EACH ROW
+BEGIN
+	DECLARE numOfRespones, numOfQuestions INT;
+	SELECT count(*) INTO numOfResponses 
+	FROM ProductAnswer as P, Questionnaire as Q 
+	WHERE P.questionnaireId = Q.id;
 
-WHEN (new.nickname IN ( SELECT word FROM offensiveWord ) )
-UPDATE user 
-SET user.nickname =  old.nickname
-WHERE user.id = new.id;
-raise_application_error(-20000, 'No offensive words are allowed as nicknames');
+	SELECT count(*) INTO numOfQuestions 
+	FROM Questionnaire as Q, Inclusion as I, Question as QT
+	WHERE I.questionnaireId = Q.id and I.questionID = QT.id ;
+
+	IF( numOfRespones <> numOfQuestions) THEN
+			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Number of answers must be equal to number of questions in questionnaire.';
+	END IF;
+END$$
+
 
 DELIMITER ;
-
