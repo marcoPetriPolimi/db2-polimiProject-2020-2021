@@ -28,15 +28,27 @@ CREATE TABLE IF NOT EXISTS User (
 ) AUTO_INCREMENT = 1;
 
 --
+-- TABLE FOR PRODUCT
+--
+CREATE TABLE IF NOT EXISTS Product (
+	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	name VARCHAR(50) NOT NULL,
+	image BLOB NOT NULL,
+	UNIQUE KEY(name)
+) AUTO_INCREMENT = 1;
+
+--
 -- TABLE FOR QUESTIONNAIRES
 --
 CREATE TABLE IF NOT EXISTS Questionnaire (
 	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-	date DATE NOT NULL,
-	name VARCHAR(50) NOT NULL,
 	creatorId INT UNSIGNED,
-    	FOREIGN KEY(creatorId) REFERENCES User(id) ON UPDATE CASCADE ON DELETE CASCADE,
-	UNIQUE KEY(name)
+	name VARCHAR(50) NOT NULL,
+	date DATE NOT NULL,
+	product INT UNSIGNED NOT NULL,
+	UNIQUE KEY(name),
+    FOREIGN KEY(creatorId) REFERENCES User(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(product) REFERENCES Product(id) ON UPDATE CASCADE ON DELETE CASCADE
 ) AUTO_INCREMENT = 1;
 
 --
@@ -51,21 +63,7 @@ CREATE TABLE IF NOT EXISTS Question (
 ) AUTO_INCREMENT = 1;
 
 --
--- TABLE FOR PRODUCT ANSWERS
---
-CREATE TABLE IF NOT EXISTS ProductAnswer (
-	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-	questionnaireId INT UNSIGNED NOT NULL,
-	questionId INT UNSIGNED NOT NULL,
-	userId INT UNSIGNED NOT NULL,
-	word VARCHAR(50) NOT NULL,
-	FOREIGN KEY (questionnaireId) REFERENCES Questionnaire(id) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY (questionId) REFERENCES Question(id) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY (userId) REFERENCES User(id) ON UPDATE CASCADE ON DELETE CASCADE
-);
-
---
--- TABLE FOR PRODUCT ANSWERS
+-- TABLE FOR OFFENSIVE WORDS
 --
 CREATE TABLE IF NOT EXISTS OffensiveWord (
 	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
@@ -83,6 +81,21 @@ CREATE TABLE IF NOT EXISTS OffensiveWord (
 --------------------------------------------------
 
 --
+-- TABLE FOR QUESTIONNAIRE SUBMISSIONS
+--
+CREATE TABLE IF NOT EXISTS Submission (
+	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	userId INT UNSIGNED,
+	questionnaireId INT UNSIGNED,
+	submitted BOOL NOT NULL,
+	points INT UNSIGNED NOT NULL,
+	date DATETIME NOT NULL,
+    UNIQUE KEY(questionnaireId,userId),
+	FOREIGN KEY (questionnaireId) REFERENCES Questionnaire(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY (userId) REFERENCES User(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+--
 -- TABLE FOR POSSIBLE ANSWERS
 --
 CREATE TABLE IF NOT EXISTS PossibleAnswer (
@@ -93,38 +106,33 @@ CREATE TABLE IF NOT EXISTS PossibleAnswer (
 ) AUTO_INCREMENT = 1;
 
 --
+-- TABLE FOR PRODUCT ANSWERS
+--
+CREATE TABLE IF NOT EXISTS ProductAnswer (
+	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	submissionId INT UNSIGNED,
+	questionId INT UNSIGNED,
+	userId INT UNSIGNED NOT NULL,
+	word VARCHAR(50) NOT NULL,
+	FOREIGN KEY (questionId) REFERENCES Question(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY (submissionId) REFERENCES Submission(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+--
 -- TABLE FOR PERSONAL ANSWERS
 -- Additional info sex: M = male, F = female, U = undefined
 -- Additional info Expertise: 0 = none, 1 = low, 2 = medium, 3 = high
 --
 CREATE TABLE IF NOT EXISTS PersonalAnswer (
 	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-	questionnaireId INT UNSIGNED,
-	userId INT UNSIGNED,
+	submissionId INT UNSIGNED,
 	age SMALLINT UNSIGNED,
 	sex CHAR(1),
 	expertise SMALLINT UNSIGNED,
-    UNIQUE KEY(questionnaireId,userId),
-	FOREIGN KEY (questionnaireId) REFERENCES Questionnaire(id) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY (userId) REFERENCES User(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY (submissionId) REFERENCES Submission(id) ON UPDATE CASCADE ON DELETE CASCADE,
 	CHECK(sex = 'M' OR sex = 'F' OR sex = 'U'),
 	CHECK(expertise = 0 OR expertise = 1 OR expertise = 2 OR expertise = 3)
 ) AUTO_INCREMENT = 1;
-
---
--- TABLE FOR QUESTIONNAIRE SUBMISSIONS
---
-CREATE TABLE IF NOT EXISTS Submission (
-	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-	questionnaireId INT UNSIGNED,
-	userId INT UNSIGNED,
-	submitted BOOL NOT NULL,
-	points INT UNSIGNED NOT NULL,
-	date DATETIME NOT NULL,
-    UNIQUE KEY(questionnaireId,userId),
-	FOREIGN KEY (questionnaireId) REFERENCES Questionnaire(id) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY (userId) REFERENCES User(id) ON UPDATE CASCADE ON DELETE CASCADE
-);
 
 --
 -- TABLE FOR INCLUSION RELATION BETWEEN QUESTIONS AND QUESTIONNAIRES
@@ -133,10 +141,22 @@ CREATE TABLE IF NOT EXISTS Inclusion (
 	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 	questionnaireId INT UNSIGNED,
 	questionId INT UNSIGNED,
-    	UNIQUE KEY(questionnaireId,questionId),
+    UNIQUE KEY(questionnaireId,questionId),
 	FOREIGN KEY (questionnaireId) REFERENCES Questionnaire(id) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY (questionId) REFERENCES Question(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+--
+-- TABLE FOR REVIEW
+--
+CREATE TABLE IF NOT EXISTS Review (
+	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	userId INT UNSIGNED NOT NULL,
+	productId INT UNSIGNED NOT NULL,
+	UNIQUE KEY(userId,productId),
+	FOREIGN KEY (userId) REFERENCES User(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY (productId) REFERENCES Product(id) ON UPDATE CASCADE ON DELETE CASCADE
+) AUTO_INCREMENT = 1;
 
 
 --------------------------------------------------
@@ -182,7 +202,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-
+-- @author MARCO
 CREATE TRIGGER AdministratorCreatesQuestionnairesAfterRegistration
 BEFORE INSERT ON Questionnaire
 FOR EACH ROW
@@ -220,7 +240,7 @@ DELIMITER ;
 
 
 DELIMITER $$
-
+-- @author MARCO
 CREATE TRIGGER ResponseNumberForAQuestionIsPositiveAndLessThanMaximum
 AFTER INSERT ON ProductAnswer
 FOR EACH ROW
@@ -228,7 +248,7 @@ BEGIN
 	DECLARE maximumResponses, givenResponses, responseType INT;
 
 	SELECT count(*) INTO maximumResponses FROM PossibleAnswer WHERE questionId = NEW.questionId;
-	SELECT count(*) INTO givenResponses FROM ProductAnswer WHERE questionId = NEW.questionId AND questionnaireId = 	NEW.questionnaireId AND userId = NEW.userId;
+	SELECT count(*) INTO givenResponses FROM ProductAnswer WHERE questionId = NEW.questionId AND submissionId = NEW.submissionId;
 	SELECT type INTO responseType FROM Question WHERE id = NEW.questionId;
 
 	IF (responseType = 1) THEN
@@ -249,7 +269,7 @@ DELIMITER $$
 
 -- @author ETION
 CREATE TRIGGER NicknamesDoNotContainOffensiveWordOnUpdate
-BEFORE INSERT ON user -- //( change )//
+BEFORE INSERT ON User -- //( change )//
 FOR EACH ROW
 BEGIN
 		DECLARE iteration INT DEFAULT 1; 
@@ -393,7 +413,7 @@ CREATE TRIGGER QuestionnairesResponsesAreEqualToQuestions
 BEFORE INSERT ON ProductAnswer
 FOR EACH ROW
 BEGIN
-	DECLARE numOfRespones, numOfQuestions INT;
+	DECLARE numOfResponses, numOfQuestions INT;
 	SELECT count(*) INTO numOfResponses 
 	FROM ProductAnswer as P, Questionnaire as Q 
 	WHERE P.questionnaireId = Q.id;
@@ -402,7 +422,7 @@ BEGIN
 	FROM Questionnaire as Q, Inclusion as I, Question as QT
 	WHERE I.questionnaireId = Q.id and I.questionID = QT.id ;
 
-	IF( numOfRespones <> numOfQuestions) THEN
+	IF(numOfResponses <> numOfQuestions) THEN
 			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Number of answers must be equal to number of questions in questionnaire.';
 	END IF;
 END$$
