@@ -11,7 +11,8 @@ import javax.persistence.*;
  * @author Marco Petri
  */
 @Entity
-@Table(name = "submission", schema = "db2_project")
+@Table(name = "submission", schema = "db2_project",
+	uniqueConstraints = @UniqueConstraint(columnNames={"questionnaireId","userId"}))
 public class Submission implements Serializable {
 	/**
 	 * 
