@@ -3,6 +3,7 @@ package ejb.database;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -25,14 +26,18 @@ private static final long serialVersionUID = 1L;
 	 */
 	@Temporal(TemporalType.DATE)
 	private Date date;
+	
 	@Column(unique=true)
 	private String name;
+
 	
 	@OneToMany (mappedBy = "questionnaireId")
-	private Collection<ProductAnswer> productAnswers;
-	@OneToMany (mappedBy = "questionnaireId")
-	private Collection<PersonalAnswer> personalAnswers;
+	private List<Submission> submissions;
+
+	@ManyToOne
+	private int creatorId;
 	
+
 	public Questionnaire() {}
 	public Questionnaire(int id, Date date, String name) {
 		this.id = id;
@@ -47,6 +52,10 @@ private static final long serialVersionUID = 1L;
 		this.id = id;
 	}
 	
+	public void setCreatorId(int creatorId) {
+		this.creatorId = creatorId;
+	}
+	
 	public void setDate(Date date) {
 		this.date = date;
 	}
@@ -56,11 +65,19 @@ private static final long serialVersionUID = 1L;
 	}
 	
 	
+	public void setSubmissions(List<Submission> submissions) {
+		this.submissions = submissions;
+	}
+	
 	/* ******************
 	 * 		GETTERS		*
 	 ********************/
 	public int getId() {
 		return id;
+	}
+	
+	public int getCreatorId() {
+		return creatorId;
 	}
 	
 	public Date getDate() {
@@ -70,6 +87,9 @@ private static final long serialVersionUID = 1L;
 	public String getName() {
 		return name;
 	}
-	
 
+	
+	public List<Submission> getSubmissions() {
+		return submissions;
+	}
 }

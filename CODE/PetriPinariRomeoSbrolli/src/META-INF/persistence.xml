@@ -8,7 +8,6 @@
 		<jta-data-source>MissionDB</jta-data-source>
 		<class>ejb.database.PersonalAnswer</class>
 		<class>ejb.database.PossibleAnswer</class>
-		<class>ejb.database.Creation</class>
 		<class>ejb.database.Inclusion</class>
 		<class>ejb.database.OffensiveWord</class>
 		<class>ejb.database.ProductAnswer</class>

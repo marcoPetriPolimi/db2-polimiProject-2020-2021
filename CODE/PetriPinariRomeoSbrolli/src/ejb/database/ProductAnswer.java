@@ -16,22 +16,17 @@ public class ProductAnswer implements Serializable{
 	private int id;
 	
 	@ManyToOne
-	private Questionnaire questionnaireId;
-	
-	@ManyToOne
 	private Question questionId;
 	
 	@ManyToOne
-	private User userId;
-	
+	private Submission submissionId;
+
 	private String word;
 	
 	public ProductAnswer() {}
 	
 	public ProductAnswer(User user,Question question,Questionnaire questionnaire,String word) {
-		this.userId = user;
 		this.questionId = question;
-		this.questionnaireId = questionnaire;
 		this.word = word;
 	}
 	
@@ -39,16 +34,12 @@ public class ProductAnswer implements Serializable{
 	 * 		SETTERS		*
 	 ********************/
 	
-	public void setQuestionnaireId(Questionnaire questionnaireId) {
-		this.questionnaireId = questionnaireId;
+	public void setSubmissionId(Submission submissionId) {
+		this.submissionId = submissionId;
 	}
 	
 	public void setQuestionId(Question questionId) {
 		this.questionId = questionId;
-	}
-	
-	public void setUserId(User userId) {
-		this.userId = userId;
 	}
 	
 	public void setWord(String word) {
@@ -63,17 +54,10 @@ public class ProductAnswer implements Serializable{
 	 * 		GETTERS		*
 	 ********************/
 	
-	public Questionnaire getQuestionnaireId() {
-		return questionnaireId;
-	}
-	
 	public Question getQuestionId() {
 		return questionId;
 	}
 
-	public User getUserId() {
-		return userId;
-	}
 
 	public String getWord() {
 		return word;
@@ -81,6 +65,10 @@ public class ProductAnswer implements Serializable{
 
 	public int getId() {
 		return id;
+	}
+	
+	public Submission getSubmissionId() {
+		return submissionId;
 	}
 
 

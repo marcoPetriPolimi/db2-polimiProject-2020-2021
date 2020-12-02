@@ -2,6 +2,7 @@ package ejb.database;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -16,15 +17,19 @@ public class Submission implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@OneToOne
-	@JoinColumn(name="questionnaireId")
-	private Questionnaire questionnaire;
+	
 	@ManyToOne
-	@JoinColumn(name="userId")
-	private User senderUser;
+	private Questionnaire questionnaireId;
+	
+	@ManyToOne
+	private User userId;
+	
+	@OneToMany (mappedBy = "submissionId")
+	private List<ProductAnswer> productAnswers;
 	private boolean submitted;
 	/**
 	 * The points column of the database can be null, so an object is needed because a primitive type cannot be null.
@@ -37,9 +42,9 @@ public class Submission implements Serializable {
 	private Date date;
 	
 	public Submission() {}
-	public Submission(Questionnaire questionnaire, User senderUser, boolean submitted, Integer points, Date date) {
-		this.questionnaire		= questionnaire;
-		this.senderUser			= senderUser;
+	public Submission(Questionnaire questionnaireId, User userId, boolean submitted, Integer points, Date date) {
+		this.questionnaireId		= questionnaireId;
+		this.userId			= userId;
 		this.submitted			= submitted;
 		this.points				= points;
 		this.date				= date;
@@ -48,11 +53,26 @@ public class Submission implements Serializable {
 	/* ******************
 	 * 		SETTERS		*
 	 ********************/
-	public void setQuestionnaire(Questionnaire questionnaire) {
-		this.questionnaire		= questionnaire;
+	
+	public void setId(int id) {
+		this.id = id;
 	}
-	public void setUser(User senderUser) {
-		this.senderUser			= senderUser;
+
+	public void setProductAnswers(List<ProductAnswer> productAnswers) {
+		this.productAnswers = productAnswers;
+	}
+	public void setQuestionnaireId(Questionnaire questionnaireId) {
+		this.questionnaireId = questionnaireId;
+	}
+	public void setUserId(User userId) {
+		this.userId = userId;
+	}
+	
+	public void setQuestionnaire(Questionnaire questionnaireId) {
+		this.questionnaireId		= questionnaireId;
+	}
+	public void setUser(User userId) {
+		this.userId			= userId;
 	}
 	public void setSubmitted(boolean submitted) {
 		this.submitted			= submitted;
@@ -67,11 +87,11 @@ public class Submission implements Serializable {
 	/* ******************
 	 * 		GETTERS		*
 	 ********************/
-	public Questionnaire getQuestionnaire() {
-		return questionnaire;
+	public Questionnaire getQuestionnaireId() {
+		return questionnaireId;
 	}
-	public User getUser() {
-		return senderUser;
+	public User getUserId() {
+		return userId;
 	}
 	public boolean getSubmitted() {
 		return submitted;
@@ -82,4 +102,13 @@ public class Submission implements Serializable {
 	public Date getDate() {
 		return date;
 	}
+	
+	public int getId() {
+		return id;
+	}
+	
+	public List<ProductAnswer> getProductAnswers() {
+		return productAnswers;
+	}
+	
 }

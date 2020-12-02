@@ -18,25 +18,17 @@ public class PersonalAnswer implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
-
 	private int age;
 	private char sex;
 	private int expertise;
-	
-	@ManyToOne
-	private User userId;
 
 	@ManyToOne
-	private Questionnaire questionnaireId;
-	
+	private Submission submissionId;
 	
 	public PersonalAnswer(User user,Questionnaire questionnaire,int age,char sex,int expertise) {
 		this.age=age;
 		this.sex=sex;
 		this.expertise=expertise;
-		this.userId=user;
-		this.questionnaireId=questionnaire;
 	}
 	
 	public PersonalAnswer() {}
@@ -60,14 +52,11 @@ public class PersonalAnswer implements Serializable{
 	public void setId(int id) {
 		this.id = id;
 	}
-
-	public void setUserId(User userId) {
-		this.userId = userId;
+	
+	public void setSubmissionId(Submission submissionId) {
+		this.submissionId = submissionId;
 	}
 
-	public void setQuestionnaireId(Questionnaire questionnaireId) {
-		this.questionnaireId = questionnaireId;
-	}
 	
 	/* ******************
 	 * 		GETTERS		*
@@ -92,17 +81,10 @@ public class PersonalAnswer implements Serializable{
 	public int getId() {
 		return id;
 	}
-
-
-	public User getUserId() {
-		return userId;
+	
+	public Submission getSubmissionId() {
+		return submissionId;
 	}
-
-
-	public Questionnaire getQuestionnaireId() {
-		return questionnaireId;
-	}
-
 
 	
 }

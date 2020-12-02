@@ -3,7 +3,10 @@ package ejb.database;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+
 import javax.persistence.*;
+
 
 /**
  * This class is the EJB for the user database class.
@@ -29,6 +32,7 @@ public class User implements Serializable {
 	 */
 	@Temporal(TemporalType.DATE)
 	private Date registration;
+
 	/**
 	 * The points column of the database can be null, so an object is needed because a primitive type cannot be null.
 	 */
@@ -36,10 +40,13 @@ public class User implements Serializable {
 	private boolean blocked;
 	private int role;
 	
+	@OneToMany(mappedBy = "creatorId")
+	private List<Questionnaire> questionnaires;
+	
 	/**
 	 * Reverse relationship for the 1:N relationship with the submissions.
 	 */
-	@OneToMany(mappedBy="senderUser")
+	@OneToMany(mappedBy="userId")
 	private Collection<Submission> submissions;
 	
 	public User() {
@@ -57,6 +64,19 @@ public class User implements Serializable {
 	/* ******************
 	 * 		SETTERS		*
 	 ********************/
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setquestionnaires(List<Questionnaire> questionnaires) {
+		this.questionnaires = questionnaires;
+	}
+
+	public void setSubmissions(Collection<Submission> submissions) {
+		this.submissions = submissions;
+	}
+	
 	public void setNickname(String nickname) {
 		this.nickname		= nickname;
 	}
@@ -82,6 +102,19 @@ public class User implements Serializable {
 	/* ******************
 	 * 		GETTERS		*
 	 ********************/
+	
+	public int getId() {
+		return id;
+	}
+	
+	public List<Questionnaire> getquestionnaires() {
+		return questionnaires;
+	}
+	
+	public Collection<Submission> getSubmissions() {
+		return submissions;
+	}
+	
 	public String getNickname() {
 		return nickname;
 	}
