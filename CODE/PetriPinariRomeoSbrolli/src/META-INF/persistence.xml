@@ -3,9 +3,8 @@
 	xmlns="http://xmlns.jcp.org/xml/ns/persistence"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
-	<persistence-unit name="PetriPinariRomeoSbrolliEJB"
-		transaction-type="JTA">
-		<jta-data-source>MissionDB</jta-data-source>
+	<persistence-unit name="PetriPinariRomeoSbrolliEJB">
+		<jta-data-source>DB2_project</jta-data-source>
 		<class>ejb.database.Inclusion</class>
 		<class>ejb.database.OffensiveWord</class>
 		<class>ejb.database.PersonalAnswer</class>
