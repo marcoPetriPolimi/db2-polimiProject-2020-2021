@@ -6,17 +6,17 @@
 	<persistence-unit name="PetriPinariRomeoSbrolliEJB"
 		transaction-type="JTA">
 		<jta-data-source>MissionDB</jta-data-source>
-		<class>ejb.database.PersonalAnswer</class>
-		<class>ejb.database.PossibleAnswer</class>
 		<class>ejb.database.Inclusion</class>
 		<class>ejb.database.OffensiveWord</class>
+		<class>ejb.database.PersonalAnswer</class>
+		<class>ejb.database.PossibleAnswer</class>
+		<class>ejb.database.Product</class>
 		<class>ejb.database.ProductAnswer</class>
 		<class>ejb.database.Question</class>
 		<class>ejb.database.Questionnaire</class>
+		<class>ejb.database.Review</class>
 		<class>ejb.database.Submission</class>
 		<class>ejb.database.User</class>
-		<class>ejb.database.Product</class>
-		<class>ejb.database.Review</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE" />
 		</properties>

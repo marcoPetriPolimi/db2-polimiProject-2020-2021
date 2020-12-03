@@ -28,7 +28,9 @@ public class QuestionnaireInspectorService {
 	
 	public Map<Integer,String> getQuestionnaireProductAnswers(int questionnaireId){
 		Map<Integer,String> answers= em
-				.createQuery("SELECT u.Id,u.nickname from User u, Submission s WHERE u.Id = s.userId AND s.questionnaireId = :qId ORDER BY u.Id DESC", Tuple.class)
+				.createQuery("SELECT u.Id,u.nickname from User u, Submission s "
+						   + "WHERE u.Id = s.userId AND s.questionnaireId = :qId"
+						   + "ORDER BY u.Id DESC",Tuple.class)
 				.setParameter("qId",questionnaireId).getResultStream().collect(Collectors.toMap(tuple -> ((Number) tuple.get(0)).intValue(), tuple-> ((String) tuple.get(1))));
 		return answers;
 	}
