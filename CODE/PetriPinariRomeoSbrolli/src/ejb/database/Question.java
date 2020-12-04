@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Table(name = "question", schema = "db2_project")
 public class Question {
 
+	private static final long serialVersionUID = 1L;
 	@Id
 	private int id;
 	

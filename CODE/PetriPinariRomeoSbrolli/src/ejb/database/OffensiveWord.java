@@ -9,6 +9,8 @@ import javax.persistence.*;
 @Table(name = "OffensiveWord", schema = "db2_project")
 public class OffensiveWord {
 	
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue
 	private int id;
