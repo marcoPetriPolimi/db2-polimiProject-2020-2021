@@ -10,6 +10,7 @@ import javax.persistence.*;
 public class Question {
 
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	private int id;
 	
