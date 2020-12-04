@@ -89,8 +89,11 @@ public class Questionnaire implements Serializable{
 		return name;
 	}
 
-	
 	public List<Submission> getSubmissions() {
 		return submissions;
+	}
+	
+	public List<Inclusion> getInclusions() {
+		return questionnaireInclusions;
 	}
 }

@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import utils.Const;
+
 /**
  * This class is the EJB for the product database class.
  * @author Marco Petri
@@ -17,7 +19,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "product", schema = "db2_project")
 public class Product {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = Const.EJBVersion;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

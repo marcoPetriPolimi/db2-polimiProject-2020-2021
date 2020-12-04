@@ -30,8 +30,11 @@ public class Submission implements Serializable {
 	@JoinColumn(name = "userId")
 	private User userSender;
 	
-	@OneToMany (mappedBy = "submissionId")
+	@OneToMany (mappedBy = "submission")
 	private List<ProductAnswer> productAnswers;
+	
+	@OneToMany (mappedBy = "submission")
+	private List<PersonalAnswer> personalAnswers;
 	private boolean submitted;
 	/**
 	 * The points column of the database can be null, so an object is needed because a primitive type cannot be null.

@@ -54,11 +54,11 @@ public class Inclusion implements Serializable{
 		return id;
 	}
 	
-	public Questionnaire getQuestionnaireId() {
+	public Questionnaire getQuestionnaire() {
 		return inclusionQuestionnaire;
 	}
 	
-	public Question getQuestionId() {
+	public Question getQuestion() {
 		return inclusionQuestion;
 	}
 	

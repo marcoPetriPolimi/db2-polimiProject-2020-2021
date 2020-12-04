@@ -14,7 +14,7 @@ import ejb.database.*;
 
 @Stateless
 public class QuestionnaireInspectorService {
-	@PersistenceContext(unitName = "QuestionnaireOfTheDayEJB")
+	@PersistenceContext(unitName = "PetriPinariRomeoSbrolliEJB")
 	private EntityManager em;
 
 	public QuestionnaireInspectorService() {

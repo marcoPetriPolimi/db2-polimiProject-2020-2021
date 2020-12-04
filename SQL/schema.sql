@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS Questionnaire (
 
 --
 -- TABLE FOR QUESTIONS
--- Additional info: questions can be checkbox, selection, string or comment. Numbers represent this order
+-- Additional info: questions can be checkbox (1), selection (2), string (3) or comment (4). Numbers represent this order
 --
 CREATE TABLE IF NOT EXISTS Question (
 	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,

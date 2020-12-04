@@ -17,15 +17,16 @@ public class PersonalAnswer implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	private int age;
-	private char sex;
-	private int expertise;
+	private Integer id;
+	private Integer age;
+	private Character sex;
+	private Integer expertise;
 
 	@ManyToOne
-	private Submission submissionId;
+	@JoinColumn(name = "submissionId")
+	private Submission submission;
 	
-	public PersonalAnswer(User user,Questionnaire questionnaire,int age,char sex,int expertise) {
+	public PersonalAnswer(User user,Questionnaire questionnaire,Integer age,Character sex,Integer expertise) {
 		this.age=age;
 		this.sex=sex;
 		this.expertise=expertise;
@@ -37,15 +38,15 @@ public class PersonalAnswer implements Serializable{
 	/* ******************
 	 * 		SETTERS		*
 	 ********************/
-	public void setAge(int age) {
+	public void setAge(Integer age) {
 		this.age = age;
 	}
 
-	public void setSex(char sex) {
+	public void setSex(Character sex) {
 		this.sex = sex;
 	}
 	
-	public void setExpertise(int expertise) {
+	public void setExpertise(Integer expertise) {
 		this.expertise = expertise;
 	}
 	
@@ -53,8 +54,8 @@ public class PersonalAnswer implements Serializable{
 		this.id = id;
 	}
 	
-	public void setSubmissionId(Submission submissionId) {
-		this.submissionId = submissionId;
+	public void setSubmission(Submission submission) {
+		this.submission = submission;
 	}
 
 	
@@ -62,17 +63,17 @@ public class PersonalAnswer implements Serializable{
 	 * 		GETTERS		*
 	 ********************/
 	
-	public int getAge() {
+	public Integer getAge() {
 		return age;
 	}
 
 
-	public char getSex() {
+	public Character getSex() {
 		return sex;
 	}
 
 
-	public int getExpertise() {
+	public Integer getExpertise() {
 		return expertise;
 	}
 
@@ -82,8 +83,8 @@ public class PersonalAnswer implements Serializable{
 		return id;
 	}
 	
-	public Submission getSubmissionId() {
-		return submissionId;
+	public Submission getSubmission() {
+		return submission;
 	}
 
 	
