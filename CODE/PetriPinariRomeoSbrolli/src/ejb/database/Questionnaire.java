@@ -1,11 +1,12 @@
 package ejb.database;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
+
+import utils.Const;
 
 /**
  * This class is the EJB for the Questionnaire database table.
@@ -15,8 +16,7 @@ import javax.persistence.*;
 @Entity
 @Table (name = "Questionnaire", schema = "db2_project")
 public class Questionnaire implements Serializable{
-	
-private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = Const.EJBVersion;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,14 +30,15 @@ private static final long serialVersionUID = 1L;
 	@Column(unique=true)
 	private String name;
 
-	
-	@OneToMany (mappedBy = "questionnaireId")
+	@OneToMany (mappedBy = "submissionQuestionnaire")
 	private List<Submission> submissions;
 
 	@ManyToOne
 	private int creatorId;
 	
-
+	@OneToMany (mappedBy = "inclusionQuestionnaire")
+	private List<Inclusion> questionnaireInclusions;
+	
 	public Questionnaire() {}
 	public Questionnaire(int id, Date date, String name) {
 		this.id = id;

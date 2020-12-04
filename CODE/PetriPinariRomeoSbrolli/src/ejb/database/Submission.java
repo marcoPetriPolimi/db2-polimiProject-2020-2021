@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import utils.Const;
+
 /**
  * This class is the EJB for the submission database class.
  * @author Marco Petri
@@ -14,20 +16,19 @@ import javax.persistence.*;
 @Table(name = "submission", schema = "db2_project",
 	uniqueConstraints = @UniqueConstraint(columnNames={"questionnaireId","userId"}))
 public class Submission implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = Const.EJBVersion;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
 	@ManyToOne
-	private Questionnaire questionnaireId;
+	@JoinColumn(name = "questionnaireId")
+	private Questionnaire submissionQuestionnaire;
 	
 	@ManyToOne
-	private User userId;
+	@JoinColumn(name = "userId")
+	private User userSender;
 	
 	@OneToMany (mappedBy = "submissionId")
 	private List<ProductAnswer> productAnswers;
@@ -43,12 +44,12 @@ public class Submission implements Serializable {
 	private Date date;
 	
 	public Submission() {}
-	public Submission(Questionnaire questionnaireId, User userId, boolean submitted, Integer points, Date date) {
-		this.questionnaireId		= questionnaireId;
-		this.userId			= userId;
-		this.submitted			= submitted;
-		this.points				= points;
-		this.date				= date;
+	public Submission(Questionnaire submissionQuestionnaire, User userSender, boolean submitted, Integer points, Date date) {
+		this.submissionQuestionnaire = submissionQuestionnaire;
+		this.userSender = userSender;
+		this.submitted = submitted;
+		this.points = points;
+		this.date = date;
 	}
 	
 	/* ******************
@@ -58,41 +59,33 @@ public class Submission implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
-
 	public void setProductAnswers(List<ProductAnswer> productAnswers) {
 		this.productAnswers = productAnswers;
 	}
-	public void setQuestionnaireId(Questionnaire questionnaireId) {
-		this.questionnaireId = questionnaireId;
+	public void setQuestionnaire(Questionnaire submissionQuestionnaire) {
+		this.submissionQuestionnaire = submissionQuestionnaire;
 	}
-	public void setUserId(User userId) {
-		this.userId = userId;
-	}
-	
-	public void setQuestionnaire(Questionnaire questionnaireId) {
-		this.questionnaireId		= questionnaireId;
-	}
-	public void setUser(User userId) {
-		this.userId			= userId;
+	public void setUser(User userSender) {
+		this.userSender = userSender;
 	}
 	public void setSubmitted(boolean submitted) {
-		this.submitted			= submitted;
+		this.submitted = submitted;
 	}
 	public void setPoints(Integer points) {
-		this.points				= points;
+		this.points = points;
 	}
 	public void setDate(Date date) {
-		this.date				= date;
+		this.date = date;
 	}
 	
 	/* ******************
 	 * 		GETTERS		*
 	 ********************/
-	public Questionnaire getQuestionnaireId() {
-		return questionnaireId;
+	public Questionnaire getQuestionnaire() {
+		return submissionQuestionnaire;
 	}
-	public User getUserId() {
-		return userId;
+	public User getUser() {
+		return userSender;
 	}
 	public boolean getSubmitted() {
 		return submitted;

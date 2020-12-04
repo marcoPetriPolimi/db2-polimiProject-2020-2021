@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import utils.Const;
+
 
 /**
  * This class is the EJB for the user database class.
@@ -14,11 +16,11 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "user", schema = "db2_project")
+@NamedQueries({
+		@NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.nickname = ?1")
+})
 public class User implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = Const.EJBVersion;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,7 +48,7 @@ public class User implements Serializable {
 	/**
 	 * Reverse relationship for the 1:N relationship with the submissions.
 	 */
-	@OneToMany(mappedBy="userId")
+	@OneToMany(mappedBy="userSender")
 	private Collection<Submission> submissions;
 	
 	public User() {

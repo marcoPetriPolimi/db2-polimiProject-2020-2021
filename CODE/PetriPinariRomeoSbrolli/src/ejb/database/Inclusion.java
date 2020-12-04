@@ -12,22 +12,23 @@ import javax.persistence.*;
 @Entity
 @Table (name = "Inclusion", schema = "db2_project")
 public class Inclusion implements Serializable{
-	
-private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@ManyToOne
-	private int questionnaireId;
+	@JoinColumn(name = "questionnaireId")
+	private Questionnaire inclusionQuestionnaire;
 	@ManyToOne
-	private int questionId;
+	@JoinColumn(name = "questionId")
+	private Question inclusionQuestion;
 	
 	public Inclusion() {}
-	public Inclusion(int id, int questionnaireId, int questionId) {
+	public Inclusion(int id, Questionnaire inclusionQuestionnaire, Question inclusionQuestion) {
 		this.id = id;
-		this.questionnaireId = questionnaireId;
-		this.questionId = questionId;
+		this.inclusionQuestionnaire = inclusionQuestionnaire;
+		this.inclusionQuestion = inclusionQuestion;
 	}
 	
 	/* ******************
@@ -37,12 +38,12 @@ private static final long serialVersionUID = 1L;
 		this.id = id;
 	}
 	
-	public void setQuestionnaireId(int questionnaireId) {
-		this.questionnaireId = questionnaireId;
+	public void setQuestionnaire(Questionnaire inclusionQuestionnaire) {
+		this.inclusionQuestionnaire = inclusionQuestionnaire;
 	}
 	
-	public void setQuestionId(int questionId) {
-		this.questionId = questionId;
+	public void setQuestion(Question inclusionQuestion) {
+		this.inclusionQuestion = inclusionQuestion;
 	}
 	
 	
@@ -53,12 +54,12 @@ private static final long serialVersionUID = 1L;
 		return id;
 	}
 	
-	public int getQuestionnaireId() {
-		return questionnaireId;
+	public Questionnaire getQuestionnaireId() {
+		return inclusionQuestionnaire;
 	}
 	
-	public int getQuestionId() {
-		return questionId;
+	public Question getQuestionId() {
+		return inclusionQuestion;
 	}
 	
 

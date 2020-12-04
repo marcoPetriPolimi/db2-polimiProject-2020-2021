@@ -1,15 +1,18 @@
 package ejb.database;
 
+import java.io.Serializable;
+
 import javax.persistence.*;
+
+import utils.Const;
 
 //The persistent class for the question database table.
 //@author Etion Pinari
 
 @Entity
 @Table(name = "question", schema = "db2_project")
-public class Question {
-
-	private static final long serialVersionUID = 1L;
+public class Question implements Serializable {
+	private static final long serialVersionUID = Const.EJBVersion;
 	
 	@Id
 	private int id;

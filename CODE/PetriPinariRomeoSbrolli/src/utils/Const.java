@@ -10,6 +10,11 @@ import java.util.Map;
 public class Const {
 	// there can't be instantiation of this class
 	private Const() {}
+	
+	// project version
+	public static final long EJBVersion = 1L;
+	public static final long WebVersion = 1L;
+	public static final long ExceptionVersion = 1L;
 
 	// accepted languages list
 	public static final String defaultLanguage = "eng";
