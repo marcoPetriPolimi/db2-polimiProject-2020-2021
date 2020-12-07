@@ -74,6 +74,8 @@ local.properties
 /CODE/PetriPinariRomeoSbrolli/WebContent/WEB-INF/lib
 *.classpath
 *.project
+*.class
+MANIFEST.MF
 
 # End of https://www.toptal.com/developers/gitignore/api/eclipse
 CODE/PetriPinariRomeoSbrolli/WebContent/META-INF/MANIFEST.MF
