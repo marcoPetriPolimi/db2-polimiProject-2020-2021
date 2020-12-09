@@ -26,7 +26,8 @@ public class PossibleAnswer implements Serializable {
 	private int id;
 	
 	@ManyToOne
-	private Question questionId;
+	@JoinColumn(name = "questionId")
+	private Question question;
 	
 	private String word;
 
@@ -37,8 +38,8 @@ public class PossibleAnswer implements Serializable {
 		this.id = id;
 	}
 	
-	public void setQuestionId(Question id) {
-		this.questionId = id;
+	public void setQuestion(Question q) {
+		this.question = q;
 	}
 	
 	public void setWord(String word) {
@@ -51,8 +52,8 @@ public class PossibleAnswer implements Serializable {
 		return this.id;
 	}
 	
-	public Question getQuestionId(Question id) {
-		return this.questionId;
+	public Question getQuestion() {
+		return this.question;
 	}
 	
 	public String getWord(String word) {
