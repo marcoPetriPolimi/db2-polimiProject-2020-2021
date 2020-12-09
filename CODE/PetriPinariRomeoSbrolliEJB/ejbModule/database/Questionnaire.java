@@ -30,14 +30,14 @@ public class Questionnaire implements Serializable{
 	@Column(unique=true)
 	private String name;
 
-	@OneToMany (mappedBy = "submissionQuestionnaire")
+	@OneToMany (mappedBy = "submissionQuestionnaire", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Submission> submissions;
 
 	@ManyToOne
 	@JoinColumn(name = "creatorId")
 	private User creator;
 	
-	@OneToMany (mappedBy = "inclusionQuestionnaire")
+	@OneToMany (mappedBy = "inclusionQuestionnaire", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Inclusion> questionnaireInclusions;
 	
 	public Questionnaire() {}

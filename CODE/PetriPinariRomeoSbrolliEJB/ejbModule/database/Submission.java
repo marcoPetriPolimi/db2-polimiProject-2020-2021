@@ -35,7 +35,7 @@ public class Submission implements Serializable {
 	
 	@OneToMany (mappedBy = "submission")
 	private List<PersonalAnswer> personalAnswers;
-	private boolean submitted;
+	private int submitted;
 	/**
 	 * The points column of the database can be null, so an object is needed because a primitive type cannot be null.
 	 */
@@ -47,7 +47,7 @@ public class Submission implements Serializable {
 	private Date date;
 	
 	public Submission() {}
-	public Submission(Questionnaire submissionQuestionnaire, User userSender, boolean submitted, Integer points, Date date) {
+	public Submission(Questionnaire submissionQuestionnaire, User userSender, int submitted, Integer points, Date date) {
 		this.submissionQuestionnaire = submissionQuestionnaire;
 		this.userSender = userSender;
 		this.submitted = submitted;
@@ -71,7 +71,7 @@ public class Submission implements Serializable {
 	public void setUser(User userSender) {
 		this.userSender = userSender;
 	}
-	public void setSubmitted(boolean submitted) {
+	public void setSubmitted(int submitted) {
 		this.submitted = submitted;
 	}
 	public void setPoints(Integer points) {
@@ -90,7 +90,7 @@ public class Submission implements Serializable {
 	public User getUser() {
 		return userSender;
 	}
-	public boolean getSubmitted() {
+	public int getSubmitted() {
 		return submitted;
 	}
 	public Integer getPoints() {
