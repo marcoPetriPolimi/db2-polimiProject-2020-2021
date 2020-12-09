@@ -42,7 +42,7 @@ public class User implements Serializable {
 	private boolean blocked;
 	private int role;
 	
-	@OneToMany(mappedBy = "creatorId")
+	@OneToMany(mappedBy = "creator")
 	private List<Questionnaire> questionnaires;
 	
 	/**

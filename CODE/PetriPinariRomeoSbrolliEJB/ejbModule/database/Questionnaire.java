@@ -34,7 +34,8 @@ public class Questionnaire implements Serializable{
 	private List<Submission> submissions;
 
 	@ManyToOne
-	private int creatorId;
+	@JoinColumn(name = "creatorId")
+	private User creator;
 	
 	@OneToMany (mappedBy = "inclusionQuestionnaire")
 	private List<Inclusion> questionnaireInclusions;
@@ -53,8 +54,8 @@ public class Questionnaire implements Serializable{
 		this.id = id;
 	}
 	
-	public void setCreatorId(int creatorId) {
-		this.creatorId = creatorId;
+	public void setCreator(User creator) {
+		this.creator = creator;
 	}
 	
 	public void setDate(Date date) {
@@ -77,8 +78,8 @@ public class Questionnaire implements Serializable{
 		return id;
 	}
 	
-	public int getCreatorId() {
-		return creatorId;
+	public User getCreator() {
+		return creator;
 	}
 	
 	public Date getDate() {

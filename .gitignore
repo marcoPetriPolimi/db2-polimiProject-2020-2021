@@ -83,3 +83,4 @@ MANIFEST.MF
 # End of https://www.toptal.com/developers/gitignore/api/eclipse
 CODE/PetriPinariRomeoSbrolli/WebContent/META-INF/MANIFEST.MF
 CODE/PetriPinariRomeoSbrolliEJB/build/classes/META-INF/persistence.xml
+CODE/PetriPinariRomeoSbrolliWeb/src/web/controllers/ServletBrutta.java

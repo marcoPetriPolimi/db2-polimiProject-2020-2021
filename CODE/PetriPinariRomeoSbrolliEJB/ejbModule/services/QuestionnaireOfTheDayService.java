@@ -19,7 +19,7 @@ import exceptions.QuestionnaireException;
 
 @Stateless
 public class QuestionnaireOfTheDayService {
-	@PersistenceContext(unitName = "QuestionnaireOfTheDayServiceEJB")
+	@PersistenceContext(unitName = "PetriPinariRomeoSbrolliEJB")
 	private EntityManager em;
 
 	public QuestionnaireOfTheDayService() {
@@ -35,7 +35,6 @@ public class QuestionnaireOfTheDayService {
 	}
 	
 	/**	get product related to questionnaire with id: "int id"
-	 * 		 
 	 * @param id: primary key of questionnaire
 	 * @return the product related to questionnaire with id "id"
 	 * @throws QuestionnaireException
