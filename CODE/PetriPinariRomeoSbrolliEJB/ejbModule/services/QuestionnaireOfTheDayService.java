@@ -28,7 +28,7 @@ public class QuestionnaireOfTheDayService {
 	public Questionnaire getQuestionnaire(int id) throws QuestionnaireException {
 		Questionnaire result = em.find(Questionnaire.class, id);
 		if(result == null) {
-			throw new QuestionnaireException();
+			throw new QuestionnaireException("Could not find questionnarie");
 		} else {
 			return result;
 		}
