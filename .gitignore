@@ -69,9 +69,12 @@ local.properties
 .sts4-cache/
 
 ## Personal ignored files
-/CODE/PetriPinariRomeoSbrolli/build
-/CODE/PetriPinariRomeoSbrolli/.settings
-/CODE/PetriPinariRomeoSbrolli/WebContent/WEB-INF/lib
+/CODE/PetriPinariRomeoSbrolliEJB/build
+/CODE/PetriPinariRomeoSbrolliEJB/.settings
+/CODE/PetriPinariRomeoSbrolliEJB/WebContent/WEB-INF/lib
+/CODE/PetriPinariRomeoSbrolliWEB/build
+/CODE/PetriPinariRomeoSbrolliWEB/.settings
+/CODE/PetriPinariRomeoSbrolliWEB/WebContent/WEB-INF/lib
 *.classpath
 *.project
 *.class
@@ -79,3 +82,4 @@ MANIFEST.MF
 
 # End of https://www.toptal.com/developers/gitignore/api/eclipse
 CODE/PetriPinariRomeoSbrolli/WebContent/META-INF/MANIFEST.MF
+CODE/PetriPinariRomeoSbrolliEJB/build/classes/META-INF/persistence.xml
