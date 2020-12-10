@@ -23,8 +23,16 @@ public class PossibleAnswer implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
+	public PossibleAnswer() {};
+	
+	public PossibleAnswer(String word) {
+		super();
+		this.word = word;
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "questionId")
 	private Question question;

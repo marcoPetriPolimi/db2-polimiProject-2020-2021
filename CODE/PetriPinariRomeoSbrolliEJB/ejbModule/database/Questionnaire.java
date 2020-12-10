@@ -47,6 +47,11 @@ public class Questionnaire implements Serializable{
 		this.name = name;
 	}
 	
+	public void addInclusion(Inclusion inclusion) {
+		getInclusions().add(inclusion);
+		inclusion.setQuestionnaire(this);
+	}
+	
 	/* ******************
 	 * 		SETTERS		*
 	 ********************/

@@ -119,7 +119,7 @@ public class QuestionnaireSubmissionService {
 	 */
 	public void submitOrCancelQuestionnaire(int userId, boolean submit) {
 		User relatedUser = em.find(User.class, userId);
-		Submission toCreate = new Submission(questionnaire,relatedUser,submit,0,new Date());
+		Submission toCreate = new Submission(questionnaire,relatedUser,submit? 1 : 0,0,new Date());
 		em.persist(toCreate);
 		
 		if (submit) {

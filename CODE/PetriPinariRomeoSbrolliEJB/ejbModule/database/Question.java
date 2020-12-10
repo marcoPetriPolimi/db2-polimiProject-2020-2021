@@ -1,6 +1,7 @@
 package database;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -15,12 +16,41 @@ public class Question implements Serializable {
 	private static final long serialVersionUID = Const.EJBVersion;
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
+	public Question() {}
+	
+	public Question(String question, short type) {
+		super();
+		this.question = question;
+		this.type = type;
+	}
+
 	private String question;
 	
 	private short type;
 	
+	@OneToMany (mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<PossibleAnswer> questionAnswers;
+	
+	@OneToMany (mappedBy = "inclusionQuestion", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Inclusion> questionInclusions;
+	
+	public void addInclusion(Inclusion inclusion) {
+		getQuestionInclusions().add(inclusion);
+		inclusion.setQuestion(this);
+	}
+
+	public void addAnswer(PossibleAnswer possAnswer) {
+		getQuestionAnswers().add(possAnswer);
+		possAnswer.setQuestion(this);
+	}
+
+
+
+
+
 	/*****	Setters *****/
 	
 	public void setId(int id) {
@@ -33,6 +63,14 @@ public class Question implements Serializable {
 	
 	public void setType(short type) {
 		this.type = type;
+	}
+	
+	public void setQuestionInclusions(List<Inclusion> questionInclusions) {
+		this.questionInclusions = questionInclusions;
+	}
+	
+	public void setQuestionAnswers(List<PossibleAnswer> questionAnswers) {
+		this.questionAnswers = questionAnswers;
 	}
 	
 	
@@ -49,4 +87,13 @@ public class Question implements Serializable {
 	public short getType() {
 		return this.type;
 	}
+	
+	public List<Inclusion> getQuestionInclusions() {
+		return questionInclusions;
+	}
+
+	public List<PossibleAnswer> getQuestionAnswers() {
+		return questionAnswers;
+	}
+
 }

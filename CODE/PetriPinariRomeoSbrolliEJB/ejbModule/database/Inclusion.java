@@ -25,7 +25,7 @@ public class Inclusion implements Serializable{
 	private Question inclusionQuestion;
 	
 	public Inclusion() {}
-	public Inclusion(int id, Questionnaire inclusionQuestionnaire, Question inclusionQuestion) {
+	public Inclusion(Questionnaire inclusionQuestionnaire, Question inclusionQuestion) {
 		this.id = id;
 		this.inclusionQuestionnaire = inclusionQuestionnaire;
 		this.inclusionQuestion = inclusionQuestion;

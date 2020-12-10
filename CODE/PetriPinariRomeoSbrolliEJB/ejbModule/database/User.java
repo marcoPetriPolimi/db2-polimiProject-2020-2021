@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
-
 import utils.Const;
 
 
@@ -42,7 +41,7 @@ public class User implements Serializable {
 	private boolean blocked;
 	private int role;
 	
-	@OneToMany(mappedBy = "creator")
+	@OneToMany(mappedBy = "creator",  cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Questionnaire> questionnaires;
 	
 	/**
@@ -63,6 +62,12 @@ public class User implements Serializable {
 		this.role			= role;
 	}
 	
+	
+	public void addQuestionnaire(Questionnaire questionnaire) {
+		getQuestionnaires().add(questionnaire);
+		questionnaire.setCreator(this);
+	}
+	
 	/* ******************
 	 * 		SETTERS		*
 	 ********************/
@@ -71,7 +76,7 @@ public class User implements Serializable {
 		this.id = id;
 	}
 
-	public void setquestionnaires(List<Questionnaire> questionnaires) {
+	public void setQuestionnaires(List<Questionnaire> questionnaires) {
 		this.questionnaires = questionnaires;
 	}
 
@@ -101,6 +106,8 @@ public class User implements Serializable {
 		this.role			= role;
 	}
 	
+	
+	
 	/* ******************
 	 * 		GETTERS		*
 	 ********************/
@@ -109,7 +116,7 @@ public class User implements Serializable {
 		return id;
 	}
 	
-	public List<Questionnaire> getquestionnaires() {
+	public List<Questionnaire> getQuestionnaires() {
 		return questionnaires;
 	}
 	
