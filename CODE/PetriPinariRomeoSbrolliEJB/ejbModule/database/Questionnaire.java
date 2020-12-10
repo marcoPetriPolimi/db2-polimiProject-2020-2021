@@ -1,6 +1,7 @@
 package database;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,6 +35,10 @@ public class Questionnaire implements Serializable{
 	private List<Submission> submissions;
 
 	@ManyToOne
+	@JoinColumn(name= "product")
+	private Product product;
+	
+	@ManyToOne
 	@JoinColumn(name = "creatorId")
 	private User creator;
 	
@@ -41,13 +46,14 @@ public class Questionnaire implements Serializable{
 	private List<Inclusion> questionnaireInclusions;
 	
 	public Questionnaire() {}
-	public Questionnaire(int id, Date date, String name) {
-		this.id = id;
-		this.date = date;
+	public Questionnaire(String name) {
+		questionnaireInclusions = new ArrayList<>();
+		this.date = new Date();
 		this.name = name;
 	}
 	
 	public void addInclusion(Inclusion inclusion) {
+		System.out.println("Inclusion: " + inclusion + " list: " + questionnaireInclusions);
 		getInclusions().add(inclusion);
 		inclusion.setQuestionnaire(this);
 	}
@@ -76,6 +82,14 @@ public class Questionnaire implements Serializable{
 		this.submissions = submissions;
 	}
 	
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
+	public void setQuestionnaireInclusions(List<Inclusion> questionnaireInclusions) {
+		this.questionnaireInclusions = questionnaireInclusions;
+	}
+	
 	/* ******************
 	 * 		GETTERS		*
 	 ********************/
@@ -100,6 +114,14 @@ public class Questionnaire implements Serializable{
 	}
 	
 	public List<Inclusion> getInclusions() {
+		return questionnaireInclusions;
+	}
+	
+	public Product getProduct() {
+		return product;
+	}
+	
+	public List<Inclusion> getQuestionnaireInclusions() {
 		return questionnaireInclusions;
 	}
 }

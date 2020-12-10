@@ -26,19 +26,18 @@ public class PossibleAnswer implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	public PossibleAnswer() {};
-	
-	public PossibleAnswer(String word) {
-		super();
-		this.word = word;
-	}
-
 	@ManyToOne
 	@JoinColumn(name = "questionId")
 	private Question question;
 	
-	private String word;
+	private String answerText;
 
+	public PossibleAnswer() {};
+	
+	public PossibleAnswer(String answerText) {
+
+		this.answerText = answerText;
+	}
 	
 	/*****	Setters *****/
 	
@@ -50,8 +49,8 @@ public class PossibleAnswer implements Serializable {
 		this.question = q;
 	}
 	
-	public void setWord(String word) {
-		this.word = word;
+	public void setanswerText(String answerText) {
+		this.answerText = answerText;
 	}
 
 	/*****	Getters *****/
@@ -64,7 +63,7 @@ public class PossibleAnswer implements Serializable {
 		return this.question;
 	}
 	
-	public String getWord(String word) {
-		return this.word;
+	public String getanswerText(String answerText) {
+		return this.answerText;
 	}
 }

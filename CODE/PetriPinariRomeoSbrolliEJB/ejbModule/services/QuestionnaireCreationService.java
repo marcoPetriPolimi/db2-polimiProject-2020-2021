@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.LocalBean;
+import javax.ejb.Remove;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -11,6 +12,7 @@ import javax.persistence.PersistenceContextType;
 import database.Inclusion;
 import database.PersonalAnswer;
 import database.PossibleAnswer;
+import database.Product;
 import database.Question;
 import database.Questionnaire;
 import database.User;
@@ -33,7 +35,6 @@ public class QuestionnaireCreationService {
      * Default constructor. 
      */
     public QuestionnaireCreationService() {
-    	questionnaire= new Questionnaire();
         newQuestions= new ArrayList<>();
         storedQuestions= new ArrayList<>();
     }
@@ -67,7 +68,10 @@ public class QuestionnaireCreationService {
     	storedQuestions.remove(em.find(Question.class, questionId));
     }
     
-    public void createQuestionnaire(int userId) {
+    public void createQuestionnaire(int userId, String name, int productId) {
+    	questionnaire= new Questionnaire(name);
+    	Product product= em.find(Product.class,	productId);
+    	product.addQuestionaire(questionnaire);
     	User creator= em.find(User.class, userId);
     	creator.addQuestionnaire(questionnaire);
     	for (FormQuestion fq: newQuestions) {
@@ -77,13 +81,22 @@ public class QuestionnaireCreationService {
 			newQuestion.addInclusion(questInclusion);
     		for (String answer: fq.getPossibleAnswers()) {
     			PossibleAnswer possAnswer= new PossibleAnswer(answer);
-    			newQuestion.addAnswer(possAnswer);
+    			newQuestion.addAnswer(possAnswer);  		
     		}
     		em.persist(newQuestion);
     	}
+    	for (Question question: storedQuestions) {
+    		Inclusion questInclusion= new Inclusion();
+    		questionnaire.addInclusion(questInclusion);
+    		question.addInclusion(questInclusion);
+    		em.persist(question);
+    	}    	
     	em.persist(creator);
+    	em.persist(product);
     	
     }
     
+    @Remove
+	public void remove() {}
 
 }

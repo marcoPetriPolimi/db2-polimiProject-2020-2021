@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS Submission (
 CREATE TABLE IF NOT EXISTS PossibleAnswer (
 	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 	questionId INT UNSIGNED,
-	word VARCHAR(50) NOT NULL,
+	answerText VARCHAR(50) NOT NULL,
 	FOREIGN KEY (questionId) REFERENCES Question(id) ON UPDATE CASCADE ON DELETE CASCADE
 ) AUTO_INCREMENT = 1;
 
@@ -333,7 +333,7 @@ BEGIN
         DECLARE offence VARCHAR(50);
         DECLARE potentialOffence VARCHAR(50);
         
-        SELECT LCASE(word) INTO potentialOffence from question; 
+        SELECT LCASE(question) INTO potentialOffence from question; 
         SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = 1;
         
         LABEL1: WHILE (offence IS NOT NULL) DO

@@ -24,13 +24,6 @@ public class Inclusion implements Serializable{
 	@JoinColumn(name = "questionId")
 	private Question inclusionQuestion;
 	
-	public Inclusion() {}
-	public Inclusion(Questionnaire inclusionQuestionnaire, Question inclusionQuestion) {
-		this.id = id;
-		this.inclusionQuestionnaire = inclusionQuestionnaire;
-		this.inclusionQuestion = inclusionQuestion;
-	}
-	
 	/* ******************
 	 * 		SETTERS		*
 	 ********************/

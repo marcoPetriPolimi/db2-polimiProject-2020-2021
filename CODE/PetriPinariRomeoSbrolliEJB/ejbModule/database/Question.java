@@ -1,6 +1,7 @@
 package database;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -23,6 +24,8 @@ public class Question implements Serializable {
 	
 	public Question(String question, short type) {
 		super();
+		questionAnswers= new ArrayList<>();
+		questionInclusions = new ArrayList<>();
 		this.question = question;
 		this.type = type;
 	}

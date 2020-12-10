@@ -8,7 +8,6 @@
 		<class>database.Inclusion</class>
 		<class>database.OffensiveWord</class>
 		<class>database.PersonalAnswer</class>
-		<class>database.PossibleAnswer</class>
 		<class>database.Product</class>
 		<class>database.ProductAnswer</class>
 		<class>database.Question</class>
@@ -16,6 +15,7 @@
 		<class>database.Review</class>
 		<class>database.Submission</class>
 		<class>database.User</class>
+		<class>database.PossibleAnswer</class>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/db2_project"/>
