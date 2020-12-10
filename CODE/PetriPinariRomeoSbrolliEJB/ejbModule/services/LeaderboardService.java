@@ -1,14 +1,22 @@
 package services;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import database.Questionnaire;
 import database.Submission;
 import database.User;
+import exceptions.QuestionnaireException;
 
+/*
+ * @author Giorgio Romeo
+ */
 @Stateless
 public class LeaderboardService {
 	
@@ -18,21 +26,40 @@ public class LeaderboardService {
 	public LeaderboardService() {
 	}
 	
-	//TODO Define in a better way (add functional programming to return a map)
-	public List<User> getGeneralLeaderboard(){
-		List<User> generalLeaderboard = em
-				.createQuery("SELECT u FROM User u ORDER BY u.points DESC", User.class).getResultList();
+	/* Get users's nickname and its total points
+	 * @return  A map with key the user nickname and with value his total points
+	 */
+	public Map<String, Integer> getGeneralLeaderboard(){
+		List<Object[]> general_users_points = em
+				.createQuery("SELECT u.nickname, u.points FROM User u ORDER BY u.points DESC", Object[].class).getResultList();
+		Map<String, Integer> generalLeaderboard = new LinkedHashMap<String, Integer>();
+		for (int i = 0; i < general_users_points.size(); i++)
+			generalLeaderboard.put((String)general_users_points.get(i)[0], (Integer)general_users_points.get(i)[1]);
 
 		return generalLeaderboard;
 	}
 	
-	//TODO Define in a better way (add functional programming to return a map)
-		public List<Submission> getQuestionnaireLeaderboard(int questionnaireId){
-			List<Submission> questionnaireLeaderboard = em
-					.createQuery("SELECT s FROM Submission s WHERE s.questionnaireId = :qId "
-							   + "ORDER BY s.points DESC", Submission.class).setParameter("qId", questionnaireId).getResultList();
+	
+	/*	Get users's nickname and their points related to the questionnaire: questionnaireId
+	 * @param questionnaireId The id of the questionnaire
+	 * @return A map with key the user's nickname and with value his points related to the questionnaire
+	 * @throw QuestionnaireException
+	 */
+	public Map<String, Integer> getQuestionnaireLeaderboard(int questionnaireId) throws QuestionnaireException{
+		
+		Questionnaire questionnaire = em.find(Questionnaire.class, questionnaireId);
+		if(questionnaire == null) throw new QuestionnaireException("Could not find questionnarie");
+		
+		List<Object[]> questionnaire_users_points = em
+				.createQuery("SELECT u.nickname, s.points "
+						   + "FROM Submission s, User u "
+						   + "WHERE s.submissionQuestionnaire.id = :qId AND u = s.userSender "
+						   + "ORDER BY s.points DESC", Object[].class).setParameter("qId", questionnaireId).getResultList();
+		Map<String, Integer> questionnaireLeaderboard = new LinkedHashMap<String, Integer>();
+		for (int i = 0; i < questionnaire_users_points.size(); i++)
+			questionnaireLeaderboard.put((String)questionnaire_users_points.get(i)[0], (Integer)questionnaire_users_points.get(i)[1]);
 
-			return questionnaireLeaderboard;
-		}
+		return questionnaireLeaderboard;
+	}
 
 }

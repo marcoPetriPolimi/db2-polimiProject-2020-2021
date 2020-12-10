@@ -30,11 +30,14 @@ public class Review {
 	@ManyToOne
 	@JoinColumn(name="productId")
 	private Product product;
+	
+	private String productReview;
 
 	public Review() {}
-	public Review(User user, Product product) {
-		this.user		= user;
-		this.product	= product;
+	public Review(User user, Product product, String productReview) {
+		this.user = user;
+		this.product = product;
+		this.productReview = productReview;
 	}
 
 	/* ******************
@@ -49,6 +52,10 @@ public class Review {
 	public User getUser() {
 		return user;
 	}
+	
+	public String getProductReview() {
+		return productReview;
+	}
 
 	/* ******************
 	 * 		SETTERS		*
@@ -61,5 +68,9 @@ public class Review {
 	}
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	public void setProducReview (String productReview) {
+		this.productReview = productReview;
 	}
 }
