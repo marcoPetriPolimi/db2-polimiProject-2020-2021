@@ -334,7 +334,7 @@ BEGIN
         DECLARE offence VARCHAR(50);
         DECLARE potentialOffence VARCHAR(50);
         
-        SELECT LCASE(question) INTO potentialOffence from question; 
+        SELECT LCASE(new.question) INTO potentialOffence; 
         SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = 1;
         
         LABEL1: WHILE (offence IS NOT NULL) DO
@@ -359,11 +359,11 @@ CREATE TRIGGER ReviewDoNotContainOffensiveWordOnCreation
 BEFORE INSERT ON review -- //( change )//
 FOR EACH ROW
 BEGIN
-		DECLARE iteration INT DEFAULT 1; 
+	DECLARE iteration INT DEFAULT 1; 
         DECLARE offence VARCHAR(50);
         DECLARE potentialOffence VARCHAR(50);
         
-        SELECT LCASE(word) INTO potentialOffence from review; 
+        SELECT LCASE(new.productReview) INTO potentialOffence; 
         SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = 1;
         
         LABEL1: WHILE (offence IS NOT NULL) DO
@@ -384,14 +384,14 @@ DELIMITER $$
 
 -- @author ETION
 CREATE TRIGGER ResponsesDoNotContainOffensiveWordOnCreation
-BEFORE INSERT ON review -- //( change )//
+BEFORE INSERT ON productAnswer-- //( change )//
 FOR EACH ROW
 BEGIN
-		DECLARE iteration INT DEFAULT 1; 
+	DECLARE iteration INT DEFAULT 1; 
         DECLARE offence VARCHAR(50);
         DECLARE potentialOffence VARCHAR(50);
         
-        SELECT LCASE(word) INTO potentialOffence from productAnswer; 
+        SELECT LCASE(new.word) INTO potentialOffence; 
         SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = 1;
         
         LABEL1: WHILE (offence IS NOT NULL) DO
