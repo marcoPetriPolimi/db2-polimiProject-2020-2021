@@ -392,17 +392,25 @@ DELIMITER $$
 
 -- @AUTHOR ETION
 CREATE TRIGGER QuestionnairesResponsesAreEqualToQuestions
-BEFORE INSERT ON ProductAnswer
+AFTER INSERT ON ProductAnswer
 FOR EACH ROW
 BEGIN
 	DECLARE numOfResponses, numOfQuestions INT;
-	SELECT count(*) INTO numOfResponses 
-	FROM ProductAnswer as P, Questionnaire as Q 
-	WHERE P.questionnaireId = Q.id;
+    
+    SELECT count(*) INTO numOfResponses -- suppose that answers to questionnaires are inserted all in one go
+    FROM Submission as S
+    WHERE 								-- for each insert count the number of new answers being inserted
+			new.submissionId = S.id  	-- that are related to the same submission id
+    ;
 
-	SELECT count(*) INTO numOfQuestions 
-	FROM Questionnaire as Q, Inclusion as I, Question as QT
-	WHERE I.questionnaireId = Q.id and I.questionID = QT.id ;
+	SELECT count(QT.id) INTO numOfQuestions 					-- count the total number of question ids related to the product answer's questionnaire
+	FROM Inclusion as I, Question as QT, Questionnaire as Q, Submission as S	
+	WHERE 
+			new.submissionId = S.id AND			-- find the questionnaire related to
+            S.questionnaireId = Q.id AND		-- our submission AND
+            I.questionnaireId = Q.ID AND		-- count all the distinct question ids Included (inclusion)
+			I.questionID = QT.id ;				-- on that questionnaire
+            
 
 	IF(numOfResponses <> numOfQuestions) THEN
 			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Number of answers must be equal to number of questions in questionnaire.';
