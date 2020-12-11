@@ -202,6 +202,7 @@ END$$
 
 DELIMITER ;
 
+
 DELIMITER $$
 -- @author MARCO
 CREATE TRIGGER AdministratorCreatesQuestionnairesAfterRegistration
@@ -216,26 +217,6 @@ BEGIN
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Admins cannot create questionnaires before registration.';
 	END IF;
 END$$
-
-DELIMITER ;
-
-DELIMITER $$
-
--- CREATE TRIGGER QuestionnairesResponsesAreEqualToQuestions
--- TODO
--- BEGIN
-	-- TODO
--- END$$
-
-DELIMITER ;
-
-DELIMITER $$
-
--- CREATE TRIGGER QuestionnairesResponsesDoNotContainOffensiveWord
--- BEFORE INSERT ON productAnswer
--- BEGIN
--- 	-- TODO
--- END$$
 
 DELIMITER ;
 
@@ -383,7 +364,7 @@ DELIMITER ;
 DELIMITER $$
 
 -- @author ETION
-CREATE TRIGGER ResponsesDoNotContainOffensiveWordOnCreation
+CREATE TRIGGER QuestionnairesResponsesDoNotContainOffensiveWordOnCreation
 BEFORE INSERT ON productAnswer-- //( change )//
 FOR EACH ROW
 BEGIN
