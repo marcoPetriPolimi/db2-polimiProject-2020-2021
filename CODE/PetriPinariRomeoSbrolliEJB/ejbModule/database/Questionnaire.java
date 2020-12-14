@@ -53,7 +53,6 @@ public class Questionnaire implements Serializable{
 	}
 	
 	public void addInclusion(Inclusion inclusion) {
-		System.out.println("Inclusion: " + inclusion + " list: " + questionnaireInclusions);
 		getInclusions().add(inclusion);
 		inclusion.setQuestionnaire(this);
 	}

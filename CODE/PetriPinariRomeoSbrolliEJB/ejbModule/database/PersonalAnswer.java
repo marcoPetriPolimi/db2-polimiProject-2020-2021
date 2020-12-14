@@ -26,7 +26,7 @@ public class PersonalAnswer implements Serializable{
 	@JoinColumn(name = "submissionId")
 	private Submission submission;
 	
-	public PersonalAnswer(User user,Questionnaire questionnaire,Integer age,Character sex,Integer expertise) {
+	public PersonalAnswer(Questionnaire questionnaire,Integer age,Character sex,Integer expertise) {
 		this.age=age;
 		this.sex=sex;
 		this.expertise=expertise;

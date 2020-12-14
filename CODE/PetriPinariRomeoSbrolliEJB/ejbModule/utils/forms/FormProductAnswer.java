@@ -1,6 +1,4 @@
 package utils.forms;
-
-import java.lang.instrument.IllegalClassFormatException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,9 +36,9 @@ public class FormProductAnswer {
 		responses = new ArrayList<>();
 		this.type = type;
 	}
-	public void setResponse(String response) throws IllegalClassFormatException {
+	public void setResponse(String response) throws IllegalArgumentException {
 		if (type == 1) {
-			throw new IllegalClassFormatException();
+			throw new IllegalArgumentException();
 		}
 		
 		if (!responses.isEmpty()) {
@@ -49,9 +47,9 @@ public class FormProductAnswer {
 			responses.add(response);
 		}
 	}
-	public void addResponse(String response) throws IllegalClassFormatException {
+	public void addResponse(String response) throws IllegalArgumentException {
 		if (type != 1) {
-			throw new IllegalClassFormatException();
+			throw new IllegalArgumentException();
 		}
 		
 		responses.add(response);
@@ -66,17 +64,17 @@ public class FormProductAnswer {
 	public int getType() {
 		return type;
 	}
-	public List<String> getResponses() throws IllegalClassFormatException {
+	public List<String> getResponses() throws IllegalArgumentException {
 		if (type != 1) {
-			throw new IllegalClassFormatException();
+			throw new IllegalArgumentException();
 		}
 		
 		// defensive return
 		return new ArrayList<>(responses);
 	}
-	public String getResponse() throws IllegalClassFormatException {
+	public String getResponse() throws IllegalArgumentException {
 		if (type == 1) {
-			throw new IllegalClassFormatException();
+			throw new IllegalArgumentException();
 		}
 		
 		return responses.get(0);

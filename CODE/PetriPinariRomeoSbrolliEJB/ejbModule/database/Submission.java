@@ -30,10 +30,10 @@ public class Submission implements Serializable {
 	@JoinColumn(name = "userId")
 	private User userSender;
 	
-	@OneToMany (mappedBy = "submission")
+	@OneToMany (mappedBy = "submission",  cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductAnswer> productAnswers;
 	
-	@OneToMany (mappedBy = "submission")
+	@OneToMany (mappedBy = "submission",  cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<PersonalAnswer> personalAnswers;
 	private int submitted;
 	/**
@@ -55,10 +55,32 @@ public class Submission implements Serializable {
 		this.date = date;
 	}
 	
+	public void addProductAnswer(ProductAnswer productAnswer) {
+		getProductAnswers().add(productAnswer);
+		productAnswer.setSubmission(this);
+	}
+	
+	public void addPersonalAnswer(PersonalAnswer personalAnswer) {
+		getPersonalAnswers().add(personalAnswer);
+		personalAnswer.setSubmission(this);
+	}
+	
 	/* ******************
 	 * 		SETTERS		*
 	 ********************/
 	
+
+	public void setSubmissionQuestionnaire(Questionnaire submissionQuestionnaire) {
+		this.submissionQuestionnaire = submissionQuestionnaire;
+	}
+
+	public void setUserSender(User userSender) {
+		this.userSender = userSender;
+	}
+
+	public void setPersonalAnswers(List<PersonalAnswer> personalAnswers) {
+		this.personalAnswers = personalAnswers;
+	}
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -106,6 +128,18 @@ public class Submission implements Serializable {
 	
 	public List<ProductAnswer> getProductAnswers() {
 		return productAnswers;
+	}
+	
+	public Questionnaire getSubmissionQuestionnaire() {
+		return submissionQuestionnaire;
+	}
+	
+	public User getUserSender() {
+		return userSender;
+	}
+	
+	public List<PersonalAnswer> getPersonalAnswers() {
+		return personalAnswers;
 	}
 	
 }

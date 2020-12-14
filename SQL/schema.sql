@@ -112,7 +112,6 @@ CREATE TABLE IF NOT EXISTS ProductAnswer (
 	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 	submissionId INT UNSIGNED,
 	questionId INT UNSIGNED,
-	userId INT UNSIGNED NOT NULL,
 	word VARCHAR(50) NOT NULL,
 	FOREIGN KEY (questionId) REFERENCES Question(id) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY (submissionId) REFERENCES Submission(id) ON UPDATE CASCADE ON DELETE CASCADE
@@ -390,32 +389,76 @@ DELIMITER ;
 
 DELIMITER $$
 
--- @AUTHOR ETION
-CREATE TRIGGER QuestionnairesResponsesAreEqualToQuestions
-AFTER INSERT ON ProductAnswer
+-- @author CRISTIAN
+CREATE TRIGGER UpdatePointsOnInsertOnProductAnswer
+AFTER INSERT ON productanswer
 FOR EACH ROW
 BEGIN
-	DECLARE numOfResponses, numOfQuestions INT;
-    
-    SELECT count(*) INTO numOfResponses -- suppose that answers to questionnaires are inserted all in one go
-    FROM Submission as S
-    WHERE 								-- for each insert count the number of new answers being inserted
-			new.submissionId = S.id  	-- that are related to the same submission id
-    ;
+	DECLARE numOfAnswerToSameQuestion INT;
+    SELECT COUNT(*) into numOfAnswerToSameQuestion
+    FROM productanswer 
+    WHERE questionId=new.questionId AND submissionId=new.submissionId;
+	IF (numOfAnswerToSameQuestion=1) THEN
+	UPDATE Submission
+    SET points = points +1
+	WHERE id= new.submissionId;
+    END IF;
+END$$
 
-	SELECT count(QT.id) INTO numOfQuestions 					-- count the total number of question ids related to the product answer's questionnaire
-	FROM Inclusion as I, Question as QT, Questionnaire as Q, Submission as S	
-	WHERE 
-			new.submissionId = S.id AND			-- find the questionnaire related to
-            S.questionnaireId = Q.id AND		-- our submission AND
-            I.questionnaireId = Q.ID AND		-- count all the distinct question ids Included (inclusion)
-			I.questionID = QT.id ;				-- on that questionnaire
-            
+DELIMITER ;
 
-	IF(numOfResponses <> numOfQuestions) THEN
-			SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Number of answers must be equal to number of questions in questionnaire.';
+DELIMITER $$
+
+-- @author CRISTIAN
+CREATE TRIGGER UpdatePointsOnInsertOnPersonalAnswer
+AFTER INSERT ON personalanswer
+FOR EACH ROW
+BEGIN
+	DECLARE pointsToAdd INT DEFAULT 0;
+	IF (new.age IS NOT NULL) THEN
+    SET pointsToAdd=pointsToAdd+2;
+	END IF;
+    IF (new.expertise IS NOT NULL) THEN
+    SET pointsToAdd=pointsToAdd+2;
+	END IF;
+    IF (new.sex IS NOT NULL) THEN
+    SET pointsToAdd=pointsToAdd+2;
+	END IF;
+    IF (pointsToAdd<>0) THEN
+	UPDATE Submission
+    SET points = points + pointsToAdd
+	WHERE id= new.submissionId;
 	END IF;
 END$$
 
+DELIMITER ;
+
+DELIMITER $$
+
+-- @author CRISTIAN
+CREATE TRIGGER UpdatePointsOnDeletedQuestionnaire
+AFTER DELETE ON submission
+FOR EACH ROW
+BEGIN
+	UPDATE user
+    SET points = points - OLD.points
+	WHERE id= old.userId;
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
+-- @author CRISTIAN
+CREATE TRIGGER UpdatePointsOnUpdateSubmission
+AFTER UPDATE ON submission
+FOR EACH ROW
+BEGIN
+IF (new.points <> old.points) THEN
+	UPDATE user
+    SET points = points + (NEW.points - OLD.points)
+	WHERE id= old.userId;
+END IF;
+END$$
 
 DELIMITER ;

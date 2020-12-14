@@ -16,6 +16,7 @@ public class ProductAnswer implements Serializable{
 	private int id;
 	
 	@ManyToOne
+	@JoinColumn(name = "questionId")
 	private Question questionId;
 	
 	@ManyToOne
@@ -26,7 +27,7 @@ public class ProductAnswer implements Serializable{
 	
 	public ProductAnswer() {}
 	
-	public ProductAnswer(User user,Question question,String word) {
+	public ProductAnswer(Question question,String word) {
 		this.questionId = question;
 		this.word = word;
 	}

@@ -58,7 +58,7 @@ public class QuestionnaireSubmissionService {
 	 * @throws IllegalArgumentException
 	 * @throws IllegalClassFormatException
 	 */
-	public void modifyProductAnswers(List<FormProductAnswer> answers, int userId) throws IllegalArgumentException, IllegalClassFormatException {
+	public void modifyProductAnswers(List<FormProductAnswer> answers, int userId) throws IllegalArgumentException{
 		if (answers == null || answers.size() != questions.size()) {
 			throw new IllegalArgumentException();
 		}
@@ -67,15 +67,14 @@ public class QuestionnaireSubmissionService {
 		// iterate over all answers and stores them in attributes
 		for (int i = 0; i < answers.size(); i++) {
 			Question relatedQuestion = em.find(Question.class, answers.get(i).getQuestion());
-			User relatedUser = em.find(User.class, userId);
 			
 			// when the answer is a checkbox stores every response
 			if (answers.get(i).getType() == 1) {
-				for (int j = 0; j < answers.get(i).getResponses().size(); j++) {
-					productAnswers.add(new ProductAnswer(relatedUser,relatedQuestion,answers.get(i).getResponses().get(j)));
-				}
+					for (int j = 0; j < answers.get(i).getResponses().size(); j++) {
+						productAnswers.add(new ProductAnswer(relatedQuestion,answers.get(i).getResponses().get(j)));
+					}
 			} else {
-				productAnswers.add(new ProductAnswer(relatedUser,relatedQuestion,answers.get(i).getResponse()));
+					productAnswers.add(new ProductAnswer(relatedQuestion,answers.get(i).getResponse()));
 			}
 		}
 	}
@@ -86,7 +85,7 @@ public class QuestionnaireSubmissionService {
 	 * @param userId
 	 * @throws IllegalArgumentException
 	 */
-	public void modifyProductAnswers(FormPersonalAnswer answers, int userId) throws IllegalArgumentException {
+	public void modifyPersonalAnswers(FormPersonalAnswer answers, int userId) throws IllegalArgumentException {
 		if (answers == null) {
 			throw new IllegalArgumentException();
 		}
@@ -117,18 +116,20 @@ public class QuestionnaireSubmissionService {
 	 * @param userId
 	 * @param submit
 	 */
-	public void submitOrCancelQuestionnaire(int userId, boolean submit) {
+	private void submitOrCancelQuestionnaire(int userId, boolean submit) {
 		User relatedUser = em.find(User.class, userId);
 		Submission toCreate = new Submission(questionnaire,relatedUser,submit? 1 : 0,0,new Date());
 		em.persist(toCreate);
 		
 		if (submit) {
 			for (int i = 0; i < productAnswers.size(); i++) {
-				productAnswers.get(i).setSubmission(toCreate);
+				toCreate.addProductAnswer(productAnswers.get(i));
 				em.persist(productAnswers.get(i));
 			}
-			personalAnswer.setSubmission(toCreate);
-			em.persist(personalAnswer);
+			if (personalAnswer!= null) {
+				toCreate.addPersonalAnswer(personalAnswer);
+				em.persist(personalAnswer);
+			}
 		}
 	}
 	
