@@ -40,12 +40,9 @@ public class QuestionnaireOfTheDayService {
 	 * @throws QuestionnaireException
 	 */
 	public Product getProduct(int id) throws QuestionnaireException {
-		Questionnaire result = em.find(Questionnaire.class, id);
-		if(result == null) {
-			throw new QuestionnaireException("Questionnaire not found. Try another primary key");
-		} else {
-			return getProduct(result);
-		}
+		Questionnaire result = getQuestionnaire(id);
+		
+		return getProduct(result);
 	}
 	
 	/**
@@ -58,7 +55,7 @@ public class QuestionnaireOfTheDayService {
 		if(questionnaire == null) {
 			throw new QuestionnaireException("Null valued questionnaire");
 		} else {
-			int questionnairePK = questionnaire.getId();
+			
 						
 						/////////////////////////
 						//CHECK FOR CORRECTNESS//
@@ -68,14 +65,14 @@ public class QuestionnaireOfTheDayService {
 			Query query = em.createQuery("Select p "
 						+ "From Product p, Questionnaire q "
 						+ "Where q.id = :questionnairePK AND p.questionnaireId = q.id ", Product.class )
-			.setParameter("questionnairePK", questionnairePK);
+			.setParameter("questionnairePK", questionnaire);
 			List<Product> listResult = query.getResultList();
 			
-			Product result = listResult.get(0);
 			
-			if(result == null)
+			if(listResult == null)
 				throw new QuestionnaireException("Product not found, contact admins.");
 			
+			Product result = listResult.get(0);
 			return result;
 		}
 	}
@@ -84,18 +81,27 @@ public class QuestionnaireOfTheDayService {
 	 * Require one question based on its ID
 	 */
 	public Question getQuestion(int questionnaireId, int questionId) throws QuestionnaireException{
-		Query query = em.createQuery("Select q"
-									+ "From Question q, Inclusion i"
-									+ "Where :questionnaireId = i.questionnaire AND"
-									+ "		 i.question = :questionId ",Question.class);
 		
-		query.setParameter("questionnaireId", questionnaireId);
-		query.setParameter("questionId", questionnaireId);
+		Questionnaire questionnaire = new Questionnaire();
+		questionnaire.setId(questionnaireId);
+		
+		Question question = new Question();
+		question.setId(questionId);
+		
+		Query query = em.createQuery("Select q "
+									+ "From Question q, Inclusion i "
+									+ "Where i.questionnaire = :questionnaireId AND"
+									+ " i.question = :questionId ",Question.class);
+		
+		query.setParameter("questionnaireId", questionnaire);
+		query.setParameter("questionId", questionnaire);
 		List<Question> questions = query.getResultList();
-		Question resultQuestion = questions.get(0);
-		if(resultQuestion == null) {
-		throw new QuestionnaireException();
+		
+		if(questions == null) {
+			throw new QuestionnaireException();
 		}
+		
+		Question resultQuestion = questions.get(0);
 		
 		return resultQuestion;
 	}
@@ -105,21 +111,16 @@ public class QuestionnaireOfTheDayService {
 	 */
 	public List<Question> getQuestions(int questionnaireId) throws QuestionnaireException{
 
-								/////////////////////////
-								//CHECK FOR CORRECTNESS//
-								// BECAUSE INCLUSION FK//
-								//  MIGHT NOT HAVE THE //
-								//      RIGHT NAME	   //
-								/////////////////////////
-		Query query = em.createQuery("Select q"
-									+ "From Question q, Inclusion i"
-									+ "Where :questionnaireId = i.questionnaire AND"
-									+ "		 i.question = q.id ",Question.class)
-									.setParameter("questionnaireId", questionnaireId);
+		Questionnaire parameter= new Questionnaire();
+		parameter.setId(questionnaireId);
+		Query query = em.createQuery("Select q From Question q, Inclusion i "
+									+ "Where :questionnaireId = i.inclusionQuestionnaire AND"
+									+ " i.inclusionQuestion = q ",Question.class)
+									.setParameter("questionnaireId",  parameter );
 		List<Question> questions = query.getResultList();
 		
-		if(questions.get(0) == null) {
-			throw new QuestionnaireException();
+		if(questions == null) {
+			throw new QuestionnaireException("No questions related to questionnaire");
 		}
 		
 		return questions;
