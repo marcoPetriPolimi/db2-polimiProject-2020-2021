@@ -30,7 +30,7 @@ public class AccountService {
 		
 		// the user is not unique, precisely the user exist
 		if (!users.isEmpty()) {
-			throw new UserException();
+			throw new UserException("Username already in use. Please select new one");
 		} else {
 			user = new User(nickname,password,email,regDate,0,false,0);
 			em.persist(user);
