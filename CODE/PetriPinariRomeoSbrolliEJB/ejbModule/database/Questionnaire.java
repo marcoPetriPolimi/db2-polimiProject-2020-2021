@@ -28,6 +28,9 @@ public class Questionnaire implements Serializable{
 	@Temporal(TemporalType.DATE)
 	private Date date;
 	
+	@Temporal(TemporalType.DATE)
+	private Date presDate;
+	
 	@Column(unique=true)
 	private String name;
 
@@ -89,6 +92,10 @@ public class Questionnaire implements Serializable{
 		this.questionnaireInclusions = questionnaireInclusions;
 	}
 	
+	public void setPresDate(Date presDate) {
+		this.presDate = presDate;
+	}
+	
 	/* ******************
 	 * 		GETTERS		*
 	 ********************/
@@ -122,5 +129,9 @@ public class Questionnaire implements Serializable{
 	
 	public List<Inclusion> getQuestionnaireInclusions() {
 		return questionnaireInclusions;
+	}
+	
+	public Date getPresDate() {
+		return presDate;
 	}
 }

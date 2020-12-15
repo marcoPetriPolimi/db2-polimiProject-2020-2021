@@ -23,6 +23,14 @@ public class FormQuestion {
 		
 	}
 	
+	public void deletePossibleAnswer(String possibleAnswer) {
+		if (type >= 3) {
+			throw new IllegalArgumentException();
+		}
+		possibleAnswers.remove(possibleAnswer);
+		
+	}
+	
 	/* ******************
 	 * 		GETTERS		*
 	 ********************/

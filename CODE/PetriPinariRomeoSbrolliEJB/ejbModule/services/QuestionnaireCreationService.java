@@ -1,6 +1,7 @@
 package services;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -15,6 +16,7 @@ import database.PossibleAnswer;
 import database.Product;
 import database.Question;
 import database.Questionnaire;
+import database.Submission;
 import database.User;
 import utils.forms.FormQuestion;
 
@@ -46,9 +48,16 @@ public class QuestionnaireCreationService {
     	newQuestions.add(question);
     }
     
-    public void removeQuestion(FormQuestion question) {
-    	newQuestions.remove(question);
+    public void removeQuestion(int questionId) {
+    	FormQuestion toRemove=null;
+    	for (FormQuestion fq: newQuestions) {
+    		if (fq.getQuestion()==questionId) toRemove=fq;
+    	}
+    	if (toRemove!=null) {
+    		newQuestions.remove(toRemove);
+    	}
     }
+    
     
     public void modifyQuestion(FormQuestion question) {
     	if (question.getQuestionText() == null) {
@@ -65,15 +74,22 @@ public class QuestionnaireCreationService {
     }
     
     public void removeStoredQuestion(int questionId){
-    	storedQuestions.remove(em.find(Question.class, questionId));
+    	Question toRemove=null;
+    	for (Question q: storedQuestions) {
+    		if (q.getId()==questionId) toRemove=q;
+    	}
+    	if (toRemove!=null) {
+    		storedQuestions.remove(toRemove);
+    	}
     }
     
-    public void createQuestionnaire(int userId, String name, int productId) {
+    public void createQuestionnaire(int userId, String name,Date presDate, int productId) {
     	questionnaire= new Questionnaire(name);
     	Product product= em.find(Product.class,	productId);
     	product.addQuestionaire(questionnaire);
     	User creator= em.find(User.class, userId);
     	creator.addQuestionnaire(questionnaire);
+    	questionnaire.setPresDate(presDate);
     	for (FormQuestion fq: newQuestions) {
     		Question newQuestion = new Question(fq.getQuestionText(),fq.getType());
     		Inclusion questInclusion = new Inclusion();
@@ -89,14 +105,46 @@ public class QuestionnaireCreationService {
     		Inclusion questInclusion= new Inclusion();
     		questionnaire.addInclusion(questInclusion);
     		question.addInclusion(questInclusion);
-    		em.persist(question);
+    		em.merge(question);
     	}    	
-    	em.persist(creator);
-    	em.persist(product);
-    	
+    	em.merge(creator);
+    	em.merge(product);
     }
+    
+    public List<Question> getAllStoredQuestions(){
+		List<Question> questions=  em
+				.createQuery("SELECT q "
+							+ "FROM Question q "
+							+ "ORDER BY q.id ASC",Question.class)
+				.getResultList();
+		List<Integer> alreadyStored = new ArrayList<>();
+		for (Question q: storedQuestions) alreadyStored.add(q.getId());
+		questions.removeIf(q -> alreadyStored.contains(q.getId()));
+		
+		return questions;
+		}
     
     @Remove
 	public void remove() {}
+
+	public int getNextQuestionId() {
+		return newQuestions.size();
+	}
+
+	public List<FormQuestion> getFormQuestions() {
+		return newQuestions;
+	}
+
+	public List<Question> getStoredQuestions() {
+		return storedQuestions;
+	}
+
+	public List<Product> getAllProducts() {
+		return 	em
+				.createQuery("SELECT p "
+							+ "FROM Product p "
+							+ "ORDER BY p.id ASC",Product.class)
+				.getResultList();
+	}
 
 }

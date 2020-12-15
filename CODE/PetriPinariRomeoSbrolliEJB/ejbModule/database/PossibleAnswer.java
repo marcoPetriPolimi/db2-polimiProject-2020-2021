@@ -63,7 +63,7 @@ public class PossibleAnswer implements Serializable {
 		return this.question;
 	}
 	
-	public String getanswerText(String answerText) {
+	public String getanswerText() {
 		return this.answerText;
 	}
 }
