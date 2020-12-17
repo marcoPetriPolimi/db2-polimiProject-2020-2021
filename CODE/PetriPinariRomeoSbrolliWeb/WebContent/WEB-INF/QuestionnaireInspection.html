@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<script type="text/javascript" src="jquery-3.5.1.js"></script>
+<meta charset="ISO-8859-1">
+<title>Questionnaire Searcher</title>
+<link rel="stylesheet" type="text/css" media="all"
+	href="../CSS/mystyle.css" data-th-href="@{/css/mystyle.css}" />
+</head>
+<body>
+
+
+<form action="#" data-th-action="@{/inspection}" method="GET">
+			<fieldset>
+				<p>
+					Enter the questionnaire id you are searching for: <input type="number" name="idQuestionnaire" required />
+				</p>
+				<input type="submit" name="submit">
+			</fieldset>
+</form>
+<table data-th-each = "questionnaireAsked : ${questionnaire}">
+	<tr> 
+		<td>Questionnaire ID:</td>
+		<td data-th-utext='${questionnaire}'> ;;</td>
+	</tr>
+	<tr> 
+		<td>Questionnaire Name:</td>
+		<td data-th-utext='${questionnaireName}'> ;;</td>
+	</tr>
+	<tr> 
+	 	<th>Questionnaire creator</th>
+	 	<td data-th-utext = '${creatorName}'> </td>
+ 	</tr>
+	<tr data-th-each = "question : ${questionsString}">
+	 	<th>Question </th>
+	 	<td data-th-utext = '${question}'> </td>
+ 	</tr>
+ 	<tr>
+ 		<th>Date</th>
+ 		<td data-th-utext = '${creationDate}'></td>
+ 	</tr>
+ 	<tr>
+ 		<th>Product</th>
+ 		<td data-th-utext = '${product}'></td>
+ 	</tr>
+</table>
+
+
+
+</body>
+</html>
