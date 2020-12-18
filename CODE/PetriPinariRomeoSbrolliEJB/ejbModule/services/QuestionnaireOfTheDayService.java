@@ -2,20 +2,17 @@ package services;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
-import javax.ejb.*;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.Tuple;
 
-import database.*;
-
+import database.Product;
+import database.Question;
+import database.Questionnaire;
 import exceptions.QuestionnaireException;
 
 //@contributors: Etion

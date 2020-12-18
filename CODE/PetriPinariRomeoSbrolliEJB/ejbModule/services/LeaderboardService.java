@@ -3,15 +3,12 @@ package services;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import database.Questionnaire;
-import database.Submission;
-import database.User;
 import exceptions.QuestionnaireException;
 
 /*

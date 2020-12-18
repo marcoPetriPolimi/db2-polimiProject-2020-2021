@@ -1,6 +1,10 @@
 package database;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 // The persistent class for the offensiveWord database table.
 // @author Etion Pinari

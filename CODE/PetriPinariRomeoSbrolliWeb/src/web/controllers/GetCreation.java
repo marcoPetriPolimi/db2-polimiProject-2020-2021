@@ -3,7 +3,6 @@ package web.controllers;
 import java.io.IOException;
 import java.util.List;
 
-import javax.ejb.EJB;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.ServletContext;

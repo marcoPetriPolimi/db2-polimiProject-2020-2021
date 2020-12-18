@@ -1,20 +1,16 @@
 package services;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.ejb.*;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Tuple;
 
-import org.eclipse.persistence.config.QueryHints;
-import org.eclipse.persistence.config.ResultType;
-
-import database.*;
+import database.Questionnaire;
+import database.Submission;
 import exceptions.QuestionnaireCancellationException;
 
 

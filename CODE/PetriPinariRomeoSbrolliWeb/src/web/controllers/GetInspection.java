@@ -1,7 +1,6 @@
 package web.controllers;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,9 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.thymeleaf.context.WebContext;
 
-import database.Questionnaire;
 import database.Product;
 import database.Question;
+import database.Questionnaire;
 import services.QuestionnaireOfTheDayService;
 
 //@Contributor(s): Etion
