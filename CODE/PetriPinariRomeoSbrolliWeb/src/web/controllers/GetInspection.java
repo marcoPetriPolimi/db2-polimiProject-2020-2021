@@ -21,6 +21,9 @@ import exceptions.QuestionnaireException;
 import database.Product;
 import database.Question;
 import services.QuestionnaireAdminService;
+import database.Product;
+import database.Question;
+import database.Questionnaire;
 import services.QuestionnaireOfTheDayService;
 
 //@Contributor(s): Etion
@@ -28,9 +31,9 @@ import services.QuestionnaireOfTheDayService;
 @WebServlet("/inspection")
 public class GetInspection extends HttpThymeleafServlet {
 	private static final long serialVersionUID = 1L;
-	
+
 	private QuestionnaireAdminService qas;
-	
+
 	@EJB(name = "QuestionnaireOfTheDayService")
 	private QuestionnaireOfTheDayService QDS;
 
@@ -43,8 +46,8 @@ public class GetInspection extends HttpThymeleafServlet {
 	          // EJB is not present in the HTTP session
 	          // so let's fetch a new one from the container
 	          try {
-	            InitialContext ic = new InitialContext();	           
-	            qas = (QuestionnaireAdminService) 
+	            InitialContext ic = new InitialContext();
+	            qas = (QuestionnaireAdminService)
 	            ic.lookup("java:global/PetriPinariRomeoSbrolliWeb/QuestionnaireAdminService");
 	            // put EJB in HTTP session for future servlet calls
 	            req.getSession().setAttribute("QuestionnaireAdminService",qas);
@@ -52,29 +55,29 @@ public class GetInspection extends HttpThymeleafServlet {
 	            throw new ServletException(e);
 	          }
 	    }
-		
-		
-		
-		String questionnaireId = req.getParameter("idQuestionnaire");
-		
-		String publicationDate = req.getParameter("publicationDate");
-		
 
-		
-		//if it is his first visit and the user has not input any number yet write answer and 
+
+
+		String questionnaireId = req.getParameter("idQuestionnaire");
+
+		String publicationDate = req.getParameter("publicationDate");
+
+
+
+		//if it is his first visit and the user has not input any number yet write answer and
 		if(questionnaireId == null && publicationDate == null) {
 			wrongFormat(req, resp);
 			return;
 		};
 
-		
-		
+
+
 		// selector is "1" if you are choosing id and "2" if you are choosing "publicationDate"
 		int selector = Integer.parseInt(req.getParameter("selector"));
-		
+
 		Questionnaire questionnaire = null;
 		List<Question> questions = null;
-		Integer idQuestionnaire=null;		
+		Integer idQuestionnaire=null;
 		if(selector == 1) {
 			try {
 				idQuestionnaire = Integer.parseInt(questionnaireId);
@@ -95,18 +98,18 @@ public class GetInspection extends HttpThymeleafServlet {
 		} catch (QuestionnaireException e) {
 			e.printStackTrace();
 		}
-		
+
 		//guard check if query is right
 		if(questionnaire == null || questions == null) {
 			wrongFormat(req, resp);
 			return;
 		}
-		
+
 		List<String> questionsString = new ArrayList<String>();
 		for(Question q : questions) {
 			questionsString.add(q.getQuestion());
 		}
-		
+
 		String creatorName = questionnaire.getCreator().getNickname();
 		Product product = questionnaire.getProduct();
 		Date creationDate = questionnaire.getDate();
@@ -114,7 +117,7 @@ public class GetInspection extends HttpThymeleafServlet {
 
 		String path = "QuestionnaireInspection";
 		ServletContext servletContext = getServletContext();
-		
+
 		final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
 		ctx.setVariable("questionnaire", questionnaire.getId());
 		ctx.setVariable("questionnaireName", questionnaire.getName());
@@ -124,7 +127,7 @@ public class GetInspection extends HttpThymeleafServlet {
 		ctx.setVariable("creationDate", creationDate);
 		ctx.setVariable("presentationDate", presentationDate);
 		setUserSubsCanc(ctx,idQuestionnaire);
-		thymeleaf.process(path, ctx, resp.getWriter());		
+		thymeleaf.process(path, ctx, resp.getWriter());
 	}
 
 
@@ -158,11 +161,11 @@ public class GetInspection extends HttpThymeleafServlet {
 		String path = "QuestionnaireInspection";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
-		thymeleaf.process(path, ctx, resp.getWriter());	
+		thymeleaf.process(path, ctx, resp.getWriter());
 		return true;
 	}
-	
-	
+
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doGet(req,resp);

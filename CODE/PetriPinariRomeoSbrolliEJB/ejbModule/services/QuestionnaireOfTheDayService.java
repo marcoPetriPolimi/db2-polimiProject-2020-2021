@@ -2,13 +2,10 @@ package services;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
-import javax.ejb.*;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -16,6 +13,10 @@ import javax.persistence.Tuple;
 
 import database.*;
 import exceptions.QuestionnaireCancellationException;
+
+import database.Product;
+import database.Question;
+import database.Questionnaire;
 import exceptions.QuestionnaireException;
 
 //@contributors: Etion
@@ -27,13 +28,13 @@ public class QuestionnaireOfTheDayService {
 
 	public QuestionnaireOfTheDayService() {
 	}
-	
+
 	public Questionnaire getQuestionnaire(String dateAsString) throws QuestionnaireException, ParseException {
 
 	    Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateAsString);
 		Query query = em.createQuery("Select q "
 									+ "From Questionnaire q "
-									+ "Where q.presDate = :date", Product.class )
+									+ "Where q.presDate = :date", Questionnaire.class )
 									.setParameter("date", date);
 									List<Questionnaire> listResult = query.getResultList();
 		Questionnaire result = listResult.get(0);
@@ -43,7 +44,7 @@ public class QuestionnaireOfTheDayService {
 			return result;
 		}
 }
-	
+
 	public Questionnaire getQuestionnaire(int id) throws QuestionnaireException {
 		Questionnaire result = em.find(Questionnaire.class, id);
 		if(result == null) {
@@ -52,8 +53,8 @@ public class QuestionnaireOfTheDayService {
 			return result;
 		}
 	}
-	
-	
+
+
 	/**	get product related to questionnaire with id: "int id"
 	 * @param id: primary key of questionnaire
 	 * @return the product related to questionnaire with id "id"
@@ -61,12 +62,12 @@ public class QuestionnaireOfTheDayService {
 	 */
 	public Product getProduct(int id) throws QuestionnaireException {
 		Questionnaire result = getQuestionnaire(id);
-		
+
 		return getProduct(result);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param questionnaire of interest
 	 * @return the related product to questionnaire
 	 * @throws QuestionnaireException
@@ -75,8 +76,8 @@ public class QuestionnaireOfTheDayService {
 		if(questionnaire == null) {
 			throw new QuestionnaireException("Null valued questionnaire");
 		} else {
-			
-						
+
+
 						/////////////////////////
 						//CHECK FOR CORRECTNESS//
 						//BECAUSE PRODUCT FK IS//
@@ -87,45 +88,45 @@ public class QuestionnaireOfTheDayService {
 						+ "Where q.id = :questionnairePK AND p.questionnaireId = q.id ", Product.class )
 			.setParameter("questionnairePK", questionnaire);
 			List<Product> listResult = query.getResultList();
-			
-			
+
+
 			if(listResult == null)
 				throw new QuestionnaireException("Product not found, contact admins.");
-			
+
 			Product result = listResult.get(0);
 			return result;
 		}
 	}
-	
+
 	/**
 	 * Require one question based on its ID
 	 */
 	public Question getQuestion(int questionnaireId, int questionId) throws QuestionnaireException{
-		
+
 		Questionnaire questionnaire = new Questionnaire();
 		questionnaire.setId(questionnaireId);
-		
+
 		Question question = new Question();
 		question.setId(questionId);
-		
+
 		Query query = em.createQuery("Select q "
 									+ "From Question q, Inclusion i "
 									+ "Where i.questionnaire = :questionnaireId AND"
 									+ " i.question = :questionId ",Question.class);
-		
+
 		query.setParameter("questionnaireId", questionnaire);
 		query.setParameter("questionId", questionnaire);
 		List<Question> questions = query.getResultList();
-		
+
 		if(questions == null) {
 			throw new QuestionnaireException();
 		}
-		
+
 		Question resultQuestion = questions.get(0);
-		
+
 		return resultQuestion;
 	}
-	
+
 	/**
 	 * get all related questions to one questionnaire
 	 */
@@ -138,19 +139,19 @@ public class QuestionnaireOfTheDayService {
 									+ " i.inclusionQuestion = q ",Question.class)
 									.setParameter("questionnaireId",  parameter );
 		List<Question> questions = query.getResultList();
-		
+
 		if(questions == null) {
 			throw new QuestionnaireException("No questions related to questionnaire");
 		}
-		
+
 		return questions;
 	}
-	
+
 	public void deleteQuestionnaire(int questionnaireId) throws QuestionnaireCancellationException {
 		Questionnaire q = em.find(Questionnaire.class, questionnaireId);
 		if (q.getDate().compareTo(new Date()) > 0) {
 			throw new QuestionnaireCancellationException();
 		}
-		em.remove(q);		
+		em.remove(q);
 	}
 }

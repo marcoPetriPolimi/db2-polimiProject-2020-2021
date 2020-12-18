@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.ejb.*;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import database.*;
@@ -26,13 +26,13 @@ public class QuestionnaireAdminService {
 		userSubmissionMap= new ArrayList<Object[]>();
 		userCancelMap= new ArrayList<Object[]>();
 	}
-	
+
 	/**
 	 * Gets the users that submitted or canceled a questionnaire
-	*@param questionnaireId Id of the questionnaire 
+	*@param questionnaireId Id of the questionnaire
 	*@param submitted True to get Users that submitted, False to get Users that canceled the submission
 	*@return A map with key the user Id and with value his nickname
-	*/	
+	*/
 	public void getQuestionnaireUserList(boolean submitted){
 		@SuppressWarnings("unchecked")
 		List<Object[]> answers= em
@@ -50,9 +50,9 @@ public class QuestionnaireAdminService {
 			userCancelMap = answers;
 		}
 	}
-	
-	
-	
+
+
+
 	public Map<Question, List<String>> getUserSubmission(int userId) {
 		List<ProductAnswer> productAnswers= em
 				.createQuery("SELECT pa "
@@ -68,19 +68,19 @@ public class QuestionnaireAdminService {
 				+ "ORDER BY q.id",Question.class)
 				.setParameter("qId", selectedQuestionnaireId)
 				.getResultList();
-		
+
 		Map<Question, List<String>> questionAnswers= new HashMap<>();
 		for (Question q: questions) {
 			List<String> answers= new ArrayList<>();
 			for (ProductAnswer pa: productAnswers) {
-				if (pa.getQuestionId().getId()==q.getId()) { 
+				if (pa.getQuestionId().getId()==q.getId()) {
 					answers.add(pa.getWord());
 				}
 				questionAnswers.put(q, answers);
 			}
 		}
 		return questionAnswers;
-		
+
 	}
 
 	public Integer getSelectedQuestionnaireId() {
@@ -96,12 +96,12 @@ public class QuestionnaireAdminService {
 	public List<Object[]> getUserSubmissionMap() {
 		return userSubmissionMap;
 	}
-	
+
 	public List<Object[]> getUserCancelMap() {
 		return userCancelMap;
 	}
-	
+
     @Remove
 	public void remove() {}
-	
+
 }

@@ -9,14 +9,12 @@ import javax.ejb.Remove;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
+
 import database.Inclusion;
-import database.PersonalAnswer;
 import database.PossibleAnswer;
 import database.Product;
 import database.Question;
 import database.Questionnaire;
-import database.Submission;
 import database.User;
 import utils.forms.FormQuestion;
 

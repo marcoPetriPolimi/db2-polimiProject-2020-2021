@@ -10,7 +10,6 @@ import javax.persistence.PersistenceContext;
 
 import database.Product;
 import database.Review;
-import database.Submission;
 import database.User;
 import exceptions.ProductException;
 import exceptions.UserException;
