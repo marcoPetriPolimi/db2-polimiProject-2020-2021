@@ -36,21 +36,25 @@ public class GetLeaderboard extends HttpThymeleafServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		Map<String, Integer> leaderboard = null;
+		if(req.getParameterMap().containsKey("selector")) {
+			
+			if(req.getParameter("selector").equals("1")){
+				//Retrieving the leadearboard of all time
+				leaderboard = ls.getGeneralLeaderboard();
+			}
+			else if(req.getParameter("selector").equals("2")) {
+		        try {
+		        	//Retrieving the questionnaire of the day
+					Questionnaire questionnaire = qds.getQuestionnaireByDate(Calendar.getInstance().getTime());
+					//Retrieving the leaderboard of the users who submitted the questionnaire of the day
+					leaderboard = ls.getQuestionnaireLeaderboard(questionnaire.getId());
+				} catch (QuestionnaireException e) {
+					e.printStackTrace();
+				}	        
+			}
+		}
+		System.out.println(leaderboard);
 		
-		if(req.getParameter("selector").equals("1")){
-			//Retrieving the leadearboard of all time
-			leaderboard = ls.getGeneralLeaderboard();
-		}
-		else if(req.getParameter("selector").equals("2")) {
-	        try {
-	        	//Retrieving the questionnaire of the day
-				Questionnaire questionnaire = qds.getQuestionnaireByDate(Calendar.getInstance().getTime());
-				//Retrieving the leaderboard of the users who submitted the questionnaire of the day
-				leaderboard = ls.getQuestionnaireLeaderboard(questionnaire.getId());
-			} catch (QuestionnaireException e) {
-				e.printStackTrace();
-			}	        
-		}
 		
 		String path = "Leaderboard";
 		ServletContext servletContext = getServletContext();

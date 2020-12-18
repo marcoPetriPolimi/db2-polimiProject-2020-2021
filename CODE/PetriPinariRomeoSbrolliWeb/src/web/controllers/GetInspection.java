@@ -87,7 +87,7 @@ public class GetInspection extends HttpThymeleafServlet {
 			}
 		} else if (selector == 2) {
 			try {
-				questionnaire =QDS.getQuestionnaire(publicationDate);
+				questionnaire =QDS.getQuestionnaireByDate(publicationDate);
 				idQuestionnaire = questionnaire.getId();
 			} catch (Exception e) {
 				e.printStackTrace();
