@@ -144,8 +144,8 @@ public class GetInspection extends HttpThymeleafServlet {
 		if (qas.getSelectedQuestionnaireId()==null || qas.getSelectedQuestionnaireId().intValue()!=idQuestionnaire.intValue()) {
 			qas.setSelectedQuestionnaireId(idQuestionnaire);
 		}
-		ctx.setVariable("userSubmitted", qas.getUserSubmissionMap());
-		ctx.setVariable("userCanceled", qas.getUserCancelMap());
+		ctx.setVariable("userSubmitted", qas.getUserSubmissionList());
+		ctx.setVariable("userCanceled", qas.getUserCancelList());
 	}
 
 

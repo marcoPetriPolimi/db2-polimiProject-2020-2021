@@ -10,21 +10,48 @@
 	<div align="right">
 		<a data-th-href="@{/inspection(selector=1,idQuestionnaire=${questionnaireId})}">Back</a>
 	</div>
-<h1>User Submission</h1>
-<h2 data-th-utext='${questionnaireId}'>QuestionnaireId</h2>
+   	<h1 data-th-utext='${userNick + "&#39s answer"}'>nickname</h1>
 
-<table>
- 	<tr data-th-each="question : ${questions.keySet()}">
- 		<td data-th-utext='${question.getQuestion()}'>QuestionText</td>
-		<td>
-			<table>
-			<tr data-th-each="userAnswer : ${questions.get(question)}">
+	<h2>Product Answers (Mandatory)</h2>
+	<table>
+	 	<tr>
+    	<th>Question</th>
+   		<th>Answers</th>
+ 		</tr>
+ 		<tr data-th-each="question : ${questions.keySet()}">
+ 			<td data-th-utext='${question.getQuestion()}'>QuestionText</td>
+			<td>	
+				<table>
+				<tr data-th-each="userAnswer : ${questions.get(question)}">
 				<td  data-th-utext='${userAnswer}'>AnswerText</td>
-			</tr>
-			</table>
-		</td>
-	</tr>
-</table>
+				</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	
+<h2 data-th-if="${age==null && sex==null && expertise==null}">User did not provide responses to personal answers</h2>
+<div data-th-if="${!(age==null && sex==null && expertise==null)}">
+	<h2>Personal Answers</h2>
+		<table>
+		<tr>
+    	<th>Question</th>
+   		<th>Answers</th>
+ 		</tr>
+ 		<tr data-th-if="${age!=null}">
+ 			<td>Age</td> 
+ 			<td data-th-utext='${age}'>userAge</td>
+		</tr>
+		<tr data-th-if="${sex!=null}">
+ 			<td>Sex</td> 
+ 			<td data-th-utext='${sex}'>userSex</td>
+		</tr>
+		<tr data-th-if="${expertise!=null}">
+ 			<td>Expertise</td> 
+ 			<td data-th-utext='${expertise}'>userExpertise</td>
+		</tr>
+	</table>
+</div>
 
 </body>
 </html>

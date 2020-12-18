@@ -30,8 +30,9 @@ $(document).ready(function(){
 	href="../CSS/mystyle.css" data-th-href="@{/css/mystyle.css}" />
 </head>
 <body>
-
-
+	<div align="right">
+		<a data-th-href="@{/homepage}">Home</a>
+	</div>
 <form action="#" data-th-action="@{/inspection}" method="GET">
 			 <input type="radio" id="1" name="selector" value="1" required />
 			 <label for="1">Id search</label>
@@ -88,7 +89,7 @@ $(document).ready(function(){
 	<tr data-th-each="user : ${userSubmitted}"> 
 		<td data-th-utext='${user[0]}'>UserId</td>
 		<td data-th-utext='${user[1]}'>nickname</td>
-		<td><a data-th-href="@{/userSubmission(userId=${user[0]})}">See Submission</a></td>
+		<td><a data-th-href="@{/userSubmission(userId=${user[0]},userNick=${user[1]})}">See Submission</a></td>
 	</tr>
 	</table>	
 <h2>Users that canceled submission of this questionnaire</h2>

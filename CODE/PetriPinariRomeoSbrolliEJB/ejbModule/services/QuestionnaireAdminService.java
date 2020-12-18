@@ -4,18 +4,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.ejb.Remove;
+import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import database.*;
+import utils.userInfo.UserPersonalInfo;
 
 
 
 @Stateful
 public class QuestionnaireAdminService {
 	private Integer selectedQuestionnaireId;
-	private List<Object[]> userSubmissionMap;
-	private List<Object[]> userCancelMap;
+	private List<Object[]> userSubmissionList;
+	private List<Object[]> userCancelList;
 
 
 	@PersistenceContext(unitName = "PetriPinariRomeoSbrolliEJB")
@@ -23,8 +27,8 @@ public class QuestionnaireAdminService {
 
 	public QuestionnaireAdminService() {
 		selectedQuestionnaireId=null;
-		userSubmissionMap= new ArrayList<Object[]>();
-		userCancelMap= new ArrayList<Object[]>();
+		userSubmissionList= new ArrayList<Object[]>();
+		userCancelList= new ArrayList<Object[]>();
 	}
 
 	/**
@@ -44,29 +48,31 @@ public class QuestionnaireAdminService {
 				.setParameter("sub", submitted? 1 : 0)
 				.getResultList();
 		if (submitted) {
-			userSubmissionMap = answers;
+			userSubmissionList = answers;
 		}
 		else {
-			userCancelMap = answers;
+			userCancelList = answers;
 		}
 	}
 
 
 
 	public Map<Question, List<String>> getUserSubmission(int userId) {
+		Questionnaire quest = em.find(Questionnaire.class, selectedQuestionnaireId.intValue());
+		User user = em.find(User.class, userId);
 		List<ProductAnswer> productAnswers= em
 				.createQuery("SELECT pa "
 							+ "FROM ProductAnswer pa,Submission s "
-							+ "WHERE s.userSender = :uId AND s.submissionQuestionnaire = :qId AND s.submitted = 1 AND pa.submission=s.id"
+							+ "WHERE s.userSender = :uId AND s.submissionQuestionnaire = :qId AND s.submitted = 1 AND pa.submission.id=s.id "
 							+ "ORDER BY pa.questionId ASC",ProductAnswer.class)
-				.setParameter("qId",selectedQuestionnaireId)
-				.setParameter("uId",userId)
+				.setParameter("qId",quest)
+				.setParameter("uId",user)
 				.getResultList();
 		List<Question> questions= em.createQuery("Select q "
 				+ "FROM Question q,Inclusion i "
-				+ "WHERE i.inclusionQuestion = q.id AND i.inclusionQuestionnaire =:qID "
+				+ "WHERE i.inclusionQuestion.id = q.id AND i.inclusionQuestionnaire =:qId "
 				+ "ORDER BY q.id",Question.class)
-				.setParameter("qId", selectedQuestionnaireId)
+				.setParameter("qId", quest)
 				.getResultList();
 
 		Map<Question, List<String>> questionAnswers= new HashMap<>();
@@ -93,15 +99,31 @@ public class QuestionnaireAdminService {
 		this.getQuestionnaireUserList(false);
 	}
 
-	public List<Object[]> getUserSubmissionMap() {
-		return userSubmissionMap;
+	public List<Object[]> getUserSubmissionList() {
+		return userSubmissionList;
 	}
 
-	public List<Object[]> getUserCancelMap() {
-		return userCancelMap;
+	public List<Object[]> getUserCancelList() {
+		return userCancelList;
 	}
 
+	public UserPersonalInfo getUserInfo(int userId) {
+		try {
+		PersonalAnswer pa= em.createQuery("Select pa "
+				+ "FROM Submission s,PersonalAnswer pa "
+				+ "WHERE pa.submission=s AND s.userSender.id=:uId ",PersonalAnswer.class)
+				.setParameter("uId", userId)
+				.getSingleResult();
+		return new UserPersonalInfo(pa.getAge(),pa.getExpertise(),pa.getSex());
+		}
+		catch(NoResultException e){
+			return new UserPersonalInfo();
+		}
+	}
+	
     @Remove
 	public void remove() {}
+
+
 
 }

@@ -13,11 +13,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.thymeleaf.context.WebContext;
 import database.Question;
 import services.QuestionnaireAdminService;
 
 import services.QuestionnaireOfTheDayService;
+import utils.userInfo.UserPersonalInfo;
 
 
 // @author Cristian
@@ -26,9 +28,6 @@ public class GetUserSubmission extends HttpThymeleafServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private QuestionnaireAdminService qas;
-	
-	@EJB(name = "QuestionnaireOfTheDayService")
-	private QuestionnaireOfTheDayService QDS;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -49,12 +48,19 @@ public class GetUserSubmission extends HttpThymeleafServlet {
 	          }
 	    }
 		
-		Map<Question,List<String>> userAnswers = qas.getUserSubmission(Integer.parseInt(req.getParameter("userId")));
-		String path = "UserSubmisson";
+		int userId= Integer.parseInt(req.getParameter("userId"));
+		String nickname= StringEscapeUtils.escapeJava(req.getParameter("userNick"));
+		Map<Question,List<String>> userAnswers = qas.getUserSubmission(userId);
+		UserPersonalInfo userInfo= qas.getUserInfo(userId);
+		String path = "UserSubmission";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
 		ctx.setVariable("questions", userAnswers);
 		ctx.setVariable("questionnaireId", qas.getSelectedQuestionnaireId().intValue());
+		ctx.setVariable("userNick", nickname);
+		ctx.setVariable("age", userInfo.getAge());
+		ctx.setVariable("expertise", userInfo.getExpertise());
+		ctx.setVariable("sex", userInfo.getSex());
 		thymeleaf.process(path, ctx, resp.getWriter());
 	}
 		
