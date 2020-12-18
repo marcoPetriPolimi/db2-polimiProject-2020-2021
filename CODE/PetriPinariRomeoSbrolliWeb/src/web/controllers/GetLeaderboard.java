@@ -36,20 +36,24 @@ public class GetLeaderboard extends HttpThymeleafServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		Map<String, Integer> leaderboard = null;
+		String message = "Please, make a choice";
 		if(req.getParameterMap().containsKey("selector")) {
 			
 			if(req.getParameter("selector").equals("1")){
 				//Retrieving the leadearboard of all time
 				leaderboard = ls.getGeneralLeaderboard();
+				message = "This is the leaderboard of all time";
 			}
 			else if(req.getParameter("selector").equals("2")) {
 		        try {
 		        	//Retrieving the questionnaire of the day
 					Questionnaire questionnaire = qds.getQuestionnaireByDate(Calendar.getInstance().getTime());
 					//Retrieving the leaderboard of the users who submitted the questionnaire of the day
-					leaderboard = ls.getQuestionnaireLeaderboard(questionnaire.getId());
+					//leaderboard = ls.getQuestionnaireLeaderboard(questionnaire.getId());
+					message = "This is the leaderboard of the day";
 				} catch (QuestionnaireException e) {
 					e.printStackTrace();
+					message = "Sorry, the questionnaire of the day is currently unavailable :(";
 				}	        
 			}
 		}
@@ -60,6 +64,7 @@ public class GetLeaderboard extends HttpThymeleafServlet {
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
 		ctx.setVariable("leaderboard", leaderboard);
+		ctx.setVariable("message", message);
 		thymeleaf.process(path, ctx, resp.getWriter());
 	}
 	
