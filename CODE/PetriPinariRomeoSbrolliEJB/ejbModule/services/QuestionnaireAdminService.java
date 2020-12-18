@@ -1,30 +1,30 @@
 package services;
-
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.ejb.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Tuple;
-
-import org.eclipse.persistence.config.QueryHints;
-import org.eclipse.persistence.config.ResultType;
-
 import database.*;
-import exceptions.QuestionnaireCancellationException;
 
 
-@Stateless
+
+@Stateful
 public class QuestionnaireAdminService {
-	
+	private Integer selectedQuestionnaireId;
+	private List<Object[]> userSubmissionMap;
+	private List<Object[]> userCancelMap;
+
+
 	@PersistenceContext(unitName = "PetriPinariRomeoSbrolliEJB")
 	private EntityManager em;
 
 	public QuestionnaireAdminService() {
+		selectedQuestionnaireId=null;
+		userSubmissionMap= new ArrayList<Object[]>();
+		userCancelMap= new ArrayList<Object[]>();
 	}
 	
 	/**
@@ -33,39 +33,75 @@ public class QuestionnaireAdminService {
 	*@param submitted True to get Users that submitted, False to get Users that canceled the submission
 	*@return A map with key the user Id and with value his nickname
 	*/	
-	public Map<Integer,String> getQuestionnaireUserList(int questionnaireId, boolean submitted){
+	public void getQuestionnaireUserList(boolean submitted){
 		@SuppressWarnings("unchecked")
 		List<Object[]> answers= em
 				.createQuery("SELECT u.id,u.nickname "
 							+ "FROM User u, Submission s "
 							+ "WHERE u = s.userSender AND s.submissionQuestionnaire.id = :qId AND s.submitted = :sub "
 							+ "ORDER BY u.id DESC")
-				.setParameter("qId",questionnaireId)
+				.setParameter("qId",selectedQuestionnaireId)
 				.setParameter("sub", submitted? 1 : 0)
 				.getResultList();
-		return answers.stream().collect(Collectors.toMap(a -> (Integer) a[0], a -> (String) a[1]));
-	}
-	
-	
-	
-	public Submission getUserSubmission(int questionnaireId, int userId) {
-		Submission submission= (Submission) em
-				.createQuery("SELECT s "
-							+ "FROM Submission s "
-							+ "WHERE s.userSender = :uId AND s.submissionQuestionnaire = :qId AND s.submitted = 1 "
-							+ "ORDER BY u.id DESC",Submission.class)
-				.setParameter("qId",questionnaireId)
-				.setParameter("uId",userId);
-		return submission;
-	}
-	
-	public void deleteQuestionnaire(int questionnaireId) throws QuestionnaireCancellationException {
-		Questionnaire q = em.find(Questionnaire.class, questionnaireId);
-		if (q.getDate().compareTo(new Date()) > 0) {
-			throw new QuestionnaireCancellationException();
+		if (submitted) {
+			userSubmissionMap = answers;
 		}
-		em.remove(q);		
+		else {
+			userCancelMap = answers;
+		}
 	}
 	
+	
+	
+	public Map<Question, List<String>> getUserSubmission(int userId) {
+		List<ProductAnswer> productAnswers= em
+				.createQuery("SELECT pa "
+							+ "FROM ProductAnswer pa,Submission s "
+							+ "WHERE s.userSender = :uId AND s.submissionQuestionnaire = :qId AND s.submitted = 1 AND pa.submission=s.id"
+							+ "ORDER BY pa.questionId ASC",ProductAnswer.class)
+				.setParameter("qId",selectedQuestionnaireId)
+				.setParameter("uId",userId)
+				.getResultList();
+		List<Question> questions= em.createQuery("Select q "
+				+ "FROM Question q,Inclusion i "
+				+ "WHERE i.inclusionQuestion = q.id AND i.inclusionQuestionnaire =:qID "
+				+ "ORDER BY q.id",Question.class)
+				.setParameter("qId", selectedQuestionnaireId)
+				.getResultList();
+		
+		Map<Question, List<String>> questionAnswers= new HashMap<>();
+		for (Question q: questions) {
+			List<String> answers= new ArrayList<>();
+			for (ProductAnswer pa: productAnswers) {
+				if (pa.getQuestionId().getId()==q.getId()) { 
+					answers.add(pa.getWord());
+				}
+				questionAnswers.put(q, answers);
+			}
+		}
+		return questionAnswers;
+		
+	}
+
+	public Integer getSelectedQuestionnaireId() {
+		return selectedQuestionnaireId;
+	}
+
+	public void setSelectedQuestionnaireId(Integer selectedQuestionnaireId) {
+		this.selectedQuestionnaireId = Integer.valueOf(selectedQuestionnaireId.intValue());
+		this.getQuestionnaireUserList(true);
+		this.getQuestionnaireUserList(false);
+	}
+
+	public List<Object[]> getUserSubmissionMap() {
+		return userSubmissionMap;
+	}
+	
+	public List<Object[]> getUserCancelMap() {
+		return userCancelMap;
+	}
+	
+    @Remove
+	public void remove() {}
 	
 }

@@ -15,7 +15,7 @@ import javax.persistence.Query;
 import javax.persistence.Tuple;
 
 import database.*;
-
+import exceptions.QuestionnaireCancellationException;
 import exceptions.QuestionnaireException;
 
 //@contributors: Etion
@@ -144,5 +144,13 @@ public class QuestionnaireOfTheDayService {
 		}
 		
 		return questions;
+	}
+	
+	public void deleteQuestionnaire(int questionnaireId) throws QuestionnaireCancellationException {
+		Questionnaire q = em.find(Questionnaire.class, questionnaireId);
+		if (q.getDate().compareTo(new Date()) > 0) {
+			throw new QuestionnaireCancellationException();
+		}
+		em.remove(q);		
 	}
 }

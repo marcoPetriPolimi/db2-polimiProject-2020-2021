@@ -46,7 +46,7 @@
 		<url-pattern>/greetings</url-pattern>
 		<url-pattern>/creation</url-pattern>
 		<url-pattern>/deletion</url-pattern>
-		<url-pattern>/inspection</url-pattern>
+<!-->	<url-pattern>/inspection</url-pattern> -->
 		<url-pattern>/logout</url-pattern>
 	</filter-mapping>
 
@@ -61,7 +61,7 @@
 		<filter-name>AdministratorFilter</filter-name>
 		<url-pattern>/creation</url-pattern>
 		<url-pattern>/deletion</url-pattern>
-		<url-pattern>/inspection</url-pattern>
+<!-->	<url-pattern>/inspection</url-pattern> -->
 	</filter-mapping>
 
 	<!-- ****************************
