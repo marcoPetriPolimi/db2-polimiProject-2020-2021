@@ -174,7 +174,7 @@ public class QuestionnaireOfTheDayService {
 	    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
 	    String strDate= formatter.format(date);  
 	    
-	    return this.getQuestionnaire(strDate);
+	    return this.getQuestionnaireByDate(strDate);
 	}
 	
 	public void deleteQuestionnaire(int questionnaireId) throws QuestionnaireCancellationException {
