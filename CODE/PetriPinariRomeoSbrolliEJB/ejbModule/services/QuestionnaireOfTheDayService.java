@@ -30,7 +30,7 @@ public class QuestionnaireOfTheDayService {
 	    Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateAsString);
 		Query query = em.createQuery("Select q "
 									+ "From Questionnaire q "
-									+ "Where q.presDate = :date", Product.class )
+									+ "Where q.presDate = :date", Questionnaire.class )
 									.setParameter("date", date);
 									List<Questionnaire> listResult = query.getResultList();
 		Questionnaire result = listResult.get(0);
