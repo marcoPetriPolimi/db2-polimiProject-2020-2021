@@ -8,10 +8,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import database.User;
+import exceptions.UserAlreadyPresentEmailException;
 import exceptions.UserAlreadyPresentNicknameException;
 import exceptions.UserCredentialsException;
 import exceptions.UserException;
 
+/**
+ * 
+ * @author Marco Petri
+ *
+ */
 @Stateless
 public class AccountService {
 	@PersistenceContext(unitName = "PetriPinariRomeoSbrolliEJB")
@@ -24,15 +30,20 @@ public class AccountService {
 	 * @param email
 	 * @param regDate
 	 */
-	public void createNewUser(String nickname, String password, String email, Date regDate) throws UserException {
-		List<User> users = em.createQuery("User.findByName", User.class).setParameter(1, nickname).getResultList();
+	public void createNewUser(String nickname, String password, String email, Date regDate) throws UserAlreadyPresentNicknameException, UserAlreadyPresentEmailException {
+		List<User> usersByName = em.createNamedQuery("User.findByName", User.class).setParameter(1, nickname).getResultList();
+		List<User> usersByEmail = em.createNamedQuery("User.findByEmail", User.class).setParameter(1, email).getResultList();
 		User user;
 		
 		// the user is not unique, precisely the user exist
-		if (!users.isEmpty()) {
-			throw new UserException("Username already in use. Please select new one");
+		if (!usersByName.isEmpty() || !usersByEmail.isEmpty()) {
+			if (!usersByName.isEmpty()) {
+				throw new UserAlreadyPresentNicknameException();
+			} else {
+				throw new UserAlreadyPresentEmailException();
+			}
 		} else {
-			user = new User(nickname,password,email,regDate,0,false,0);
+			user = new User(nickname,password,email,regDate,0,false,1);
 			em.persist(user);
 		}
 	}
@@ -47,20 +58,36 @@ public class AccountService {
 		return user;
 	}
 	
+	public User findUser(String nickname) throws UserException {
+		List<User> users = em.createNamedQuery("User.findByName", User.class).setParameter(1, nickname).getResultList();
+		
+		if (users.size() != 1) {
+			throw new UserException();
+		} else {
+			return users.get(0);
+		}
+	}
+	
+	public User findUserByEmail(String email) throws UserException {
+		List<User> users = em.createNamedQuery("User.findByEmail", User.class).setParameter(1, email).getResultList();
+		
+		if (users.size() != 1) {
+			throw new UserException();
+		} else {
+			return users.get(0);
+		}
+	}
+	
 	/**
 	 * This method verifies if the pair is correct and returns true if it is. If the return value is true the user can login, if it false it cannot login.
 	 * @param nickname is the nickname of the user
 	 * @param password is the password given by the user
 	 * @return true if the pair matches on the database, false otherwise
 	 */
-	public boolean login(String nickname, String password) {
-		List<User> users = em.createQuery("User.findByName", User.class).setParameter(1, nickname).getResultList();
+	public boolean login(String nickname, String password) throws UserException {
+		User user = findUser(nickname);
 		
-		if (users.size() != 1) {
-			return users.get(0).getPassword().equals(password);
-		} else {
-			return false;
-		}
+		return user.getPassword().equals(password);
 	}
 	
 	/**
@@ -70,9 +97,9 @@ public class AccountService {
 	 * @param password
 	 * 
 	 */
-	public void changeNickname(int id, String newNickname, String password) throws UserCredentialsException, UserAlreadyPresentNicknameException {
+	public void changeNickname(int id, String newNickname, String password) throws UserException, UserCredentialsException, UserAlreadyPresentNicknameException {
 		User changingNicknameUser = em.find(User.class, id);
-		List<User> nicknameUser = em.createQuery("User.findByName", User.class).setParameter(1, newNickname).getResultList();
+		List<User> nicknameUser = em.createNamedQuery("User.findByName", User.class).setParameter(1, newNickname).getResultList();
 		
 		// verify that the user is inserting the right password in order to make the change possible by vertical propagation
 		if (login(changingNicknameUser.getNickname(), password)) {

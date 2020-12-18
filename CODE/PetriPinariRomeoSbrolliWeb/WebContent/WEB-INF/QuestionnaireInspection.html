@@ -2,6 +2,28 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+	$("input[name='selector']").change(function(e){
+		switch($(this).val()) {
+		  case '1':
+			    $('#publicationId').prop('disabled',true);
+			    $('#publicationId').prop('required',false);
+			    
+			  	$('#referenceId').prop('disabled',false);
+		    	$('#referenceId').prop('required',true);
+		    break;
+		  default:
+			  	$('#referenceId').prop('disabled',true);
+		    	$('#referenceId').prop('required',false);
+		    	
+		    	$('#publicationId').prop('disabled',false);
+			    $('#publicationId').prop('required',true);
+		}
+	});
+});
+</script>
+
 <meta charset="ISO-8859-1">
 <title>Questionnaire Searcher</title>
 <link rel="stylesheet" type="text/css" media="all"
@@ -26,7 +48,7 @@
 				<input type="submit" name="submit">
 			</fieldset>
 </form>
-<table data-th-each = "questionnaireAsked : ${questionnaire}">
+<table data-th-if="${questionnaire!=null}">
 	<tr> 
 		<td>Questionnaire ID:</td>
 		<td data-th-utext='${questionnaire}'> ;;</td>
@@ -56,30 +78,34 @@
  		<td data-th-utext = '${product}'></td>
  	</tr>
 </table>
+<div data-th-if="${questionnaire!=null}">
+<h2>Users that submitted this questionnaire</h2>
+	<table>
+ 	<tr>
+    	<th>User Id</th>
+   		<th>Nickname</th>
+ 	</tr>
+	<tr data-th-each="user : ${userSubmitted}"> 
+		<td data-th-utext='${user[0]}'>UserId</td>
+		<td data-th-utext='${user[1]}'>nickname</td>
+		<td><a data-th-href="@{/userSubmission(userId=${user[0]})}">See Submission</a></td>
+	</tr>
+	</table>	
+<h2>Users that canceled submission of this questionnaire</h2>
+	<table>
+ 	<tr>
+    	<th>User Id</th>
+   		<th>Nickname</th>
+ 	</tr>
+	<tr data-th-each="user : ${userCanceled}"> 
+		<td data-th-utext='${user[0]}'>UserId</td>
+		<td data-th-utext='${user[1]}'>nickname</td>
+	</tr>
+	</table>	
+
+</div>
 
 
-
-<script>
-$(document).ready(function(){
-	$("input[name='selector']").change(function(e){
-		switch($(this).val()) {
-		  case '1':
-			    $('#publicationId').prop('disabled',true);
-			    $('#publicationId').prop('required',false);
-			    
-			  	$('#referenceId').prop('disabled',false);
-		    	$('#referenceId').prop('required',true);
-		    break;
-		  default:
-			  	$('#referenceId').prop('disabled',true);
-		    	$('#referenceId').prop('required',false);
-		    	
-		    	$('#publicationId').prop('disabled',false);
-			    $('#publicationId').prop('required',true);
-		}
-	});
-});
-</script>
 
 
 </body>

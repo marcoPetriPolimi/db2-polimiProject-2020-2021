@@ -20,30 +20,26 @@ import utils.forms.FormQuestion;
 public class GetCreation extends HttpThymeleafServlet {
 	private static final long serialVersionUID = 1L;
 	private QuestionnaireCreationService qcs;
-	
-	
+
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		 qcs = (QuestionnaireCreationService) req.getSession().getAttribute("QuestionnaireCreationService");
-		
+
 		if(qcs == null){
 	          // EJB is not present in the HTTP session
 	          // so let's fetch a new one from the container
 	          try {
-	            InitialContext ic = new InitialContext();	           
-	            qcs = (QuestionnaireCreationService) 
-	             ic.lookup("java:global/PetriPinariRomeoSbrolliWeb/QuestionnaireCreationService");
-
+	            InitialContext ic = new InitialContext();
+	            qcs = (QuestionnaireCreationService)
+	            ic.lookup("java:global/PetriPinariRomeoSbrolliWeb/QuestionnaireCreationService");
 	            // put EJB in HTTP session for future servlet calls
-	            req.getSession().setAttribute(
-	              "QuestionnaireCreationService", 
-	              qcs);
-
+	            req.getSession().setAttribute("QuestionnaireCreationService",qcs);
 	          } catch (NamingException e) {
 	            throw new ServletException(e);
 	          }
 	    }
-		
+
 		List<FormQuestion> questions = qcs.getFormQuestions();
 		String path = "QuestionnaireCreationHome";
 		ServletContext servletContext = getServletContext();
@@ -54,7 +50,7 @@ public class GetCreation extends HttpThymeleafServlet {
 		ctx.setVariable("products", qcs.getAllProducts());
 		thymeleaf.process(path, ctx, resp.getWriter());
 	}
-	
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doGet(req, resp);

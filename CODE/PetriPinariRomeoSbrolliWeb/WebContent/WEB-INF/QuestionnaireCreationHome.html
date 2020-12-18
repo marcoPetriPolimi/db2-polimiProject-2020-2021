@@ -2,13 +2,36 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+	$("input[name='type']").change(function(e){
+		switch($(this).val()) {
+		  case '1':
+		  case '2':
+			    $('#possibleAnswers').prop('disabled',false);
+			    $('#possibleAnswers').prop('required',true);
+		    break;
+		  default:
+			  	$('#possibleAnswers').prop('disabled',true);
+		    	$('#possibleAnswers').prop('required',false);
+		    	$('#possibleAnswers').val("");
+		}
+	});
+});
+</script>
+
+
 <meta charset="ISO-8859-1">
 <title>Create a Questionnaire</title>
 <link rel="stylesheet" type="text/css" media="all"
 	href="../CSS/mystyle.css" data-th-href="@{/css/mystyle.css}" />
 </head>
 <body>
+	<div align="right">
+		<a data-th-href="@{/homepage}">Home</a>
+	</div>
 <h1>Questionnaire recap</h1>
+
 
 <table>
  	<tr>
@@ -83,9 +106,9 @@
 			</tr>
 			</table>
 		</td>
-	<td><a th:href="@{/AddStoredQuestion(questionId=${storedQuestion.getId()})}">Add</a></td>
+	<td><a data-th-href="@{/AddStoredQuestion(questionId=${storedQuestion.getId()})}">Add</a></td>
 	</tr>
-</table>	
+	</table>	
 </div>	
 		
 <div data-th-if="${!(storedQuestions.isEmpty() && questions.isEmpty()) }" >
@@ -110,25 +133,5 @@
 			</fieldset>
 		</form>
 </div>	
-		
-<script>
-$(document).ready(function(){
-	$("input[name='type']").change(function(e){
-		switch($(this).val()) {
-		  case '1':
-		  case '2':
-			    $('#possibleAnswers').prop('disabled',false);
-			    $('#possibleAnswers').prop('required',true);
-		    break;
-		  default:
-			  	$('#possibleAnswers').prop('disabled',true);
-		    	$('#possibleAnswers').prop('required',false);
-		    	$('#possibleAnswers').val("");
-		}
-	});
-});
-</script>
-
-
 </body>
 </html>

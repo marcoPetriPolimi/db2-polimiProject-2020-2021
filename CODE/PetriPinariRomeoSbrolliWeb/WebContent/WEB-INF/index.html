@@ -1,18 +1,34 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
+
 <head>
-<meta charset="ISO-8859-1">
-<title>Login page</title>
+	<meta charset="ISO-8859-1">
+	<title data-th-utext='${lang.getString("indexTitle")}'>Login page</title>
+	<link rel="stylesheet" type="text/css" href="../css/standard.css" data-th-href="@{css/standard.css}"/>
 </head>
+
 <body>
-	<h1>Welcome to Questionnaire Of The Day!</h1>
-
-	<form action="CheckLogin" method="POST">
-		Username: <input type="text" name="username" required> <br>
-		Password: <input type="password" name="pwd" required><br>
-		<input type="submit" value="login">
-		<p th:text=" ${errorMsg}"></p>
-	</form>
-
+	<div class="indexPanel">
+		<h1 data-th-utext='${lang.getString("indexWelcomeMsg")}'>Welcome to Questionnaire Of The Day!</h1>
+	
+		<p data-th-if="${errorMsg}" data-th-utext="${errorText}" class="error">This is an error text</p>
+		<p data-th-if="${registration}" data-th-utext="${registrationText}" class="success">This is an error text</p>
+	
+		<h2 data-th-utext='${lang.getString("indexFillLogin")}'>Fill the form to log in</h2>
+		<form action="CheckLogin" method="POST">
+			<input type="text" name="usr" placeholder="Username" data-th-placeholder='${lang.getString("indexUsername")}' required>
+			<input type="password" name="pwd" placeholder="Password" data-th-placeholder='${lang.getString("indexPassword")}' required>
+			<input type="submit" value="Login" data-th-value='${lang.getString("indexLoginButton")}'>
+		</form>
+		<h2 data-th-utext='${lang.getString("indexFillRegister")}'>Fill the form to register</h2>
+		<form action="CheckRegistration" method="POST">
+			<input type="text" name="usr" placeholder="Username" data-th-placeholder='${lang.getString("indexUsername")}' required>
+			<input type="email" name="email" placeholder="Email" data-th-placeholder='${lang.getString("indexEmail")}' required>
+			<input type="password" name="pwd" placeholder="Password" data-th-placeholder='${lang.getString("indexPassword")}' required>
+			<input type="password" name="pwd2" placeholder="Repeat password" data-th-placeholder='${lang.getString("indexRepeatPassword")}' required>
+			<input type="submit" value="Registration" data-th-value='${lang.getString("indexRegistrationButton")}'>
+		</form>
+	</div>
 </body>
+
 </html>

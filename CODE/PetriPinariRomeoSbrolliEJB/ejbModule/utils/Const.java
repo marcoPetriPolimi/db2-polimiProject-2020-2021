@@ -1,7 +1,10 @@
 package utils;
 
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * This class is a constant class with the definition of language supported list differentiating between the current iso standard (ISO 3) and the old one (ISO 2) which is the only one supported by the external library thymeleaf.
@@ -26,8 +29,7 @@ public class Const {
 	public static final Map<String,String> isoTagToCountry = Map.of("ita","IT","eng","US");
 
 	// default properties files position
-	public static final String propertiesDirectory = "/WEB-INF/classes";
-	public static final String propertiesBaseName = "PURE_HTML";
+	public static final String propertiesBaseName = "resources.QuestionnaireOfTheDay";
 
 	// error messages before having instantiated the correct lang
 	public static final String unavailableException = "Can't find database driver";
