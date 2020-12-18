@@ -61,19 +61,11 @@ public class GetInspection extends HttpThymeleafServlet {
 		String questionnaireId = req.getParameter("idQuestionnaire");
 
 		String publicationDate = req.getParameter("publicationDate");
-<<<<<<< Updated upstream
 
 
 
 		//if it is his first visit and the user has not input any number yet write answer and
 		if(questionnaireId == null && publicationDate == null) {
-=======
-		
-		String selectorAsString = req.getParameter("selector");
-		
-		//if it is his first visit and the user has not input any number yet write answer and 
-		if( questionnaireId == null && publicationDate == null && selectorAsString == null) {
->>>>>>> Stashed changes
 			wrongFormat(req, resp);
 			return;
 		};
@@ -81,16 +73,11 @@ public class GetInspection extends HttpThymeleafServlet {
 
 
 		// selector is "1" if you are choosing id and "2" if you are choosing "publicationDate"
-<<<<<<< Updated upstream
 		int selector = Integer.parseInt(req.getParameter("selector"));
 
 		Questionnaire questionnaire = null;
 		List<Question> questions = null;
 		Integer idQuestionnaire=null;
-=======
-		int selector = Integer.parseInt(selectorAsString);
-		
->>>>>>> Stashed changes
 		if(selector == 1) {
 			try {
 				idQuestionnaire = Integer.parseInt(questionnaireId);
@@ -99,7 +86,6 @@ public class GetInspection extends HttpThymeleafServlet {
 				e.printStackTrace();
 			}
 		} else if (selector == 2) {
-<<<<<<< Updated upstream
 			try {
 				questionnaire =QDS.getQuestionnaire(publicationDate);
 				idQuestionnaire = questionnaire.getId();
@@ -107,65 +93,6 @@ public class GetInspection extends HttpThymeleafServlet {
 				e.printStackTrace();
 			}
 		}
-=======
-			getQuestionnaireByDate(publicationDate, req, resp);
-		} else if (selector == 3) {
-			getQuestionnaireOfTheDay(req,resp);
-		}
-		
-		
-		
-	}
-	
-	private void getQuestionnaireOfTheDay(HttpServletRequest req, HttpServletResponse resp) throws IOException{
-		// TODO Auto-generated method stub
-		Questionnaire questionnaire = null;
-		List<Question> questions = null;
-
-		try {
-			questionnaire =QDS.getQuestionnaireOfTheDay();
-			questions = QDS.getQuestions(questionnaire.getId());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		//guard check if query is right
-		if(questionnaire == null || questions == null) {
-			wrongFormat(req, resp);
-			return;
-		}
-		
-		List<String> questionsString = new ArrayList<String>();
-		for(Question q : questions) {
-			questionsString.add(q.getQuestion());
-		}
-		
-		String creatorName = questionnaire.getCreator().getNickname();
-		Product product = questionnaire.getProduct();
-		Date creationDate = questionnaire.getDate();
-		Date presentationDate = questionnaire.getPresDate();
-
-		String path = "QuestionnaireInspection";
-		ServletContext servletContext = getServletContext();
-		
-		final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
-		ctx.setVariable("questionnaire", questionnaire.getId());
-		ctx.setVariable("questionnaireName", questionnaire.getName());
-		ctx.setVariable("questionsString", questionsString);
-		ctx.setVariable("creatorName", creatorName);
-		ctx.setVariable("product", product.getImage());
-		ctx.setVariable("creationDate", creationDate);
-		ctx.setVariable("presentationDate", presentationDate);
-		
-		thymeleaf.process(path, ctx, resp.getWriter());	
-	}
-
-	private void getQuestionnaireByDate(String publicationDate, HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		
-		Questionnaire questionnaire = null;
-		List<Question> questions = null;
-
->>>>>>> Stashed changes
 		try {
 			questions = QDS.getQuestions(idQuestionnaire);
 		} catch (QuestionnaireException e) {
