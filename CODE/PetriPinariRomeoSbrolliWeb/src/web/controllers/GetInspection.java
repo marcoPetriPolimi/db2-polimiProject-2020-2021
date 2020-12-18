@@ -26,7 +26,7 @@ import database.Question;
 import database.Questionnaire;
 import services.QuestionnaireOfTheDayService;
 
-//@Contributor(s): Etion
+//@Contributor(s): Etion, Cristian Schrolle
 
 @WebServlet("/inspection")
 public class GetInspection extends HttpThymeleafServlet {
@@ -62,10 +62,10 @@ public class GetInspection extends HttpThymeleafServlet {
 
 		String publicationDate = req.getParameter("publicationDate");
 
-
+		String selectorAsString = req.getParameter("selector");
 
 		//if it is his first visit and the user has not input any number yet write answer and
-		if(questionnaireId == null && publicationDate == null) {
+		if(questionnaireId == null && publicationDate == null && selectorAsString == null) {
 			wrongFormat(req, resp);
 			return;
 		};
@@ -73,7 +73,7 @@ public class GetInspection extends HttpThymeleafServlet {
 
 
 		// selector is "1" if you are choosing id and "2" if you are choosing "publicationDate"
-		int selector = Integer.parseInt(req.getParameter("selector"));
+		int selector = Integer.parseInt(selectorAsString);
 
 		Questionnaire questionnaire = null;
 		List<Question> questions = null;
@@ -90,6 +90,13 @@ public class GetInspection extends HttpThymeleafServlet {
 				questionnaire =QDS.getQuestionnaireByDate(publicationDate);
 				idQuestionnaire = questionnaire.getId();
 			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (selector == 3) {
+			try {
+				questionnaire = QDS.getQuestionnaireOfTheDay();
+				idQuestionnaire = questionnaire.getId();
+			} catch(Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -151,7 +158,6 @@ public class GetInspection extends HttpThymeleafServlet {
 
 	/**
 	 * checks if string s is null, aka no input has been put in
-	 * @param s
 	 * @param req
 	 * @param resp
 	 * @return
