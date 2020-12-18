@@ -25,12 +25,12 @@ public class QuestionnaireOfTheDayService {
 	public QuestionnaireOfTheDayService() {
 	}
 	
-	public Questionnaire getQuestionnaire(String dateAsString) throws QuestionnaireException, ParseException {
+	public Questionnaire getQuestionnaireByDate(String dateAsString) throws QuestionnaireException, ParseException {
 
 	    Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateAsString);
 		Query query = em.createQuery("Select q "
 									+ "From Questionnaire q "
-									+ "Where q.presDate = :date", Product.class )
+									+ "Where q.presDate = :date", Questionnaire.class )
 									.setParameter("date", date);
 									List<Questionnaire> listResult = query.getResultList();
 		Questionnaire result = listResult.get(0);
@@ -39,7 +39,22 @@ public class QuestionnaireOfTheDayService {
 		} else {
 			return result;
 		}
-}
+	}
+	
+	public Questionnaire getQuestionnaireByDate(Date date) throws QuestionnaireException {
+
+		Query query = em.createQuery("Select q "
+									+ "From Questionnaire q "
+									+ "Where q.presDate = :date", Questionnaire.class )
+									.setParameter("date", date);
+									List<Questionnaire> listResult = query.getResultList();
+		Questionnaire result = listResult.get(0);
+		if(result == null) {
+			throw new QuestionnaireException("Could not find questionnarie by publication date");
+		} else {
+			return result;
+		}
+	}
 	
 	public Questionnaire getQuestionnaire(int id) throws QuestionnaireException {
 		Questionnaire result = em.find(Questionnaire.class, id);

@@ -65,7 +65,7 @@ public class GetInspection extends HttpThymeleafServlet {
 		List<Question> questions = null;
 
 		try {
-			questionnaire =QDS.getQuestionnaire(publicationDate);
+			questionnaire =QDS.getQuestionnaireByDate(publicationDate);
 			questions = QDS.getQuestions(questionnaire.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
