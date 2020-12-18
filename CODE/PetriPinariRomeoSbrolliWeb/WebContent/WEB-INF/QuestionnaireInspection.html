@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<script type="text/javascript" src="jquery-3.5.1.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <meta charset="ISO-8859-1">
 <title>Questionnaire Searcher</title>
 <link rel="stylesheet" type="text/css" media="all"
@@ -11,9 +11,17 @@
 
 
 <form action="#" data-th-action="@{/inspection}" method="GET">
+			 <input type="radio" id="1" name="selector" value="1" required />
+			 <label for="1">Id search</label>
+			 <input type="radio" id="2" name="selector" value="2" />
+			 <label for="2">Publication date search</label> <br><br>
 			<fieldset>
 				<p>
-					Enter the questionnaire id you are searching for: <input type="number" name="idQuestionnaire" required />
+					Enter the questionnaire id you are searching for: <input id ="referenceId" type="number" name="idQuestionnaire" disabled/>
+				</p>
+				<p>
+					Enter the publication day of the questionnaire you are looking for: <input id = "publicationId" type="date" name="publicationDate"
+																						placeholder="yyyy-mm-dd" disabled />
 				</p>
 				<input type="submit" name="submit">
 			</fieldset>
@@ -36,8 +44,12 @@
 	 	<td data-th-utext = '${question}'> </td>
  	</tr>
  	<tr>
- 		<th>Date</th>
+ 		<th>Creation Date</th>
  		<td data-th-utext = '${creationDate}'></td>
+ 	</tr>
+ 	<tr>
+ 		<th>Publication Date</th>
+ 		<td data-th-utext = '${presentationDate}'></td>
  	</tr>
  	<tr>
  		<th>Product</th>
@@ -45,6 +57,29 @@
  	</tr>
 </table>
 
+
+
+<script>
+$(document).ready(function(){
+	$("input[name='selector']").change(function(e){
+		switch($(this).val()) {
+		  case '1':
+			    $('#publicationId').prop('disabled',true);
+			    $('#publicationId').prop('required',false);
+			    
+			  	$('#referenceId').prop('disabled',false);
+		    	$('#referenceId').prop('required',true);
+		    break;
+		  default:
+			  	$('#referenceId').prop('disabled',true);
+		    	$('#referenceId').prop('required',false);
+		    	
+		    	$('#publicationId').prop('disabled',false);
+			    $('#publicationId').prop('required',true);
+		}
+	});
+});
+</script>
 
 
 </body>

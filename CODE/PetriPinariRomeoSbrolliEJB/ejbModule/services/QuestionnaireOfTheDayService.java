@@ -1,6 +1,9 @@
 package services;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,14 +28,31 @@ public class QuestionnaireOfTheDayService {
 	public QuestionnaireOfTheDayService() {
 	}
 	
+	public Questionnaire getQuestionnaire(String dateAsString) throws QuestionnaireException, ParseException {
+
+	    Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateAsString);
+		Query query = em.createQuery("Select q "
+									+ "From Questionnaire q "
+									+ "Where q.presDate = :date", Product.class )
+									.setParameter("date", date);
+									List<Questionnaire> listResult = query.getResultList();
+		Questionnaire result = listResult.get(0);
+		if(result == null) {
+			throw new QuestionnaireException("Could not find questionnarie by publication date");
+		} else {
+			return result;
+		}
+}
+	
 	public Questionnaire getQuestionnaire(int id) throws QuestionnaireException {
 		Questionnaire result = em.find(Questionnaire.class, id);
 		if(result == null) {
-			throw new QuestionnaireException("Could not find questionnarie");
+			throw new QuestionnaireException("Could not find questionnarie by id");
 		} else {
 			return result;
 		}
 	}
+	
 	
 	/**	get product related to questionnaire with id: "int id"
 	 * @param id: primary key of questionnaire

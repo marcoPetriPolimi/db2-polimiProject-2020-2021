@@ -1,6 +1,7 @@
 package web.controllers;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,27 +32,49 @@ public class GetInspection extends HttpThymeleafServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// insert the code for the get
-		String s = req.getParameter("idQuestionnaire");
+		
+		
+		String questionnaireId = req.getParameter("idQuestionnaire");
+		
+		String publicationDate = req.getParameter("publicationDate");
+		
+
+		
 		//if it is his first visit and the user has not input any number yet write answer and 
-		if(wrongFormat(s, req, resp)) {
+		if( questionnaireId == null && publicationDate == null) {
+			wrongFormat(req, resp);
 			return;
 		};
+
+		// selector is "1" if you are choosing id and "2" if you are choosing "publicationDate"
+		int selector = Integer.parseInt(req.getParameter("selector"));
 		
-		Integer idQuestionnaire = Integer.parseInt(s);
+		if(selector == 1) {
+			getQuestionnaireById(questionnaireId, req, resp);
+		} else if (selector == 2) {
+			getQuestionnaireByDate(publicationDate, req, resp);
+		}
+		
+		
+		
+	}
+	
+//	@SuppressWarnings("deprecation")
+	private void getQuestionnaireByDate(String publicationDate, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		
 		Questionnaire questionnaire = null;
 		List<Question> questions = null;
-		
+
 		try {
-			questionnaire =QDS.getQuestionnaire(idQuestionnaire.intValue());
-			questions = QDS.getQuestions(idQuestionnaire);
+			questionnaire =QDS.getQuestionnaire(publicationDate);
+			questions = QDS.getQuestions(questionnaire.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		//guard check if question is right
+		//guard check if query is right
 		if(questionnaire == null || questions == null) {
-			wrongFormat(null, req, resp);
+			wrongFormat(req, resp);
 			return;
 		}
 		
@@ -63,6 +86,7 @@ public class GetInspection extends HttpThymeleafServlet {
 		String creatorName = questionnaire.getCreator().getNickname();
 		Product product = questionnaire.getProduct();
 		Date creationDate = questionnaire.getDate();
+		Date presentationDate = questionnaire.getPresDate();
 
 		String path = "QuestionnaireInspection";
 		ServletContext servletContext = getServletContext();
@@ -74,6 +98,58 @@ public class GetInspection extends HttpThymeleafServlet {
 		ctx.setVariable("creatorName", creatorName);
 		ctx.setVariable("product", product.getImage());
 		ctx.setVariable("creationDate", creationDate);
+		ctx.setVariable("presentationDate", presentationDate);
+		
+		thymeleaf.process(path, ctx, resp.getWriter());	
+		
+	}
+
+	/**
+	 * Creates a thymeleaf object that dynamically writes on the page if the questionnaire is found
+	 * @param s questionnaire id
+	 * @param req
+	 * @param resp
+	 * @throws IOException
+	 */
+	private void getQuestionnaireById(String s, HttpServletRequest req, HttpServletResponse resp ) throws IOException {
+		Integer idQuestionnaire = Integer.parseInt(s);
+		Questionnaire questionnaire = null;
+		List<Question> questions = null;
+		
+		try {
+			questionnaire =QDS.getQuestionnaire(idQuestionnaire);
+			questions = QDS.getQuestions(idQuestionnaire);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		//guard check if query is right
+		if(questionnaire == null || questions == null) {
+			wrongFormat(req, resp);
+			return;
+		}
+		
+		List<String> questionsString = new ArrayList<String>();
+		for(Question q : questions) {
+			questionsString.add(q.getQuestion());
+		}
+		
+		String creatorName = questionnaire.getCreator().getNickname();
+		Product product = questionnaire.getProduct();
+		Date creationDate = questionnaire.getDate();
+		Date presentationDate = questionnaire.getPresDate();
+
+		String path = "QuestionnaireInspection";
+		ServletContext servletContext = getServletContext();
+		
+		final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
+		ctx.setVariable("questionnaire", questionnaire.getId());
+		ctx.setVariable("questionnaireName", questionnaire.getName());
+		ctx.setVariable("questionsString", questionsString);
+		ctx.setVariable("creatorName", creatorName);
+		ctx.setVariable("product", product.getImage());
+		ctx.setVariable("creationDate", creationDate);
+		ctx.setVariable("presentationDate", presentationDate);
 		
 		thymeleaf.process(path, ctx, resp.getWriter());	
 	}
@@ -86,10 +162,7 @@ public class GetInspection extends HttpThymeleafServlet {
 	 * @return
 	 * @throws IOException
 	 */
-	private boolean wrongFormat(String s, HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		if(s != null) {
-			return false;
-		}
+	private boolean wrongFormat( HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		String path = "QuestionnaireInspection";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
