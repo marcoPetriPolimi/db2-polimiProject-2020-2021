@@ -28,10 +28,22 @@ public class QuestionnaireOfTheDayService {
 
 	public QuestionnaireOfTheDayService() {
 	}
+<<<<<<< Updated upstream
 
+=======
+	
+	/**
+	 * 
+	 * @param dateAsString should be of format yyyy-MM-dd (sql's decision, not mine)
+	 * @return
+	 * @throws QuestionnaireException
+	 * @throws ParseException
+	 */
+>>>>>>> Stashed changes
 	public Questionnaire getQuestionnaire(String dateAsString) throws QuestionnaireException, ParseException {
 
 	    Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateAsString);
+	    System.out.println("Date is: " + date);
 		Query query = em.createQuery("Select q "
 									+ "From Questionnaire q "
 									+ "Where q.presDate = :date", Questionnaire.class )
@@ -43,8 +55,24 @@ public class QuestionnaireOfTheDayService {
 		} else {
 			return result;
 		}
+<<<<<<< Updated upstream
 }
 
+=======
+	}
+	
+	public Questionnaire getQuestionnaireOfTheDay() throws QuestionnaireException, ParseException {
+
+		Date date = new Date();  
+	    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
+	    String strDate= formatter.format(date);  
+	    System.out.println(strDate); 
+	    System.out.println("Date is: " + date);
+	    
+	    return this.getQuestionnaire(strDate);
+    }
+	
+>>>>>>> Stashed changes
 	public Questionnaire getQuestionnaire(int id) throws QuestionnaireException {
 		Questionnaire result = em.find(Questionnaire.class, id);
 		if(result == null) {

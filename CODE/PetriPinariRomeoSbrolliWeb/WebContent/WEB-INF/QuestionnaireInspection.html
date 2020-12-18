@@ -31,12 +31,15 @@ $(document).ready(function(){
 </head>
 <body>
 
-
+<h2>Questionnaire Search</h2>
 <form action="#" data-th-action="@{/inspection}" method="GET">
+			<br>
 			 <input type="radio" id="1" name="selector" value="1" required />
 			 <label for="1">Id search</label>
 			 <input type="radio" id="2" name="selector" value="2" />
-			 <label for="2">Publication date search</label> <br><br>
+			 <label for="2">Publication date search</label> 
+			 <input type="radio" id="3" name="selector" value="3" />
+			 <label for="3">Questionnaire Of the day</label> <br><br>
 			<fieldset>
 				<p>
 					Enter the questionnaire id you are searching for: <input id ="referenceId" type="number" name="idQuestionnaire" disabled/>
@@ -106,6 +109,38 @@ $(document).ready(function(){
 </div>
 
 
+<<<<<<< Updated upstream
+=======
+<script>
+$(document).ready(function(){
+	$("input[name='selector']").change(function(e){
+		switch($(this).val()) {
+		  case '1':
+			    $('#publicationId').prop('disabled',true);
+			    $('#publicationId').prop('required',false);
+			    
+			  	$('#referenceId').prop('disabled',false);
+		    	$('#referenceId').prop('required',true);
+		    break;
+		  case '2':
+			  	$('#referenceId').prop('disabled',true);
+		    	$('#referenceId').prop('required',false);
+		    	
+		    	$('#publicationId').prop('disabled',false);
+			    $('#publicationId').prop('required',true);
+		    break;
+		  case '3':
+			  	$('#referenceId').prop('disabled',true);
+		    	$('#referenceId').prop('required',false);
+		    	
+		    	$('#publicationId').prop('disabled',true);
+			    $('#publicationId').prop('required',false);
+			  
+		}
+	});
+});
+</script>
+>>>>>>> Stashed changes
 
 
 </body>
