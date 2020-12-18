@@ -29,7 +29,7 @@ public class QuestionnaireOfTheDayService {
 	public QuestionnaireOfTheDayService() {
 	}
 
-	public Questionnaire getQuestionnaire(String dateAsString) throws QuestionnaireException, ParseException {
+	public Questionnaire getQuestionnaireByDate(String dateAsString) throws QuestionnaireException, ParseException {
 
 	    Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateAsString);
 		Query query = em.createQuery("Select q "
@@ -43,7 +43,22 @@ public class QuestionnaireOfTheDayService {
 		} else {
 			return result;
 		}
-}
+	}
+	
+	public Questionnaire getQuestionnaireByDate(Date date) throws QuestionnaireException {
+
+		Query query = em.createQuery("Select q "
+									+ "From Questionnaire q "
+									+ "Where q.presDate = :date", Questionnaire.class )
+									.setParameter("date", date);
+									List<Questionnaire> listResult = query.getResultList();
+		Questionnaire result = listResult.get(0);
+		if(result == null) {
+			throw new QuestionnaireException("Could not find questionnarie by publication date");
+		} else {
+			return result;
+		}
+	}
 
 	public Questionnaire getQuestionnaire(int id) throws QuestionnaireException {
 		Questionnaire result = em.find(Questionnaire.class, id);
@@ -147,6 +162,21 @@ public class QuestionnaireOfTheDayService {
 		return questions;
 	}
 
+	/**
+	 * get all related questions to one questionnaire
+	 */
+	public List<Question> getQuestions(Questionnaire questionnaire) throws QuestionnaireException{
+		return getQuestions(questionnaire.getId());
+	}
+
+	public Questionnaire getQuestionnaireOfTheDay() throws QuestionnaireException, ParseException {
+		Date date = new Date();  
+	    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
+	    String strDate= formatter.format(date);  
+	    
+	    return this.getQuestionnaireByDate(strDate);
+	}
+	
 	public void deleteQuestionnaire(int questionnaireId) throws QuestionnaireCancellationException {
 		Questionnaire q = em.find(Questionnaire.class, questionnaireId);
 		if (q.getDate().compareTo(new Date()) > 0) {

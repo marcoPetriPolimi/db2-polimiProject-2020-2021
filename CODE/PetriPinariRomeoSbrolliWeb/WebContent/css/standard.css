@@ -1,0 +1,147 @@
+@charset "ISO-8859-1";
+
+body {
+	text-align: center;
+}
+
+a {
+	text-decoration: none;
+	color: #2274ff;
+}
+
+a:hover {
+	color: #68a9ee;
+}
+
+/****************************
+ *							*
+ * 		INDEX PAGE			*
+ *							*
+ ****************************/
+div.indexPanel {
+	/* positioning and margin */
+	position: relative;
+	top: 100px;
+	/* dimensions and padding */
+	padding: 25px;
+	/* decorations */
+	align-items: center;
+	border-radius: 5px;
+	box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+	display: inline-flex;
+	flex-direction: column;
+}
+
+div.indexPanel > form {
+	/* positioning and margin */
+	/* dimensions and padding */
+	/* decorations */
+	align-items: center;
+	display: inline-flex;
+	flex-direction: column;
+}
+
+div.indexPanel > h2 {
+	/* positioning and margin */
+	/* dimensions and padding */
+	/* decorations */
+	align-self: start;
+}
+
+div.indexPanel > form > input {
+	/* positioning and margin */
+	margin-top: 25px;
+	/* dimensions and padding */
+	/* decorations */
+}
+
+div.indexPanel > form > input:first-child {
+	/* positioning and margin */
+	margin-top: 0px;
+	/* dimensions and padding */
+	/* decorations */
+}
+
+/****************************
+ *							*
+ * 		GENERAL STYLE		*
+ *							*
+ ****************************/
+input[type=number], input[type=text], input[type=password], input[type=email] {
+	/* positions, margin */
+	/* dimensions and padding */
+	width: 200px;
+	height: 25px;
+	padding: 5px;
+	/* view */
+	border: 1px solid rgba(166,166,166,1);
+}
+ 
+input[type=submit], input[type=button] {
+	/* positions, margin */
+	/* dimensions and padding */
+	width: 150px;
+	min-height: 40px;
+	padding: 5px 10px 5px 10px;
+	/* view */
+	background-color: rgb(17,160,247);
+	border: none;
+	border-radius: 7px;
+	color: rgb(255,255,255);
+	font-weight: bold;
+}
+
+input[type=submit]:hover, input[type=button]:hover {
+	/* positions, margin */
+	/* dimensions and padding */
+	/* view */
+	background-color: rgb(49, 177, 255);
+}
+
+input[type=submit]:active, input[type=button]:active {
+	/* positions, margin */
+	/* dimensions and padding */
+	/* view */
+	background-color: rgb(16, 141, 217);
+	box-shadow: inset 0px 0px 2px 1px rgba(0,0,0,0.4);
+}
+
+textarea {
+	/* positions, margin */
+	/* dimensions and padding */
+	padding: 5px;
+	min-width: 200px;
+	max-width: 200px;
+	min-height: 60px;
+	max-height: 150px;
+	/* view */
+	border: 1px solid rgba(166,166,166,1);
+}
+
+/****************************
+ *							*
+ * 			ERRORS			*
+ *							*
+ ****************************/
+.error {
+	/* positions, margin */
+	/* dimensions and padding */
+	/* view */
+	color: rgb(255,0,0);
+	display: inline-block;
+}
+
+.success {
+	/* positions, margin */
+	/* dimensions and padding */
+	/* view */
+	color: rgb(0, 128, 0);
+	display: inline-block;
+}
+
+.hidden {
+	/* positions, margin */
+	/* dimensions and padding */
+	/* view */
+	display: none;
+}
