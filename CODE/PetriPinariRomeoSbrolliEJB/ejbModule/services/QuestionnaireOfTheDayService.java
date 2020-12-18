@@ -147,6 +147,21 @@ public class QuestionnaireOfTheDayService {
 		return questions;
 	}
 
+	/**
+	 * get all related questions to one questionnaire
+	 */
+	public List<Question> getQuestions(Questionnaire questionnaire) throws QuestionnaireException{
+		return getQuestions(questionnaire.getId());
+	}
+
+	public Questionnaire getQuestionnaireOfTheDay() throws QuestionnaireException, ParseException {
+		Date date = new Date();  
+	    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
+	    String strDate= formatter.format(date);  
+	    
+	    return this.getQuestionnaire(strDate);
+	}
+	
 	public void deleteQuestionnaire(int questionnaireId) throws QuestionnaireCancellationException {
 		Questionnaire q = em.find(Questionnaire.class, questionnaireId);
 		if (q.getDate().compareTo(new Date()) > 0) {
