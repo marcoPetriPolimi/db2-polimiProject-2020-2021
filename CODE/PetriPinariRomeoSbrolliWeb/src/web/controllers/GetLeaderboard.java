@@ -1,11 +1,7 @@
 package web.controllers;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Map;
 
 import javax.ejb.EJB;
@@ -49,16 +45,14 @@ public class GetLeaderboard extends HttpThymeleafServlet {
 		        	//Retrieving the questionnaire of the day
 					Questionnaire questionnaire = qds.getQuestionnaireByDate(Calendar.getInstance().getTime());
 					//Retrieving the leaderboard of the users who submitted the questionnaire of the day
-					//leaderboard = ls.getQuestionnaireLeaderboard(questionnaire.getId());
+					leaderboard = ls.getQuestionnaireLeaderboard(questionnaire.getId());
 					message = "This is the leaderboard of the day";
 				} catch (QuestionnaireException e) {
 					e.printStackTrace();
 					message = "Sorry, the questionnaire of the day is currently unavailable :(";
 				}	        
 			}
-		}
-		System.out.println(leaderboard);
-		
+		}		
 		
 		String path = "Leaderboard";
 		ServletContext servletContext = getServletContext();
