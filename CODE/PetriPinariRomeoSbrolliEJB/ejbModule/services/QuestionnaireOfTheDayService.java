@@ -9,9 +9,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.Tuple;
-
-import database.*;
 import exceptions.QuestionnaireCancellationException;
 
 import database.Product;
@@ -35,6 +32,7 @@ public class QuestionnaireOfTheDayService {
 		Query query = em
 				.createQuery("Select q " + "From Questionnaire q " + "Where q.presDate = :date", Questionnaire.class)
 				.setParameter("date", date);
+		@SuppressWarnings("unchecked")
 		List<Questionnaire> listResult = query.getResultList();
 		if (listResult.size() == 0) {
 			throw new QuestionnaireException("Could not find questionnarie by publication date");
@@ -48,6 +46,7 @@ public class QuestionnaireOfTheDayService {
 		Query query = em
 				.createQuery("Select q " + "From Questionnaire q " + "Where q.presDate = :date", Questionnaire.class)
 				.setParameter("date", date);
+		@SuppressWarnings("unchecked")
 		List<Questionnaire> listResult = query.getResultList();
 		if (listResult.size() == 0) {
 			throw new QuestionnaireException("Could not find questionnarie by publication date");

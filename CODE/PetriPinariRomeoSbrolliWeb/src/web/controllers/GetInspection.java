@@ -22,9 +22,6 @@ import exceptions.QuestionnaireException;
 import database.Product;
 import database.Question;
 import services.QuestionnaireAdminService;
-import database.Product;
-import database.Question;
-import database.Questionnaire;
 import services.QuestionnaireOfTheDayService;
 
 //@Contributor(s): Etion, Cristian Schrolle
@@ -159,7 +156,7 @@ public class GetInspection extends HttpThymeleafServlet {
 
 
 	/**
-	 * checks if string s is null, aka no input has been put in
+	 * checks if string s is null, namely no input has been put in
 	 * @param req
 	 * @param resp
 	 * @return

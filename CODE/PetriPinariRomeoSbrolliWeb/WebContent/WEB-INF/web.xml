@@ -74,6 +74,7 @@
 		<url-pattern>/CreateQuestionnaire</url-pattern>
 		<url-pattern>/AddStoredQuestion</url-pattern>
 		<url-pattern>/DeleteQuestion</url-pattern>
+		<url-pattern>/DeleteQuestionnaire</url-pattern>
 		<url-pattern>/inspection</url-pattern>
 		<url-pattern>/userSubmission</url-pattern>
 	</filter-mapping>

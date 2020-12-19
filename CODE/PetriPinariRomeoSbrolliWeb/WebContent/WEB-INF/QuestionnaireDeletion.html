@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+	$("input[name='selector']").change(function(e){
+		switch($(this).val()) {
+		  case '1':
+			    $('#publicationId').prop('disabled',true);
+			    $('#publicationId').prop('required',false);
+			    
+			  	$('#referenceId').prop('disabled',false);
+		    	$('#referenceId').prop('required',true);
+		    break;
+		  case '2':
+			  	$('#referenceId').prop('disabled',true);
+		    	$('#referenceId').prop('required',false);
+		    	
+		    	$('#publicationId').prop('disabled',false);
+			    $('#publicationId').prop('required',true);
+		    break;
+		  case '3':
+			  	$('#referenceId').prop('disabled',true);
+		    	$('#referenceId').prop('required',false);
+		    	
+		    	$('#publicationId').prop('disabled',true);
+			    $('#publicationId').prop('required',false);
+			  
+		}
+	});
+});
+</script>
+
+<meta charset="ISO-8859-1">
+<title>Questionnaire Deletion</title>
+<link rel="stylesheet" type="text/css" href="../css/standard.css" data-th-href="@{css/standard.css}"/>
+</head>
+<body>
+	<div class="mainPanel">
+		<nav class="navigator">
+			<div class="navButton"><a href="homepage" data-th-href="@{/homepage}" >Homepage</a></div>
+			<div class="navButton"><a href="homepage" data-th-href="@{/Leaderboard}" >Leaderboard</a></div>
+			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="creation" data-th-href="@{Creation}" >Questionnaire's creation</a></div>
+			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="deletion" data-th-href="@{deletion}" >Questionnaire's deletion</a></div>
+			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="inspection" data-th-href="@{inspection}" >Inspection</a></div>
+			<div class="navButton logout"><a href="logout" data-th-href="@{logout}" >Logout</a></div>
+		</nav>
+	</div>
+
+<div class="mytable" align="left">
+	<h1 align="center">Questionnaire Deletion</h1>
+	<br><br><br><br><br><br>
+	<form action="#" data-th-action="@{/deletion}" method="GET">
+		 <input type="radio" id="1" name="selector" value="1" required />
+		 <label for="1">Id search</label>
+		 <input type="radio" id="2" name="selector" value="2" />
+			 <label for="2">Publication date search</label> 
+		<fieldset>
+			<p>
+				Enter the questionnaire id you are searching for: <input id ="referenceId" type="number" name="idQuestionnaire" disabled/>
+			</p>
+			<p>
+				Enter the publication day of the questionnaire you are looking for: <input id = "publicationId" type="date" name="publicationDate"
+																					placeholder="yyyy-mm-dd" disabled />
+			</p>
+			<input type="submit" name="submit">
+		</fieldset>
+	</form>
+	
+	<div data-th-if="${message!=null}"><p data-th-utext='${message}'> ;;</p> </div>
+	
+	<div data-th-if="${questionnaire!=null}">
+		<br>
+		<a th:href="@{/DeleteQuestionnaire(questionnaireId=${questionnaire})}">Delete Questionnaire</a>
+		<br><br>
+		
+		<table>
+			
+			<tr> 
+				<td>Questionnaire ID:</td>
+				<td data-th-utext='${questionnaire}'> ;;</td>
+			</tr>
+			<tr> 
+				<td>Questionnaire Name:</td>
+				<td data-th-utext='${questionnaireName}'> ;;</td>
+			</tr>
+			<tr> 
+		 	<th>Questionnaire creator</th>
+			 	<td data-th-utext = '${creatorName}'> </td>
+		 	</tr>
+			<tr data-th-each = "question : ${questionsString}">
+			 	<th>Question </th>
+			 	<td data-th-utext = '${question}'> </td>
+		 	</tr>
+		 	<tr>
+		 		<th>Creation Date</th>
+		 		<td data-th-utext = '${creationDate}'></td>
+		 	</tr>
+		 	<tr>
+		 		<th>Publication Date</th>
+		 		<td data-th-utext = '${presentationDate}'></td>
+		 	</tr>
+		 	<tr>
+		 		<th>Product</th>
+		 		<td>
+		 			<img alt="product"
+					th:src="@{'data:image/jpeg;base64,'+${product}}">
+		 		</td>
+		 	</tr>
+		</table>
+	</div>
+</div>
+</body>
+</html>

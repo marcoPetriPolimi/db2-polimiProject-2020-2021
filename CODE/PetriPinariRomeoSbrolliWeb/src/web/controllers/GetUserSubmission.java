@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import javax.ejb.EJB;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.ServletContext;
@@ -17,8 +16,6 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.thymeleaf.context.WebContext;
 import database.Question;
 import services.QuestionnaireAdminService;
-
-import services.QuestionnaireOfTheDayService;
 import utils.userInfo.UserPersonalInfo;
 
 
