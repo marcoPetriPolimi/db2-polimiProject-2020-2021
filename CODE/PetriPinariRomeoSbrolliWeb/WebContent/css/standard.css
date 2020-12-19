@@ -64,6 +64,76 @@ div.indexPanel > form > input:first-child {
 
 /****************************
  *							*
+ * 		HOMEPAGE PAGE		*
+ *							*
+ ****************************/
+div.mainPanel {
+	/* positioning and margin */
+	position: relative;
+	top: 150px;
+	/* dimensions and padding */
+	padding: 0px;
+	width: 1000px;
+	/* decorations */
+	align-items: start;
+	box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+	display: inline-flex;
+	flex-direction: column;
+}
+
+div.mainPanel > nav.navigator {
+	/* positioning and margin */
+	/* dimensions and padding */
+	width: 100%;
+	height: 38px;
+	/* decorations */
+	align-items: start;
+	background-color: rgb(126, 173, 226);
+	display: inline-flex;
+	flex-direction: row;
+}
+
+div.mainPanel > nav.navigator > div.navButton {
+	/* positioning and margin */
+	/* dimensions and padding */
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	/* decorations */
+	align-items: start;
+	background-color: rgb(29, 89, 212);
+	display: inline-flex;
+	flex-direction: row;
+	font-size: 16px;
+}
+
+div.mainPanel > nav.navigator > div.logout {
+	/* positioning and margin */
+	position: absolute;
+	right: 0px;
+	/* dimensions and padding */
+	/* decorations */
+}
+
+div.mainPanel > nav.navigator > div.navButton a, div.mainPanel > nav.navigator > div.navButton a:hover {
+	color: rgb(255, 255, 255);
+}
+
+div.mainPanel > div.content {
+	/* positioning and margin */
+	/* dimensions and padding */
+	width: 100%;
+	min-height: 100px;
+	/* decorations */
+	align-items: start;
+	background-color: rgb(255, 255, 255);
+	display: inline-flex;
+	flex-direction: row;
+}
+ 
+/****************************
+ *							*
  * 		GENERAL STYLE		*
  *							*
  ****************************/

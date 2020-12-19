@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title data-th-utext='${lang.getString("homepageTitle")}'>Homepage</title>
+	<link rel="stylesheet" type="text/css" href="../css/standard.css" data-th-href="@{css/standard.css}"/>
+</head>
+
+<body>
+	<div class="mainPanel">
+		<nav class="navigator">
+			<div class="navButton"><a href="homepage" data-th-href="@{leaderbord}">Homepage</a></div>
+			<div class="navButton"><a href="homepage" data-th-href="@{leaderbord}">Leaderboard</a></div>
+			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="creation" data-th-href="@{creation}">Questionnaire's creation</a></div>
+			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="deletion" data-th-href="@{deletion}">Questionnaire's deletion</a></div>
+			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="inspection" data-th-href="@{inspection}">Inspection</a></div>
+			<div class="navButton logout"><a href="logout" data-th-href="@{logout}">Logout</a></div>
+		</nav>
+		<div class="content">
+			<!-- page's content -->
+		</div>
+	</div>
+</body>
+
+</html>
