@@ -23,7 +23,7 @@ public class UserFilter extends HttpFilter {
 		HttpSession session = req.getSession();
 
 		if (session.isNew() || session.getAttribute("user") == null) {
-			resp.sendRedirect("/index");
+			resp.sendRedirect("index");
 		} else {
 			chain.doFilter(request,response);
 		}

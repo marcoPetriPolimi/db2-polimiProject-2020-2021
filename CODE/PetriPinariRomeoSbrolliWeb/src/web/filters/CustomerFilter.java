@@ -26,7 +26,7 @@ public class CustomerFilter extends HttpFilter {
 		User user = (User) session.getAttribute("user");
 
 		if (user.getRole() != 1) {
-			resp.sendRedirect("/homepage");
+			resp.sendRedirect("homepage");
 		} else {
 			chain.doFilter(request,response);
 		}

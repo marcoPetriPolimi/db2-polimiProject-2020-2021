@@ -26,7 +26,7 @@ public class AdministratorFilter extends HttpFilter {
 		database.User user = (User) session.getAttribute("user");
 
 		if (user.getRole() != 2) {
-			resp.sendRedirect("/homepage");
+			resp.sendRedirect("homepage");
 		} else {
 			chain.doFilter(request,response);
 		}

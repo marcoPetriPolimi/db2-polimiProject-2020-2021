@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @WebServlet("/logout")
 public class GetLogout extends HttpThymeleafServlet {
@@ -13,7 +14,14 @@ public class GetLogout extends HttpThymeleafServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// insert the code for the get
+		HttpSession session = req.getSession();
+		
+		if (session.isNew() || session.getAttribute("user") == null) {
+			resp.sendRedirect("index");
+		} else if (session.getAttribute("user") != null){
+			session.invalidate();
+			resp.sendRedirect("index");
+		}
 	}
 	
 	@Override
