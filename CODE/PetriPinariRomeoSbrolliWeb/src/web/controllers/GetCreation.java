@@ -48,6 +48,7 @@ public class GetCreation extends HttpThymeleafServlet {
 		ctx.setVariable("allStoredQuestions", qcs.getAllStoredQuestions());
 		ctx.setVariable("storedQuestions", qcs.getStoredQuestions());
 		ctx.setVariable("products", qcs.getAllProducts());
+		ctx.setVariable("user", req.getSession().getAttribute("user"));
 		thymeleaf.process(path, ctx, resp.getWriter());
 	}
 

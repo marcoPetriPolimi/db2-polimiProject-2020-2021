@@ -133,6 +133,7 @@ public class GetInspection extends HttpThymeleafServlet {
 		ctx.setVariable("product", product.getName());
 		ctx.setVariable("creationDate", creationDate);
 		ctx.setVariable("presentationDate", presentationDate);
+		ctx.setVariable("user", req.getSession().getAttribute("user"));
 		setUserSubsCanc(ctx,idQuestionnaire);
 		thymeleaf.process(path, ctx, resp.getWriter());
 	}
@@ -167,6 +168,7 @@ public class GetInspection extends HttpThymeleafServlet {
 		String path = "QuestionnaireInspection";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
+		ctx.setVariable("user", req.getSession().getAttribute("user"));
 		thymeleaf.process(path, ctx, resp.getWriter());
 		return true;
 	}

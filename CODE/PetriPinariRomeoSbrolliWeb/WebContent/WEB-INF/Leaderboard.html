@@ -4,12 +4,23 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <meta charset="ISO-8859-1">
 <title>Create a Questionnaire</title>
-<link rel="stylesheet" type="text/css" media="all"
-	href="../CSS/mystyle.css" data-th-href="@{/css/mystyle.css}" />
+<link rel="stylesheet" type="text/css" href="../css/standard.css" data-th-href="@{css/standard.css}"/>
 </head>
 <body>
+	<div class="mainPanel">
+		<nav class="navigator">
+			<div class="navButton"><a href="homepage" data-th-href="@{/homepage}">Homepage</a></div>
+			<div class="navButton"><a href="homepage" data-th-href="@{/Leaderboard}">Leaderboard</a></div>
+			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="creation" data-th-href="@{Creation}" >Questionnaire's creation</a></div>
+			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="deletion" data-th-href="@{deletion}" >Questionnaire's deletion</a></div>
+			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="inspection" data-th-href="@{inspection}" >Inspection</a></div>
+			<div class="navButton logout"><a href="logout" data-th-href="@{logout}">Logout</a></div>
+		</nav>
+	</div>
+<div align="left">
+
 	<h1 align="center"> Leaderboard </h1>
-	
+	<br><br><br><br><br><br>
 	<form action="#" data-th-action="@{/Leaderboard}" method="GET">
 			 <input type="radio" id="1" name="selector" value="1" />
 			 <label for="1">Leaderboard of all time</label>
@@ -37,6 +48,6 @@
 	
 		</table>
 	</div>
-	
+	</div>
 </body>
 </html>

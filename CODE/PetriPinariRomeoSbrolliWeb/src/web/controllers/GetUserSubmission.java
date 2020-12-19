@@ -61,6 +61,7 @@ public class GetUserSubmission extends HttpThymeleafServlet {
 		ctx.setVariable("age", userInfo.getAge());
 		ctx.setVariable("expertise", userInfo.getExpertise());
 		ctx.setVariable("sex", userInfo.getSex());
+		ctx.setVariable("user", req.getSession().getAttribute("user"));
 		thymeleaf.process(path, ctx, resp.getWriter());
 	}
 		

@@ -65,6 +65,7 @@ public class GetLeaderboard extends HttpThymeleafServlet {
 		final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
 		ctx.setVariable("leaderboard", leaderboard);
 		ctx.setVariable("message", message);
+		ctx.setVariable("user", req.getSession().getAttribute("user"));
 		thymeleaf.process(path, ctx, resp.getWriter());
 	}
 	

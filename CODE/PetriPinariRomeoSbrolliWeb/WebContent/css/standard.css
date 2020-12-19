@@ -2,7 +2,10 @@
 
 body {
 	text-align: center;
+	padding-left: 75px;
 }
+
+
 
 a {
 	text-decoration: none;
@@ -137,6 +140,12 @@ div.mainPanel > div.content {
  * 		GENERAL STYLE		*
  *							*
  ****************************/
+ .mytable td,th,tr{
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+ 
+ 
 input[type=number], input[type=text], input[type=password], input[type=email] {
 	/* positions, margin */
 	/* dimensions and padding */
