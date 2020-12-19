@@ -19,6 +19,41 @@
 		</nav>
 		<div class="content">
 			<!-- page's content -->
+			<div>
+				<table data-th-if="${questionnaire!=null}">
+					<tr>
+						<th data-th-utext='${lang.getString("QuestionnaireName")}'>Questionnaire Name:</th>
+						<td data-th-utext='${questionnaire}'> </td>
+					</tr>
+					<tr data-th-each = "question : ${questionsString}">
+					 	<th data-th-utext='${lang.getString("QuestionName")}'>Question </th>
+					 	<td data-th-utext = '${question}'> </td>
+				 	</tr>
+				 	<tr>
+				 		<th data-th-utext='${lang.getString("Product")}'>Prodotto</th>
+				 		<td>	<img alt="product"
+								th:src="@{'data:image/jpeg;base64,'+${product}}">
+						</td>
+				 	</tr>
+				</table>
+			</div>
+			<div>
+				<div>
+				<br>
+				<br>
+				<h3 data-th-utext='${lang.getString("Leaderboard")}'></h3>
+					<table class = "tableProp" data-th-if="${leaderboard!=null}">
+				 		<tr>
+				    		<th>User</th>
+				   			<th colspan="2">Points</th>
+				 		</tr>
+						<tr data-th-each="user : ${leaderboard.keySet()}">
+							<td data-th-utext='${user}'>UserNickname</td>
+							<td data-th-utext='${leaderboard.get(user)}'>UserPoints</td>
+						</tr>
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
 </body>

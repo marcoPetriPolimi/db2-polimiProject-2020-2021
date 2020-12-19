@@ -28,24 +28,24 @@
 			 <label for="2">Leaderboard of the day</label> <br><br>
 			 <input type="submit" name="submit" value="Display">
 	</form>
-	
+
 	<br><br><br>
-	
+
 
 	<p data-th-utext='${message}'>message<br></p>
-	
+
 	<div data-th-if="${leaderboard!=null}">
 		<table>
  		<tr>
     		<th>User</th>
    			<th colspan="2">Points</th>
  		</tr>
-		<tr data-th-each="user : ${leaderboard.keySet()}"> 
+		<tr data-th-each="user : ${leaderboard.keySet()}">
 			<td data-th-utext='${user}'>UserNickname</td>
 			<td data-th-utext='${leaderboard.get(user)}'>UserPoints</td>
-		
+
 		</tr>
-	
+
 		</table>
 	</div>
 	</div>
