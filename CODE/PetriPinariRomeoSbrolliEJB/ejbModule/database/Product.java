@@ -1,5 +1,6 @@
 package database;
 
+
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 
 import utils.Const;
 
@@ -79,6 +81,7 @@ public class Product {
 	public String getName() {
 		return name;
 	}
+	
 	
 	public void setProductQuestionnaires(List<Questionnaire> productQuestionnaires) {
 		this.productQuestionnaires = productQuestionnaires;

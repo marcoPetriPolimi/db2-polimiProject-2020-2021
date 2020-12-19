@@ -130,8 +130,14 @@ div.mainPanel > div.content {
 	background-color: rgb(255, 255, 255);
 	display: inline-flex;
 	flex-direction: row;
+	justify-content: space-around;
 }
- 
+
+.tableProp {
+	background-color: rgb(126, 126, 226);
+	border-style: solid;
+	border-color: rgba(26, 26, 126, 0.5);
+}
 /****************************
  *							*
  * 		GENERAL STYLE		*

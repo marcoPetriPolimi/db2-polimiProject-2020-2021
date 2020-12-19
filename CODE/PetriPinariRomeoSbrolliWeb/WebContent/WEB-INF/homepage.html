@@ -10,15 +10,50 @@
 <body>
 	<div class="mainPanel">
 		<nav class="navigator">
-			<div class="navButton"><a href="homepage" data-th-href="@{leaderbord}" data-th-utext='${lang.getString("navigationHome")}'>Homepage</a></div>
-			<div class="navButton"><a href="homepage" data-th-href="@{leaderbord}" data-th-utext='${lang.getString("navigationLeaderboard")}'>Leaderboard</a></div>
-			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="creation" data-th-href="@{creation}" data-th-utext='${lang.getString("navigationCreation")}'>Questionnaire's creation</a></div>
+			<div class="navButton"><a href="homepage" data-th-href="@{homepage}" data-th-utext='${lang.getString("navigationHome")}'>Homepage</a></div>
+			<div class="navButton"><a href="Leaderboard" data-th-href="@{Leaderboard}" data-th-utext='${lang.getString("navigationLeaderboard")}'>Leaderboard</a></div>
+			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="Creation" data-th-href="@{creation}" data-th-utext='${lang.getString("navigationCreation")}'>Questionnaire's creation</a></div>
 			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="deletion" data-th-href="@{deletion}" data-th-utext='${lang.getString("navigationDeletion")}'>Questionnaire's deletion</a></div>
 			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="inspection" data-th-href="@{inspection}" data-th-utext='${lang.getString("navigationInspection")}'>Inspection</a></div>
 			<div class="navButton logout"><a href="logout" data-th-href="@{logout}" data-th-utext='${lang.getString("navigationLogout")}'>Logout</a></div>
 		</nav>
 		<div class="content">
 			<!-- page's content -->
+			<div>
+				<table data-th-if="${questionnaire!=null}">
+					<tr> 
+						<th data-th-utext='${lang.getString("QuestionnaireName")}'>Questionnaire Name:</th>
+						<td data-th-utext='${questionnaire}'> </td>
+					</tr>
+					<tr data-th-each = "question : ${questionsString}">
+					 	<th data-th-utext='${lang.getString("QuestionName")}'>Question </th>
+					 	<td data-th-utext = '${question}'> </td>
+				 	</tr>
+				 	<tr>
+				 		<th data-th-utext='${lang.getString("Product")}'>Prodotto</th>
+				 		<td>	<img alt="product"
+								th:src="@{'data:image/jpeg;base64,'+${product}}">
+						</td>
+				 	</tr>
+				</table>
+			</div>
+			<div>
+				<div>
+				<br>
+				<br>
+				<h3 data-th-utext='${lang.getString("Leaderboard")}'></h3>
+					<table class = "tableProp" data-th-if="${leaderboard!=null}">
+				 		<tr>
+				    		<th>User</th>
+				   			<th colspan="2">Points</th>
+				 		</tr>
+						<tr data-th-each="user : ${leaderboard.keySet()}"> 
+							<td data-th-utext='${user}'>UserNickname</td>
+							<td data-th-utext='${leaderboard.get(user)}'>UserPoints</td>
+						</tr>
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
 </body>

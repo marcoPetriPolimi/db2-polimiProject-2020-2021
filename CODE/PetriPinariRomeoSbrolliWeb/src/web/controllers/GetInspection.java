@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.codec.binary.Base64;
 import org.thymeleaf.context.WebContext;
 
 import database.Questionnaire;
@@ -124,13 +125,13 @@ public class GetInspection extends HttpThymeleafServlet {
 
 		String path = "QuestionnaireInspection";
 		ServletContext servletContext = getServletContext();
-
+		
 		final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
 		ctx.setVariable("questionnaire", questionnaire.getId());
 		ctx.setVariable("questionnaireName", questionnaire.getName());
 		ctx.setVariable("questionsString", questionsString);
 		ctx.setVariable("creatorName", creatorName);
-		ctx.setVariable("product", product.getName());
+		ctx.setVariable("product", Base64.encodeBase64String(product.getImage()));
 		ctx.setVariable("creationDate", creationDate);
 		ctx.setVariable("presentationDate", presentationDate);
 		setUserSubsCanc(ctx,idQuestionnaire);

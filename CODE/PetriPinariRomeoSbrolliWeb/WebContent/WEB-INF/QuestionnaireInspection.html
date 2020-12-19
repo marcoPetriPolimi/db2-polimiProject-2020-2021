@@ -86,7 +86,10 @@ $(document).ready(function(){
  	</tr>
  	<tr>
  		<th>Product</th>
- 		<td data-th-utext = '${product}'></td>
+ 		<td>
+ 			<img alt="product"
+			th:src="@{'data:image/jpeg;base64,'+${product}}">
+ 		</td>
  	</tr>
 </table>
 <div data-th-if="${questionnaire!=null}">
