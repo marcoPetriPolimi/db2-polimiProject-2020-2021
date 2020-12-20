@@ -11,9 +11,11 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
+import database.User;
 import services.QuestionnaireCreationService;
 
 /**
@@ -63,13 +65,14 @@ public class CheckQuestionnaireCreation extends HttpThymeleafServlet {
 				e.printStackTrace();
 			}
 			
-			//FIXME appena viene implementata la session qua al posto di 1 va messo l'id dello user, da aggiungere la data di presentazione
-			qcs.createQuestionnaire(1, StringEscapeUtils.escapeJava(req.getParameter("name")),presDate,(Integer)Integer.parseInt(req.getParameter("chosenProd")));
+			HttpSession session = req.getSession();
+			User user = (User) session.getAttribute("user");
+			qcs.createQuestionnaire(user.getId(), StringEscapeUtils.escapeJava(req.getParameter("name")),presDate,(Integer)Integer.parseInt(req.getParameter("chosenProd")));
 		
 		String ctxpath = getServletContext().getContextPath();
 		req.getSession().removeAttribute("QuestionnaireCreationService");
 		qcs.remove();
-		String path = ctxpath + "/ServletBrutta";
+		String path = ctxpath + "/homepage";
 		resp.sendRedirect(path);
 	}
 

@@ -98,18 +98,19 @@ public class GetInspection extends HttpThymeleafServlet {
 				e.printStackTrace();
 			}
 		}
+
+		//guard check if query is right
+		if(questionnaire == null) {
+			wrongFormat(req, resp);
+			return;
+		}
+
 		try {
 			questions = QDS.getQuestions(idQuestionnaire);
 		} catch (QuestionnaireException e) {
 			e.printStackTrace();
 		}
-
-		//guard check if query is right
-		if(questionnaire == null || questions == null) {
-			wrongFormat(req, resp);
-			return;
-		}
-
+		
 		List<String> questionsString = new ArrayList<String>();
 		for(Question q : questions) {
 			questionsString.add(q.getQuestion());

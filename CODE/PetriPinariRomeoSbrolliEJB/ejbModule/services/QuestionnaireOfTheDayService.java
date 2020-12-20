@@ -34,6 +34,7 @@ public class QuestionnaireOfTheDayService {
 				.setParameter("date", date);
 		@SuppressWarnings("unchecked")
 		List<Questionnaire> listResult = query.getResultList();
+
 		if (listResult.size() == 0) {
 			throw new QuestionnaireException("Could not find questionnarie by publication date");
 		} else
@@ -99,7 +100,7 @@ public class QuestionnaireOfTheDayService {
 					.setParameter("questionnairePK", questionnaire);
 			List<Product> listResult = query.getResultList();
 
-			if (listResult == null)
+			if (listResult.size() == 0)
 				throw new QuestionnaireException("Product not found, contact admins.");
 
 			Product result = listResult.get(0);
@@ -125,7 +126,7 @@ public class QuestionnaireOfTheDayService {
 		query.setParameter("questionId", questionnaire);
 		List<Question> questions = query.getResultList();
 
-		if (questions == null) {
+		if (questions.size() == 0) {
 			throw new QuestionnaireException();
 		}
 
@@ -149,7 +150,7 @@ public class QuestionnaireOfTheDayService {
 				.setParameter("questionnaireId", parameter);
 		List<Question> questions = query.getResultList();
 
-		if (questions == null) {
+		if (questions.size() == 0) {
 			throw new QuestionnaireException("No questions related to questionnaire");
 		}
 

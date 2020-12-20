@@ -68,16 +68,16 @@ public class GetDeletion extends HttpThymeleafServlet {
 			}
 		}
 		
+		// guard check if query is right
+		if (questionnaire == null) {
+			wrongFormat(req, resp,"Sorry, the requested questionnaire is currently unavailable :(");
+			return;
+		}
+		
 		try {
 			questions = qds.getQuestions(idQuestionnaire);
 		} catch (QuestionnaireException e) {
 			e.printStackTrace();
-		}
-
-		// guard check if query is right
-		if (questionnaire == null || questions == null) {
-			wrongFormat(req, resp,"Sorry, the requested questionnaire is currently unavailable :(");
-			return;
 		}
 		
 		Questionnaire questionnaireOfTheDay = null;
