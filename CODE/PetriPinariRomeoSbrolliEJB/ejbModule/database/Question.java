@@ -32,7 +32,6 @@ public class Question implements Serializable {
 	public Question(String question, short type) {
 		super();
 		questionAnswers= new ArrayList<>();
-		questionInclusions = new ArrayList<>();
 		this.question = question;
 		this.type = type;
 	}
@@ -44,14 +43,6 @@ public class Question implements Serializable {
 	@OneToMany (mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
 	private List<PossibleAnswer> questionAnswers;
 	
-	@OneToMany (mappedBy = "inclusionQuestion", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Inclusion> questionInclusions;
-	
-	public void addInclusion(Inclusion inclusion) {
-		getQuestionInclusions().add(inclusion);
-		inclusion.setQuestion(this);
-	}
-
 	public void addAnswer(PossibleAnswer possAnswer) {
 		getQuestionAnswers().add(possAnswer);
 		possAnswer.setQuestion(this);
@@ -75,10 +66,6 @@ public class Question implements Serializable {
 		this.type = type;
 	}
 	
-	public void setQuestionInclusions(List<Inclusion> questionInclusions) {
-		this.questionInclusions = questionInclusions;
-	}
-	
 	public void setQuestionAnswers(List<PossibleAnswer> questionAnswers) {
 		this.questionAnswers = questionAnswers;
 	}
@@ -96,10 +83,6 @@ public class Question implements Serializable {
 	
 	public short getType() {
 		return this.type;
-	}
-	
-	public List<Inclusion> getQuestionInclusions() {
-		return questionInclusions;
 	}
 
 	public List<PossibleAnswer> getQuestionAnswers() {

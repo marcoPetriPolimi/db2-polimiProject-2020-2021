@@ -5,7 +5,6 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
 	<persistence-unit name="PetriPinariRomeoSbrolliEJB">
 		<jta-data-source>DB2_project</jta-data-source>
-		<class>database.Inclusion</class>
 		<class>database.OffensiveWord</class>
 		<class>database.PersonalAnswer</class>
 		<class>database.Product</class>

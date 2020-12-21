@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
-import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -68,12 +67,7 @@ public class QuestionnaireAdminService {
 				.setParameter("qId",quest)
 				.setParameter("uId",user)
 				.getResultList();
-		List<Question> questions= em.createQuery("Select q "
-				+ "FROM Question q,Inclusion i "
-				+ "WHERE i.inclusionQuestion.id = q.id AND i.inclusionQuestionnaire =:qId "
-				+ "ORDER BY q.id",Question.class)
-				.setParameter("qId", quest)
-				.getResultList();
+		List<Question> questions= quest.getQuestions();
 
 		Map<Question, List<String>> questionAnswers= new HashMap<>();
 		for (Question q: questions) {

@@ -11,7 +11,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 
-import database.Inclusion;
 import database.PersonalAnswer;
 import database.ProductAnswer;
 import database.Question;
@@ -44,11 +43,8 @@ public class QuestionnaireSubmissionService {
 		if (questionnaire == null) {
 			throw new QuestionnaireException();
 		} else {
-			questions = new ArrayList<>();
-			for (Inclusion i : questionnaire.getInclusions()) {
-				questions.add(i.getQuestion());
+			questions = questionnaire.getQuestions();
 			}
-		}
 	}
 	
 	/**

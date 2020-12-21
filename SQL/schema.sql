@@ -474,3 +474,20 @@ END IF;
 END$$
 
 DELIMITER ;
+
+DELIMITER $$
+
+-- @author CRISTIAN
+CREATE TRIGGER CancelQuestionOnNoMoreInclusions
+AFTER DELETE ON inclusion
+FOR EACH ROW
+BEGIN
+IF ((SELECT COUNT(*)
+	FROM inclusion
+	WHERE questionId= OLD.questionId)=0) THEN
+	DELETE FROM question
+    WHERE id=OLD.questionId;
+END IF;
+END$$
+
+DELIMITER ;

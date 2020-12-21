@@ -37,15 +37,7 @@ public class Product {
 	
 	@Column(unique=true)
 	private String name;
-	
-	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-	private List<Questionnaire> productQuestionnaires;
-	
-	public void addQuestionaire(Questionnaire questionnaire) {
-		getProductQuestionnaires().add(questionnaire);
-		questionnaire.setProduct(this);
-	}
-
+		
 	public Product() {}
 	public Product(byte[] image, String name) {
 		this.image		= image;
@@ -64,10 +56,6 @@ public class Product {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public List<Questionnaire> getProductQuestionnaires() {
-		return productQuestionnaires;
-	}
 	
 	/* ******************
 	 * 		SETTERS		*
@@ -80,11 +68,6 @@ public class Product {
 	}
 	public String getName() {
 		return name;
-	}
-	
-	
-	public void setProductQuestionnaires(List<Questionnaire> productQuestionnaires) {
-		this.productQuestionnaires = productQuestionnaires;
 	}
 
 }

@@ -10,7 +10,6 @@ import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import database.Inclusion;
 import database.PossibleAnswer;
 import database.Product;
 import database.Question;
@@ -84,29 +83,22 @@ public class QuestionnaireCreationService {
     public void createQuestionnaire(int userId, String name,Date presDate, int productId) {
     	questionnaire= new Questionnaire(name);
     	Product product= em.find(Product.class,	productId);
-    	product.addQuestionaire(questionnaire);
+    	questionnaire.setProduct(product);
     	User creator= em.find(User.class, userId);
     	creator.addQuestionnaire(questionnaire);
     	questionnaire.setPresDate(presDate);
     	for (FormQuestion fq: newQuestions) {
     		Question newQuestion = new Question(fq.getQuestionText(),fq.getType());
-    		Inclusion questInclusion = new Inclusion();
-    		questionnaire.addInclusion(questInclusion);
-			newQuestion.addInclusion(questInclusion);
+    		questionnaire.addQuestion(newQuestion);;
     		for (String answer: fq.getPossibleAnswers()) {
     			PossibleAnswer possAnswer= new PossibleAnswer(answer);
     			newQuestion.addAnswer(possAnswer);  		
     		}
-    		em.persist(newQuestion);
     	}
     	for (Question question: storedQuestions) {
-    		Inclusion questInclusion= new Inclusion();
-    		questionnaire.addInclusion(questInclusion);
-    		question.addInclusion(questInclusion);
-    		em.merge(question);
+    		questionnaire.addQuestion(question);
     	}    	
     	em.merge(creator);
-    	em.merge(product);
     }
     
     public List<Question> getAllStoredQuestions(){

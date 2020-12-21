@@ -111,28 +111,17 @@ public class QuestionnaireOfTheDayService {
 	/**
 	 * Require one question based on its ID
 	 */
+	//FIXME non si può semplicemente prendere la question con la find sul suo ID???
 	public Question getQuestion(int questionnaireId, int questionId) throws QuestionnaireException {
 
-		Questionnaire questionnaire = new Questionnaire();
-		questionnaire.setId(questionnaireId);
-
-		Question question = new Question();
-		question.setId(questionId);
-
-		Query query = em.createQuery("Select q " + "From Question q, Inclusion i "
-				+ "Where i.questionnaire = :questionnaireId AND" + " i.question = :questionId ", Question.class);
-
-		query.setParameter("questionnaireId", questionnaire);
-		query.setParameter("questionId", questionnaire);
-		List<Question> questions = query.getResultList();
-
-		if (questions.size() == 0) {
-			throw new QuestionnaireException();
+		Questionnaire questionnaire = em.find(Questionnaire.class, questionnaireId);
+		
+		List<Question> questions = questionnaire.getQuestions();
+		
+		for (Question q: questions) {
+			if (q.getId()==questionId) return q;
 		}
-
-		Question resultQuestion = questions.get(0);
-
-		return resultQuestion;
+		return null;
 	}
 
 	/**
@@ -140,15 +129,11 @@ public class QuestionnaireOfTheDayService {
 	 */
 	public List<Question> getQuestions(int questionnaireId) throws QuestionnaireException {
 
-		Questionnaire parameter = new Questionnaire();
-		parameter.setId(questionnaireId);
-		Query query = em
-				.createQuery(
-						"Select q From Question q, Inclusion i "
-								+ "Where :questionnaireId = i.inclusionQuestionnaire AND" + " i.inclusionQuestion = q ",
-						Question.class)
-				.setParameter("questionnaireId", parameter);
-		List<Question> questions = query.getResultList();
+		Questionnaire quest = em.find(Questionnaire.class, questionnaireId);
+		if (quest==null) {
+			throw new QuestionnaireException("No questionnaire found");
+		}
+		List<Question> questions = quest.getQuestions();
 
 		if (questions.size() == 0) {
 			throw new QuestionnaireException("No questions related to questionnaire");

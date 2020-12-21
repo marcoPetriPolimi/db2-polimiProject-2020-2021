@@ -8,10 +8,13 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -56,26 +59,33 @@ public class Questionnaire implements Serializable{
 	@JoinColumn(name = "creatorId")
 	private User creator;
 	
-	@OneToMany (mappedBy = "inclusionQuestionnaire", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Inclusion> questionnaireInclusions;
-	
 	public Questionnaire() {}
 	public Questionnaire(String name) {
-		questionnaireInclusions = new ArrayList<>();
+		questions = new ArrayList<>();
 		this.date = new Date();
 		this.name = name;
 	}
 	
-	public void addInclusion(Inclusion inclusion) {
-		getInclusions().add(inclusion);
-		inclusion.setQuestionnaire(this);
+	@ManyToMany ( cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+	@JoinTable(name="inclusion",
+	joinColumns=@JoinColumn(name="questionnaireId"),
+	inverseJoinColumns=@JoinColumn(name="questionId"))
+	private List<Question> questions;
+	
+	public void addQuestion(Question question) {
+		questions.add(question);
 	}
+	
 	
 	/* ******************
 	 * 		SETTERS		*
 	 ********************/
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public void setQuestions(List<Question> questions) {
+		this.questions = questions;
 	}
 	
 	public void setCreator(User creator) {
@@ -97,10 +107,6 @@ public class Questionnaire implements Serializable{
 	
 	public void setProduct(Product product) {
 		this.product = product;
-	}
-
-	public void setQuestionnaireInclusions(List<Inclusion> questionnaireInclusions) {
-		this.questionnaireInclusions = questionnaireInclusions;
 	}
 	
 	public void setPresDate(Date presDate) {
@@ -130,19 +136,15 @@ public class Questionnaire implements Serializable{
 		return submissions;
 	}
 	
-	public List<Inclusion> getInclusions() {
-		return questionnaireInclusions;
-	}
-	
 	public Product getProduct() {
 		return product;
 	}
 	
-	public List<Inclusion> getQuestionnaireInclusions() {
-		return questionnaireInclusions;
-	}
-	
 	public Date getPresDate() {
 		return presDate;
+	}
+
+	public List<Question> getQuestions() {
+		return questions;
 	}
 }
