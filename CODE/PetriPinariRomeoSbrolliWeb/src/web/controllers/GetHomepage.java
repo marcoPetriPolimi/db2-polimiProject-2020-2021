@@ -25,6 +25,7 @@ import database.Questionnaire;
 import database.User;
 import services.LeaderboardService;
 import services.QuestionnaireOfTheDayService;
+import services.ReviewService;
 
 //@Contributors: Marco, Etion
 
@@ -37,6 +38,9 @@ public class GetHomepage extends HttpThymeleafServlet {
 	
 	@EJB(name = "LeaderboardService")
 	private LeaderboardService LS;
+	
+	@EJB(name = "ReviewService")
+	private ReviewService RS;
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -78,18 +82,25 @@ public class GetHomepage extends HttpThymeleafServlet {
 	private void putQuestionnaireOfTheDay(WebContext webContext) throws Exception {
 		
 		Questionnaire dailyQuestionnaire = QDS.getQuestionnaireOfTheDay();
-		List<Question> questions = QDS.getQuestions(dailyQuestionnaire);
-		
-		List<String> questionsString = new ArrayList<String>();
-		for(Question q : questions) {
-			questionsString.add(q.getQuestion());
-		}
 		if(dailyQuestionnaire != null) {
+			
+			List<Question> questions = QDS.getQuestions(dailyQuestionnaire);
+			List<String> questionsString = new ArrayList<String>();
+			for(Question q : questions) {
+			questionsString.add(q.getQuestion());
+			}
+			String message = null;
+			Map<String,String> reviews = RS.getProductReviews(dailyQuestionnaire.getProduct().getId());
+			if (reviews.keySet().isEmpty()) message = "Currently there are no reviews on this product :(";
+			else message = "Users' reviews on this product";
+			
 			webContext.setVariable("questionnaire", dailyQuestionnaire.getName());
 			webContext.setVariable("questionsString", questionsString);
-			webContext.setVariable("product",  Base64.encodeBase64String(dailyQuestionnaire.getProduct().getImage()));	
+			webContext.setVariable("product",  Base64.encodeBase64String(dailyQuestionnaire.getProduct().getImage()));
+			webContext.setVariable("reviews", reviews);
+			webContext.setVariable("message", message);
 		}
-}
+	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

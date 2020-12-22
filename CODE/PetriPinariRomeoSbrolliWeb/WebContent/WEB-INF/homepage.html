@@ -43,6 +43,17 @@
 						<a class = "myButton" href = "questionnaireResponse" data-th-href="@{/questionnaireResponse}" data-th-utext='${lang.getString("respondToQuest")}'> Respond to Questionnaire</a>
 					</div>
 				</div>
+				<p data-th-utext='${message}'>Message</p>
+				<table data-th-if = '${!(reviews.keySet().isEmpty())}'>
+					<tr>
+    					<th>User</th>
+   						<th colspan="2">Review</th>
+ 					</tr>
+ 					<tr data-th-each="user : ${reviews.keySet()}">
+						<td data-th-utext='${user}'>UserNickname</td>
+						<td data-th-utext='${reviews.get(user)}'>UserReview</td>
+					</tr>
+				</table>
 			</div>
 			<div>
 				<div>
