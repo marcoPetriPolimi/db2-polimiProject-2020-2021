@@ -491,3 +491,19 @@ END IF;
 END$$
 
 DELIMITER ;
+
+DELIMITER $$
+
+-- @author GIORGIO
+CREATE TRIGGER AdminCannotReviewProduct
+BEFORE INSERT ON Review
+FOR EACH ROW
+BEGIN
+IF ((SELECT role
+	FROM User
+	WHERE id= New.UserId)=2) THEN
+	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Admins cannot review products.';
+END IF;
+END$$
+
+DELIMITER ;
