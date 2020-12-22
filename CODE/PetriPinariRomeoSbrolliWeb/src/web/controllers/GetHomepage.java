@@ -84,12 +84,12 @@ public class GetHomepage extends HttpThymeleafServlet {
 		for(Question q : questions) {
 			questionsString.add(q.getQuestion());
 		}
-
-		webContext.setVariable("questionnaire", dailyQuestionnaire.getName());
-		webContext.setVariable("questionsString", questionsString);
-
-		webContext.setVariable("product",  Base64.encodeBase64String(dailyQuestionnaire.getProduct().getImage()));
-	}
+		if(dailyQuestionnaire != null) {
+			webContext.setVariable("questionnaire", dailyQuestionnaire.getName());
+			webContext.setVariable("questionsString", questionsString);
+			webContext.setVariable("product",  Base64.encodeBase64String(dailyQuestionnaire.getProduct().getImage()));	
+		}
+}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

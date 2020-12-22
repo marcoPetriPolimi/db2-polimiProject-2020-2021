@@ -59,18 +59,18 @@ public class Questionnaire implements Serializable{
 	@JoinColumn(name = "creatorId")
 	private User creator;
 	
+	@ManyToMany ( cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+	@JoinTable(name="inclusion",
+	joinColumns=@JoinColumn(name="questionnaireId"),
+	inverseJoinColumns=@JoinColumn(name="questionId"))
+	private List<Question> questions;
+	
 	public Questionnaire() {}
 	public Questionnaire(String name) {
 		questions = new ArrayList<>();
 		this.date = new Date();
 		this.name = name;
 	}
-	
-	@ManyToMany ( cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-	@JoinTable(name="inclusion",
-	joinColumns=@JoinColumn(name="questionnaireId"),
-	inverseJoinColumns=@JoinColumn(name="questionId"))
-	private List<Question> questions;
 	
 	public void addQuestion(Question question) {
 		questions.add(question);
