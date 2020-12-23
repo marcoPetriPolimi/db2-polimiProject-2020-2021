@@ -1,4 +1,4 @@
-package web.controllers;
+package web.controllers.checkers;
 
 import java.io.IOException;
 import java.util.ResourceBundle;
@@ -16,6 +16,7 @@ import org.thymeleaf.context.WebContext;
 import database.User;
 import exceptions.UserException;
 import services.AccountService;
+import web.controllers.HttpThymeleafServlet;
 
 @WebServlet("/CheckLogin")
 public class CheckLogin extends HttpThymeleafServlet {

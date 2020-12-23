@@ -1,4 +1,4 @@
-package web.controllers;
+package web.controllers.checkers;
 
 import java.io.IOException;
 import java.util.Date;
@@ -18,6 +18,7 @@ import exceptions.UserAlreadyPresentEmailException;
 import exceptions.UserAlreadyPresentNicknameException;
 import services.AccountService;
 import services.OffensiveWordsService;
+import web.controllers.HttpThymeleafServlet;
 
 /**
  * Servlet implementation class CheckRegistration

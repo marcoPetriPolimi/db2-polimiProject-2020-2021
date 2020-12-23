@@ -1,4 +1,4 @@
-package web.controllers;
+package web.controllers.pages;
 
 import java.io.IOException;
 import java.util.ResourceBundle;
@@ -11,10 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.thymeleaf.context.WebContext;
 
-import database.User;
+import web.controllers.HttpThymeleafServlet;
 
-@WebServlet("/changeNickname")
-public class GetChangeNickname extends HttpThymeleafServlet {
+@WebServlet("/index")
+public class GetIndex extends HttpThymeleafServlet {
 	private static final long serialVersionUID = 1L;
 	
 	@Override
@@ -22,14 +22,13 @@ public class GetChangeNickname extends HttpThymeleafServlet {
 		ResourceBundle lang = findLanguage(req);
 		ServletContext context = getServletContext();
 		WebContext webContext = new WebContext(req,resp,context);
-		String page = "changeNickname";
-		
-		User user = (User) req.getSession().getAttribute("user");
+		String page = "index";
 		
 		webContext.setVariable("lang", lang);
-		webContext.setVariable("user", user);
 		webContext.setVariable("errorMsg", false);
 		webContext.setVariable("errorText", "none");
+		webContext.setVariable("registration", false);
+		webContext.setVariable("registrationText", "none");
 		thymeleaf.process(page,webContext,resp.getWriter());
 	}
 	

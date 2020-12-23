@@ -1,4 +1,4 @@
-package web.controllers;
+package web.controllers.pages;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.thymeleaf.context.WebContext;
+
+import web.controllers.HttpThymeleafServlet;
 
 //linked from homepage, do not change name of webServlet -- Etion
 @WebServlet("/questionnaireResponse")

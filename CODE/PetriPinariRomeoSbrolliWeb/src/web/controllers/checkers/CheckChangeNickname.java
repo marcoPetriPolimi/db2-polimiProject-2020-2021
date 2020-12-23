@@ -1,4 +1,4 @@
-package web.controllers;
+package web.controllers.checkers;
 
 import java.io.IOException;
 import java.util.ResourceBundle;
@@ -19,6 +19,7 @@ import exceptions.UserCredentialsException;
 import exceptions.UserException;
 import services.AccountService;
 import services.OffensiveWordsService;
+import web.controllers.HttpThymeleafServlet;
 
 @WebServlet("/CheckNickname")
 public class CheckChangeNickname extends HttpThymeleafServlet {

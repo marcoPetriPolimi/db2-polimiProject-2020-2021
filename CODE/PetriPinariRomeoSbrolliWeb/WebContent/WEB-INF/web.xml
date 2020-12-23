@@ -52,6 +52,7 @@
 		<url-pattern>/homepage</url-pattern>
 		<url-pattern>/changeNickname</url-pattern>
 		<url-pattern>/productReview</url-pattern>
+		<url-pattern>/Leaderboard</url-pattern>
 		<url-pattern>/questionnaireResponse</url-pattern>
 		<url-pattern>/greetings</url-pattern>
 		<url-pattern>/deletion</url-pattern>
@@ -61,6 +62,7 @@
 	<filter-mapping>
 		<filter-name>CustomerFilter</filter-name>
 		<url-pattern>/productReview</url-pattern>
+		<url-pattern>/Leaderboard</url-pattern>
 		<url-pattern>/questionnaireResponse</url-pattern>
 		<url-pattern>/greetings</url-pattern>
 	</filter-mapping>
@@ -69,6 +71,7 @@
 		<filter-name>AdministratorFilter</filter-name>
 		<url-pattern>/Creation</url-pattern>
 		<url-pattern>/deletion</url-pattern>
+		<url-pattern>/Leaderboard</url-pattern>
 		<url-pattern>/logout</url-pattern>
 		<url-pattern>/CreateQuestion</url-pattern>
 		<url-pattern>/CreateQuestionnaire</url-pattern>

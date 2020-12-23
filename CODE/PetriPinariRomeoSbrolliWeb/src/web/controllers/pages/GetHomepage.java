@@ -1,4 +1,4 @@
-package web.controllers;
+package web.controllers.pages;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -26,6 +26,7 @@ import database.User;
 import services.LeaderboardService;
 import services.QuestionnaireOfTheDayService;
 import services.ReviewService;
+import web.controllers.HttpThymeleafServlet;
 
 //@Contributors: Marco, Etion
 
