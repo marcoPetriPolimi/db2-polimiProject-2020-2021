@@ -17,6 +17,7 @@ import org.thymeleaf.context.WebContext;
 import exceptions.UserAlreadyPresentEmailException;
 import exceptions.UserAlreadyPresentNicknameException;
 import services.AccountService;
+import services.OffensiveWordsService;
 
 /**
  * Servlet implementation class CheckRegistration
@@ -26,6 +27,8 @@ public class CheckRegistration extends HttpThymeleafServlet {
 	private static final long serialVersionUID = 1L;
 	@EJB(name = "services/AccountService")
 	private AccountService accountService;
+	@EJB(name = "services/OffensiveWordService")
+	private OffensiveWordsService offensiveWordService;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -62,6 +65,9 @@ public class CheckRegistration extends HttpThymeleafServlet {
 			} else if (username.trim().length() == 0) {
 				error = true;
 				errorMessage = lang.getString("indexWrongNameNull");
+			} else if (offensiveWordService.isPresent(username)) {
+				error = true;
+				errorMessage = lang.getString("indexWrongNameOffensive");
 			} else {
 				try {
 					accountService.createNewUser(username,password,email,new Date());

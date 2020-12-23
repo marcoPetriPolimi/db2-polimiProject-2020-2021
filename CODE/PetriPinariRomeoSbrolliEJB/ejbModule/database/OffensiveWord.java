@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 // The persistent class for the offensiveWord database table.
@@ -11,10 +12,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "OffensiveWord", schema = "db2_project")
+@NamedQuery(name = "OffensiveWord.findByWord", query = "SELECT w FROM OffensiveWord w WHERE w.word = ?1")
 public class OffensiveWord {
-	
-	private static final long serialVersionUID = 1L;
-	
 	@Id
 	@GeneratedValue
 	private int id;
@@ -22,28 +21,19 @@ public class OffensiveWord {
 	@Column(unique=true)
 	private String word;
 	
-	
-	
 	/*****	Setters *****/
-	
 	public void setId(int id) {
 		this.id = id;
 	}
-	
 	public void setWord(String word) {
 		this.word = word;
 	}
 	
-	
-	
 	/*****	Getters *****/
-	
 	public int getId() {
 		return this.id;
 	}
-	
 	public String getWord() {
 		return this.word;
 	}
-	
 }

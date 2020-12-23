@@ -8,7 +8,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import services.QuestionnaireAdminService;
 
@@ -19,9 +18,10 @@ public class EJBAdminFilter extends HttpFilter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest)request;
-		HttpServletResponse resp = (HttpServletResponse)response;
 		HttpSession session = req.getSession();
+		
 		QuestionnaireAdminService qas = (QuestionnaireAdminService) session.getAttribute("QuestionnaireAdminService");
+		
 		if(qas!=null) {
 			qas.remove();
 			session.removeAttribute("QuestionnaireAdminService");
