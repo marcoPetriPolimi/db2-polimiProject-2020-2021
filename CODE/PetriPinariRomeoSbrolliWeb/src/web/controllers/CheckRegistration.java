@@ -76,7 +76,7 @@ public class CheckRegistration extends HttpThymeleafServlet {
 					registrationMessage = lang.getString("indexRegistrationSuccess");
 				} catch (UserAlreadyPresentNicknameException e) {
 					error = true;
-					errorMessage = lang.getString("indexWrongRepeatPassword");
+					errorMessage = lang.getString("indexNameAlreadyPresent");
 				} catch (UserAlreadyPresentEmailException e) {
 					error = true;
 					errorMessage = lang.getString("indexWrongRepeatPassword");

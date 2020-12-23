@@ -79,7 +79,7 @@
 		<url-pattern>/userSubmission</url-pattern>
 	</filter-mapping>
 	
-		<filter-mapping>
+	<filter-mapping>
 		<filter-name>EJBCreationFilter</filter-name>
 		<url-pattern>/deletion</url-pattern>
 		<url-pattern>/logout</url-pattern>
@@ -87,18 +87,16 @@
 		<url-pattern>/userSubmission</url-pattern>
 		<url-pattern>/homepage</url-pattern>
 		<url-pattern>/Leaderboard</url-pattern>
-		</filter-mapping>
+	</filter-mapping>
 		
-		<filter-mapping>
+	<filter-mapping>
 		<filter-name>EJBAdminFilter</filter-name>
 		<url-pattern>/deletion</url-pattern>
 		<url-pattern>/logout</url-pattern>
 		<url-pattern>/Creation</url-pattern>
 		<url-pattern>/homepage</url-pattern>
 		<url-pattern>/Leaderboard</url-pattern>
-
-		</filter-mapping>
-
+	</filter-mapping>
 
 	<!-- ****************************
 	 *								*

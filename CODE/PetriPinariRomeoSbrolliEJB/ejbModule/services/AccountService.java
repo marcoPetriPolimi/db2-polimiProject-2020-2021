@@ -103,7 +103,7 @@ public class AccountService {
 		
 		// verify that the user is inserting the right password in order to make the change possible by vertical propagation
 		if (login(changingNicknameUser.getNickname(), password)) {
-			if (nicknameUser != null) {
+			if (!nicknameUser.isEmpty()) {
 				throw new UserAlreadyPresentNicknameException();
 			} else {
 				changingNicknameUser.setNickname(newNickname);

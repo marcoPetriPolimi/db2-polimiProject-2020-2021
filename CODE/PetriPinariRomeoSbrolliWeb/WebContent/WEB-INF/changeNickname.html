@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title data-th-utext='${lang.getString("changeNicknameTitle")}'>Change nickname</title>
+	<link rel="stylesheet" type="text/css" href="../css/standard.css" data-th-href="@{css/standard.css}"/>
+</head>
+
+<body>
+	<div class="mainPanel">
+		<nav class="navigator">
+			<div class="navButton"><a href="homepage" data-th-href="@{/homepage}" data-th-utext='${lang.getString("navigationHome")}'>Homepage</a></div>
+			<div class="navButton"><a href="homepage" data-th-href="@{/Leaderboard}" data-th-utext='${lang.getString("navigationLeaderboard")}'>Leaderboard</a></div>
+			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="creation" data-th-href="@{Creation}" data-th-utext='${lang.getString("navigationCreation")}'>Questionnaire's creation</a></div>
+			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="deletion" data-th-href="@{deletion}" data-th-utext='${lang.getString("navigationDeletion")}'>Questionnaire's deletion</a></div>
+			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="inspection" data-th-href="@{inspection}" data-th-utext='${lang.getString("navigationInspection")}'>Inspection</a></div>
+			<div class="navButton"><a href="homepage" data-th-href="@{/changeNickname}" data-th-utext='${lang.getString("navigationNickname")}'>Change username</a></div>
+			<div class="navButton logout"><a href="logout" data-th-href="@{logout}" data-th-utext='${lang.getString("navigationLogout")}'>Logout</a></div>
+		</nav>
+		<div class="changeNickname content">
+			<!-- page's content -->
+			<h2 data-th-if="${offensiveNick}" data-th-utext='${lang.getString("indexFillLogin")}' class="error">Your nickname seems to be offensive to our website, please change it to be able to use QDay another day!</h2>
+			
+			<h2 data-th-utext='${lang.getString("indexFillLogin")}'>Fill the form to log in</h2>
+			
+			<p data-th-if="${errorMsg}" data-th-utext="${errorText}" class="error">This is an error text</p>
+			
+			<form action="CheckNickname" method="POST">
+				<input type="text" name="usr" placeholder="New username" data-th-placeholder='${lang.getString("changeNicknameUser")}' required>
+				<input type="password" name="pwd" placeholder="Password" data-th-placeholder='${lang.getString("indexPassword")}' required>
+				<input type="submit" value="Change nickname" data-th-value='${lang.getString("changeNicknameSubmit")}'>
+			</form>
+		</div>
+	</div>
+</body>
+
+</html>

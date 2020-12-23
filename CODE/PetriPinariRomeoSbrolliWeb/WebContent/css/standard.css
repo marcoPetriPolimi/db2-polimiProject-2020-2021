@@ -19,6 +19,7 @@ a:hover {
 /****************************
  *							*
  * 		INDEX PAGE			*
+ *		CHANGE NICK			*
  *							*
  ****************************/
 div.indexPanel {
@@ -35,7 +36,7 @@ div.indexPanel {
 	flex-direction: column;
 }
 
-div.indexPanel > form {
+div.indexPanel > form, div.mainPanel > div.changeNickname > form {
 	/* positioning and margin */
 	/* dimensions and padding */
 	/* decorations */
@@ -44,25 +45,34 @@ div.indexPanel > form {
 	flex-direction: column;
 }
 
-div.indexPanel > h2 {
+div.indexPanel > h2, div.mainPanel > div.changeNickname > h2 {
 	/* positioning and margin */
 	/* dimensions and padding */
 	/* decorations */
-	align-self: start;
+	align-self: flex-start;
 }
 
-div.indexPanel > form > input {
+div.indexPanel > form > input, div.mainPanel > div.changeNickname > form > input {
 	/* positioning and margin */
 	margin-top: 25px;
 	/* dimensions and padding */
 	/* decorations */
 }
 
-div.indexPanel > form > input:first-child {
+div.indexPanel > form > input:first-child, div.mainPanel > div.changeNickname > form > input:first-child {
 	/* positioning and margin */
 	margin-top: 0px;
 	/* dimensions and padding */
 	/* decorations */
+}
+
+div.mainPanel > div.changeNickname {
+	/* positioning and margin */
+	/* dimensions and padding */
+	/* decorations */
+	align-items: center !important;
+	display: inline-flex !important;
+	flex-direction: column !important;
 }
 
 /****************************
@@ -126,8 +136,9 @@ div.mainPanel > nav.navigator > div.navButton a, div.mainPanel > nav.navigator >
 div.mainPanel > div.content {
 	/* positioning and margin */
 	/* dimensions and padding */
-	width: 100%;
+	width: calc(100% - 70px);
 	min-height: 100px;
+	padding: 35px;
 	/* decorations */
 	align-items: start;
 	background-color: rgb(255, 255, 255);
@@ -142,9 +153,12 @@ div.mainPanel > div.content {
 	border-color: rgba(26, 26, 126, 0.5);
 }
 
-div.mainPanel > div.content > div > div.buttonsInline{
-	justify-content: space-evenly;
+div.mainPanel > div.content > div > div.buttonsInline {
+	/* positioning and margin */
 	margin : 10px;
+	/* dimensions and padding */
+	/* decorations */
+	justify-content: space-evenly;
 }
 
 
@@ -161,9 +175,9 @@ a.myButton{
  * 		GENERAL STYLE		*
  *							*
  ****************************/
- .mytable td,th,tr{
-  border: 1px solid black;
-  border-collapse: collapse;
+.mytable td,th,tr{
+	border: 1px solid black;
+	border-collapse: collapse;
 }
  
  

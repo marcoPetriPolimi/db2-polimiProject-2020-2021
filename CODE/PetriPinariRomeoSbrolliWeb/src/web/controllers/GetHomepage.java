@@ -65,22 +65,12 @@ public class GetHomepage extends HttpThymeleafServlet {
 		thymeleaf.process(page,webContext,resp.getWriter());
 	}
 	
-	
-	
-	
 	private void putLeaderboard(WebContext webContext) throws Exception {
-		// TODO Auto-generated method stub
-		
 		Map<String, Integer> leaderboard = LS.getGeneralLeaderboard();		
 		webContext.setVariable("leaderboard", leaderboard);
 	}
-
-
-
-
 	
 	private void putQuestionnaireOfTheDay(WebContext webContext) throws Exception {
-		
 		Questionnaire dailyQuestionnaire = QDS.getQuestionnaireOfTheDay();
 		if(dailyQuestionnaire != null) {
 			
