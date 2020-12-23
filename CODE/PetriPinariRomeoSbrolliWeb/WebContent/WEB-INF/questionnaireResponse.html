@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title data-th-utext='${lang.getString("questRespTitle")}'>QDay - QResponse</title>
+	<link rel="stylesheet" type="text/css" href="../css/standard.css" data-th-href="@{css/standard.css}"/>
+</head>
+
+<body>
+	<div class="mainPanel">
+		<nav class="navigator">
+			<div class="navButton"><a href="homepage" data-th-href="@{/homepage}" data-th-utext='${lang.getString("navigationHome")}'>Homepage</a></div>
+			<div class="navButton"><a href="homepage" data-th-href="@{/Leaderboard}" data-th-utext='${lang.getString("navigationLeaderboard")}'>Leaderboard</a></div>
+			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="creation" data-th-href="@{Creation}" data-th-utext='${lang.getString("navigationCreation")}'>Questionnaire's creation</a></div>
+			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="deletion" data-th-href="@{deletion}" data-th-utext='${lang.getString("navigationDeletion")}'>Questionnaire's deletion</a></div>
+			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="inspection" data-th-href="@{inspection}" data-th-utext='${lang.getString("navigationInspection")}'>Inspection</a></div>
+			<div class="navButton"><a href="homepage" data-th-href="@{/changeNickname}" data-th-utext='${lang.getString("navigationNickname")}'>Change username</a></div>
+			<div class="navButton logout"><a href="logout" data-th-href="@{/logout}" data-th-utext='${lang.getString("navigationLogout")}'>Logout</a></div>
+		</nav>
+		<div class="questionnaireResponse content">
+			<!-- page's content -->
+			<h2 data-th-utext='${questionnaireName}'>Name of the questionnaire</h2>
+			
+			<form>
+				<div data-th-each="question : ${questions}" class="question">
+					<p class="questionText" data-th-utext="${question.getQuestion()}">Question 1</p>
+					
+					<!-- parsing of the checkbox -->
+					<span data-th-if="${question.getType()} == 1" data-th-each="answer : ${question.getQuestionAnswers()}">
+						<input type="checkbox" data-th-id="${ch_+answer.indexOf​(answer)}" data-th-name="${check_+questions.indexOf​(question)}" data-th-value="${ch_+answer.indexOf​(answer)}"/>
+						<label data-th-for="${ch_+answer.indexOf​(answer)}" data-th-utext="${answer.getAnswerText()}">Response 1</label><br/>
+					</span>
+					
+					<!-- parsing of the selects -->
+					<select data-th-if="${question.getType()} == 2" data-th-name="${sele_+questions.indexOf​(question)}">
+						<option value="none" default>Select a response...</option>
+						<option data-th-value="${sl_+answer.indexOf​(answer)}" data-th-each="answer : ${question.getQuestionAnswers()}" data-th-utext="${answer.getAnswerText()}">Response 1</option>
+					</select>
+					
+					<!-- parsing of the strings -->
+					<input data-th-if="${question.getType()} == 3" data-th-name="${text_+questions.indexOf​(question)}" type="text" placeholder="Write here the response"/>
+					
+					<!-- parsing of the comments -->
+					<textarea data-th-if="${question.getType()} == 4" data-th-name="${comm_+questions.indexOf​(question)}" placeholder="Write here the response"></textarea>
+					<hr data-th-if="${questions.indexOf​(question)} < ${questions.size()}-1"/>
+				</div>
+				
+				<input type="submit" name="product" value="Submit" data-th-value='${lang.getString("questRespSubmitProduct")}'/>
+			</form>
+		</div>
+	</div>
+</body>
+
+</html>

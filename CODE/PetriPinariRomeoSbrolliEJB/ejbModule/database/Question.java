@@ -27,6 +27,12 @@ public class Question implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
+	private String question;
+	private short type;
+	
+	@OneToMany (mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+	private List<PossibleAnswer> questionAnswers;
+	
 	public Question() {}
 	
 	public Question(String question, short type) {
@@ -35,22 +41,11 @@ public class Question implements Serializable {
 		this.question = question;
 		this.type = type;
 	}
-
-	private String question;
-	
-	private short type;
-	
-	@OneToMany (mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
-	private List<PossibleAnswer> questionAnswers;
 	
 	public void addAnswer(PossibleAnswer possAnswer) {
 		getQuestionAnswers().add(possAnswer);
 		possAnswer.setQuestion(this);
 	}
-
-
-
-
 
 	/*****	Setters *****/
 	

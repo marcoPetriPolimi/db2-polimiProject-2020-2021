@@ -67,7 +67,7 @@ public class PossibleAnswer implements Serializable {
 		return this.question;
 	}
 	
-	public String getanswerText() {
+	public String getAnswerText() {
 		return this.answerText;
 	}
 }

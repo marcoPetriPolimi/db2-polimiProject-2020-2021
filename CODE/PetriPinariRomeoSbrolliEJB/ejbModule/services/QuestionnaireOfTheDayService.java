@@ -43,7 +43,6 @@ public class QuestionnaireOfTheDayService {
 	}
 
 	public Questionnaire getQuestionnaireByDate(Date date) throws QuestionnaireException {
-
 		Query query = em
 				.createQuery("Select q " + "From Questionnaire q " + "Where q.presDate = :date", Questionnaire.class)
 				.setParameter("date", date);

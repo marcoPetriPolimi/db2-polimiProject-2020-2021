@@ -36,7 +36,7 @@ div.indexPanel {
 	flex-direction: column;
 }
 
-div.indexPanel > form, div.mainPanel > div.changeNickname > form {
+div.indexPanel > form, div.mainPanel > div.changeNickname > form, div.mainPanel > div.questionnaireResponse > form {
 	/* positioning and margin */
 	/* dimensions and padding */
 	/* decorations */
@@ -45,21 +45,21 @@ div.indexPanel > form, div.mainPanel > div.changeNickname > form {
 	flex-direction: column;
 }
 
-div.indexPanel > h2, div.mainPanel > div.changeNickname > h2 {
+div.indexPanel > h2, div.mainPanel > div.changeNickname > h2, div.mainPanel > div.questionnaireResponse > h2 {
 	/* positioning and margin */
 	/* dimensions and padding */
 	/* decorations */
 	align-self: flex-start;
 }
 
-div.indexPanel > form > input, div.mainPanel > div.changeNickname > form > input {
+div.indexPanel > form > input, div.mainPanel > div.changeNickname > form > input, div.mainPanel > div.questionnaireResponse > form > input {
 	/* positioning and margin */
 	margin-top: 25px;
 	/* dimensions and padding */
 	/* decorations */
 }
 
-div.indexPanel > form > input:first-child, div.mainPanel > div.changeNickname > form > input:first-child {
+div.indexPanel > form > input:first-child, div.mainPanel > div.changeNickname > form > input:first-child, div.mainPanel > div.questionnaireResponse > form > input:first-child {
 	/* positioning and margin */
 	margin-top: 0px;
 	/* dimensions and padding */
@@ -73,6 +73,56 @@ div.mainPanel > div.changeNickname {
 	align-items: center !important;
 	display: inline-flex !important;
 	flex-direction: column !important;
+}
+
+/****************************
+ *							*
+ * 		QUESTIONNAIRE		*
+ *		RESPONSE			*
+ *							*
+ ****************************/
+div.mainPanel > div.questionnaireResponse {
+	/* positioning and margin */
+	/* dimensions and padding */
+	/* decorations */
+	align-items: center !important;
+	display: inline-flex !important;
+	flex-direction: column !important;
+}
+
+div.mainPanel > div.questionnaireResponse > form {
+	/* positioning and margin */
+	/* dimensions and padding */
+	width: 70%;
+	/* decorations */
+}
+
+div.mainPanel > div.questionnaireResponse > form > div.question {
+	/* positioning and margin */
+	/* dimensions and padding */
+	width: 100%;
+	/* decorations */
+	display: inline-block;
+	text-align: center;
+}
+
+div.mainPanel > div.questionnaireResponse > form > div.question > hr {
+	/* positioning and margin */
+	margin-top: 20px;
+	margin-bottom: 20px;
+	/* dimensions and padding */
+	width: 100%;
+	/* decorations */
+}
+
+div.mainPanel > div.questionnaireResponse > form > div.question > p.questionText {
+	/* positioning and margin */
+	margin-top: 0px;
+	/* dimensions and padding */
+	width: 100%;
+	/* decorations */
+	display: inline-block;
+	text-align: left;
 }
 
 /****************************
@@ -194,7 +244,7 @@ input[type=number], input[type=text], input[type=password], input[type=email] {
 input[type=submit], input[type=button] {
 	/* positions, margin */
 	/* dimensions and padding */
-	width: 150px;
+	min-width: 150px;
 	min-height: 40px;
 	padding: 5px 10px 5px 10px;
 	/* view */
@@ -220,14 +270,25 @@ input[type=submit]:active, input[type=button]:active {
 	box-shadow: inset 0px 0px 2px 1px rgba(0,0,0,0.4);
 }
 
+select {
+	/* positions, margin */
+	/* dimensions and padding */
+	min-width: 200px;
+	max-width: 300px;
+	height: 35px;
+	padding: 5px;
+	/* view */
+	border: 1px solid rgba(166,166,166,1);
+}
+
 textarea {
 	/* positions, margin */
 	/* dimensions and padding */
 	padding: 5px;
 	min-width: 200px;
-	max-width: 200px;
+	max-width: 400px;
 	min-height: 60px;
-	max-height: 150px;
+	max-height: 300px;
 	/* view */
 	border: 1px solid rgba(166,166,166,1);
 }

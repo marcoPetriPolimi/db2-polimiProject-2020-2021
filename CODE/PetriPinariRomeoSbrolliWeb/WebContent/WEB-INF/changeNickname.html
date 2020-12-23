@@ -16,7 +16,7 @@
 			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="deletion" data-th-href="@{deletion}" data-th-utext='${lang.getString("navigationDeletion")}'>Questionnaire's deletion</a></div>
 			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="inspection" data-th-href="@{inspection}" data-th-utext='${lang.getString("navigationInspection")}'>Inspection</a></div>
 			<div class="navButton"><a href="homepage" data-th-href="@{/changeNickname}" data-th-utext='${lang.getString("navigationNickname")}'>Change username</a></div>
-			<div class="navButton logout"><a href="logout" data-th-href="@{logout}" data-th-utext='${lang.getString("navigationLogout")}'>Logout</a></div>
+			<div class="navButton logout"><a href="logout" data-th-href="@{/logout}" data-th-utext='${lang.getString("navigationLogout")}'>Logout</a></div>
 		</nav>
 		<div class="changeNickname content">
 			<!-- page's content -->
