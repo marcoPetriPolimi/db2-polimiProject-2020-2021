@@ -26,8 +26,9 @@ public class EJBCreationFilter extends HttpFilter {
 		
 		if(qcs!=null) {
 			qcs.remove();
-			session.removeAttribute("QuestionnaireCreationService");
+			System.out.print("REMOVING EJB");
 		}
+		session.removeAttribute("QuestionnaireCreationService");
 		chain.doFilter(request,response);
 	}
 }

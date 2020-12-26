@@ -1,5 +1,6 @@
 package services;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -114,9 +115,6 @@ public class QuestionnaireCreationService {
 		return questions;
 		}
     
-    @Remove
-	public void remove() {}
-
 	public int getNextQuestionId() {
 		return newQuestions.size();
 	}
@@ -136,5 +134,22 @@ public class QuestionnaireCreationService {
 							+ "ORDER BY p.id ASC",Product.class)
 				.getResultList();
 	}
+	
+	public boolean addProduct(String name, byte[] imgByteArray) {
+		Product prod= em
+				.createQuery("SELECT p "
+						+ "FROM Product p "
+						+ "WHERE p.name=:pName",Product.class)
+				.setParameter("pName", name)
+				.getSingleResult();
+		if (prod.getName().equals(name)) return false;
+		Product newProd= new Product(imgByteArray, name);
+		em.persist(newProd);
+		return true;
+
+	}
+	
+    @Remove
+	public void remove() {}
 
 }

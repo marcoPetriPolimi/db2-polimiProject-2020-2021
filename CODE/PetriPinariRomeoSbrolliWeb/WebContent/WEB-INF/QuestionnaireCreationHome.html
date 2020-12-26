@@ -93,7 +93,7 @@
 				
 	
 	
-							<input type="submit" name="Create Question">
+							<input type="submit" name="CreateQuestion" value="Create Question">
 						</fieldset>
 					</form>
 			
@@ -119,6 +119,21 @@
 			</div>	
 			
 			<div data-th-if="${!(storedQuestions.isEmpty() && questions.isEmpty()) }" >
+			<h2> Add a new Product </h2>
+			<div data-th-if="${message!=null}"><p data-th-utext='${message}'> ;;</p> </div>
+			<form action="#" data-th-action="@{/AddProduct}" method="POST" enctype="multipart/form-data">
+						<fieldset>
+							<p>
+							Product name
+							<input type="text" id="ProdName" name="pname" required/> 
+							</p>
+							<p>
+							Product image
+							<input type="file" id="ProdImage" name="pimg" required>
+							</p>
+							<input type="submit" name="Addproduct" value= "Add product">
+						</fieldset>
+			</form>
 			<h2>Set name,date,product</h2><br>
 	
 			<form action="#" data-th-action="@{/CreateQuestionnaire}" method="POST">
@@ -136,7 +151,7 @@
 					 		<input type="radio" data-th-id="${product.getId()}" data-th-value="${product.getId()}" name="chosenProd" required />
 					 		<label data-th-for="${product.getId()}" data-th-utext="${product.getName()}">Product</label><br>				 
 							</p>
-							<input type="submit" name="Create questionnaire">
+							<input type="submit" name="Create questionnaire" value= "Create Questionnaire">
 						</fieldset>
 					</form>
 			</div>	

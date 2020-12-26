@@ -62,6 +62,16 @@
 		<url-pattern>/greetings</url-pattern>
 		<url-pattern>/deletion</url-pattern>
 		<url-pattern>/logout</url-pattern>
+		<url-pattern>/Creation</url-pattern>
+		<url-pattern>/logout</url-pattern>
+		<url-pattern>/CreateQuestion</url-pattern>
+		<url-pattern>/CreateQuestionnairet</url-pattern>
+		<url-pattern>/AddStoredQuestion</url-pattern>
+		<url-pattern>/DeleteQuestion</url-pattern>
+		<url-pattern>/DeleteQuestionnaire</url-pattern>
+		<url-pattern>/inspection</url-pattern>
+		<url-pattern>/userSubmission</url-pattern>
+		<url-pattern>/AddProduct</url-pattern>	
 	</filter-mapping>
 
 	<filter-mapping>
@@ -84,6 +94,7 @@
 		<url-pattern>/DeleteQuestionnaire</url-pattern>
 		<url-pattern>/inspection</url-pattern>
 		<url-pattern>/userSubmission</url-pattern>
+		<url-pattern>/AddProduct</url-pattern>
 	</filter-mapping>
 	
 	<filter-mapping>
@@ -109,6 +120,7 @@
 		<url-pattern>/Creation</url-pattern>
 		<url-pattern>/homepage</url-pattern>
 		<url-pattern>/Leaderboard</url-pattern>
+		<url-pattern>/AddProduct</url-pattern>
 	</filter-mapping>
 
 	<!-- ****************************

@@ -30,6 +30,7 @@ public class GetCreation extends HttpThymeleafServlet {
 	          // EJB is not present in the HTTP session
 	          // so let's fetch a new one from the container
 	          try {
+	        	  System.out.println("Here!");
 	            InitialContext ic = new InitialContext();
 	            qcs = (QuestionnaireCreationService)
 	            ic.lookup("java:global/PetriPinariRomeoSbrolliWeb/QuestionnaireCreationService");
@@ -49,6 +50,8 @@ public class GetCreation extends HttpThymeleafServlet {
 		ctx.setVariable("storedQuestions", qcs.getStoredQuestions());
 		ctx.setVariable("products", qcs.getAllProducts());
 		ctx.setVariable("user", req.getSession().getAttribute("user"));
+		ctx.setVariable("message", req.getSession().getAttribute("message"));
+		req.getSession().removeAttribute("message");
 		thymeleaf.process(path, ctx, resp.getWriter());
 	}
 

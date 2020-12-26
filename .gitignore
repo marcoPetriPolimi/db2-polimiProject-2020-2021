@@ -84,3 +84,11 @@ MANIFEST.MF
 CODE/PetriPinariRomeoSbrolli/WebContent/META-INF/MANIFEST.MF
 CODE/PetriPinariRomeoSbrolliEJB/build/classes/META-INF/persistence.xml
 CODE/PetriPinariRomeoSbrolliWeb/src/web/controllers/ServletBrutta.java
+CODE/Servers/Tomee working-config/catalina.properties
+CODE/Servers/Tomee working-config/context.xml
+CODE/Servers/Tomee working-config/catalina.policy
+CODE/Servers/Tomee working-config/web.xml
+CODE/Servers/Tomee working-config/tomee.xml
+CODE/Servers/Tomee working-config/tomcat-users.xml
+CODE/Servers/Tomee working-config/server.xml
+CODE/PetriPinariRomeoSbrolliEJB/build/classes/META-INF/persistence.xml
