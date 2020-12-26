@@ -25,8 +25,8 @@ public class EJBAdminFilter extends HttpFilter {
 		
 		if(qas!=null) {
 			qas.remove();
-			session.removeAttribute("QuestionnaireAdminService");
 		}
+		session.removeAttribute("QuestionnaireAdminService");
 		chain.doFilter(request,response);
 	}
 }

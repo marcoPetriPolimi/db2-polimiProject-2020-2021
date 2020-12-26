@@ -63,7 +63,7 @@ public class QuestionnaireAdminService {
 				.createQuery("SELECT pa "
 							+ "FROM ProductAnswer pa,Submission s "
 							+ "WHERE s.userSender = :uId AND s.submissionQuestionnaire = :qId AND s.submitted = 1 AND pa.submission.id=s.id "
-							+ "ORDER BY pa.questionId ASC",ProductAnswer.class)
+							+ "ORDER BY pa.question ASC",ProductAnswer.class)
 				.setParameter("qId",quest)
 				.setParameter("uId",user)
 				.getResultList();
