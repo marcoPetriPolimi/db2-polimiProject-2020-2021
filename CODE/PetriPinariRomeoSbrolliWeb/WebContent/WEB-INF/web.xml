@@ -37,6 +37,11 @@
 	</filter>
 	
 	<filter>
+		<filter-name>EJBQuestionnaireFilter</filter-name>
+		<filter-class>web.filters.EJBQuestionnaireFilter</filter-class>
+	</filter>
+	
+	<filter>
 		<filter-name>EJBCreationFilter</filter-name>
 		<filter-class>web.filters.EJBCreationFilter</filter-class>
 	</filter>
