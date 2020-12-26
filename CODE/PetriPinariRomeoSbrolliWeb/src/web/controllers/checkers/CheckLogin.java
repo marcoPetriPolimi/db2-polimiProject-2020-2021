@@ -55,9 +55,14 @@ public class CheckLogin extends HttpThymeleafServlet {
 				if (accountService.login(username, password)) {
 					cleanSession(session);
 					
-					// now there are no elements bound to this session, the newly are created
-					session.setAttribute("user", user);
-					login = true;
+					if (user.getBlocked()) {
+						error = true;
+						errorMessage = lang.getString("indexBanned");
+					} else {
+						// now there are no elements bound to this session, the newly are created
+						session.setAttribute("user", user);
+						login = true;
+					}
 				} else {
 					error = true;
 					errorMessage = lang.getString("indexWrongPassword");
