@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.ejb.EJB;
 import javax.naming.InitialContext;
@@ -37,6 +38,7 @@ public class GetInspection extends HttpThymeleafServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		ResourceBundle lang = findLanguage(req);
 
 		 qas = (QuestionnaireAdminService) req.getSession().getAttribute("QuestionnaireAdminService");
 
@@ -125,6 +127,7 @@ public class GetInspection extends HttpThymeleafServlet {
 		ServletContext servletContext = getServletContext();
 		
 		final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
+		ctx.setVariable("lang", lang);
 		ctx.setVariable("questionnaire", questionnaire.getId());
 		ctx.setVariable("questionnaireName", questionnaire.getName());
 		ctx.setVariable("questionsString", questionsString);
@@ -164,9 +167,11 @@ public class GetInspection extends HttpThymeleafServlet {
 	 * @throws IOException
 	 */
 	private boolean wrongFormat( HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		ResourceBundle lang = findLanguage(req);
 		String path = "QuestionnaireInspection";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
+		ctx.setVariable("lang", lang);
 		ctx.setVariable("user", req.getSession().getAttribute("user"));
 		thymeleaf.process(path, ctx, resp.getWriter());
 		return true;

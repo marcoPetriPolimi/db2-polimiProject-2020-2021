@@ -3,6 +3,7 @@ package web.controllers;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletContext;
@@ -30,6 +31,7 @@ public class GetLeaderboard extends HttpThymeleafServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		ResourceBundle lang = findLanguage(req);
 		
 		Map<String, Integer> leaderboard = null;
 		String message = "Please, make a choice";
@@ -57,6 +59,7 @@ public class GetLeaderboard extends HttpThymeleafServlet {
 		String path = "Leaderboard";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
+		ctx.setVariable("lang", lang);
 		ctx.setVariable("leaderboard", leaderboard);
 		ctx.setVariable("message", message);
 		ctx.setVariable("user", req.getSession().getAttribute("user"));

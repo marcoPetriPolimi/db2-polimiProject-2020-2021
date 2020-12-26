@@ -2,6 +2,7 @@ package web.controllers;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -22,6 +23,7 @@ public class GetCreation extends HttpThymeleafServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		ResourceBundle lang = findLanguage(req);
 		QuestionnaireCreationService qcs = (QuestionnaireCreationService) req.getSession().getAttribute("QuestionnaireCreationService");
 
 		if(qcs == null){
@@ -41,6 +43,7 @@ public class GetCreation extends HttpThymeleafServlet {
 		String path = "QuestionnaireCreationHome";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
+		ctx.setVariable("lang", lang);
 		ctx.setVariable("questions", questions);
 		ctx.setVariable("allStoredQuestions", qcs.getAllStoredQuestions());
 		ctx.setVariable("storedQuestions", qcs.getStoredQuestions());

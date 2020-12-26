@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletContext;
@@ -31,6 +32,7 @@ public class GetDeletion extends HttpThymeleafServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		ResourceBundle lang = findLanguage(req);
 		
 		String questionnaireId = req.getParameter("idQuestionnaire");
 
@@ -110,6 +112,7 @@ public class GetDeletion extends HttpThymeleafServlet {
 		ServletContext servletContext = getServletContext();
 
 		final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
+		ctx.setVariable("lang", lang);
 		ctx.setVariable("questionnaire", questionnaire.getId());
 		ctx.setVariable("questionnaireName", questionnaire.getName());
 		ctx.setVariable("questionsString", questionsString);
@@ -133,9 +136,11 @@ public class GetDeletion extends HttpThymeleafServlet {
 	 * @throws IOException
 	 */
 	private boolean wrongFormat(HttpServletRequest req, HttpServletResponse resp, String message) throws IOException {
+		ResourceBundle lang = findLanguage(req);
 		String path = "QuestionnaireDeletion";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
+		ctx.setVariable("lang", lang);
 		ctx.setVariable("user", req.getSession().getAttribute("user"));
 		ctx.setVariable("message", message);
 		thymeleaf.process(path, ctx, resp.getWriter());

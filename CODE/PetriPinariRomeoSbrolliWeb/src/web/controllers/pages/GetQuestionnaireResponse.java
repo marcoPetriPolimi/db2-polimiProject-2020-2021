@@ -177,20 +177,22 @@ public class GetQuestionnaireResponse extends HttpThymeleafServlet {
 			}
 		}
 		if (age != null) {
-			try {
-				ageNum = Integer.parseInt(age);
-				if (ageNum < 18 || ageNum > 130) {
+			if (age.trim().length() != 0) {
+				try {
+					ageNum = Integer.parseInt(age);
+					if (ageNum < 18 || ageNum > 130) {
+						throw new InvalidRequestException();
+					}
+				} catch (NumberFormatException e) {
 					throw new InvalidRequestException();
 				}
-			} catch (NumberFormatException e) {
-				throw new InvalidRequestException();
-			}
-			
-			// age is valid
-			try {
-				givenAnswers.setAge(ageNum);
-			} catch (IllegalArgumentException e) {
-				// impossible to reach
+				
+				// age is valid
+				try {
+					givenAnswers.setAge(ageNum);
+				} catch (IllegalArgumentException e) {
+					// impossible to reach
+				}
 			}
 		}
 		if (expertise != null) {

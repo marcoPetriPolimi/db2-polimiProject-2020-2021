@@ -7,60 +7,61 @@
 </head>
 <body>
 	<div class="mainPanel">
-	<nav class="navigator">
+		<nav class="navigator">
 			<div class="navButton"><a href="homepage" data-th-href="@{/homepage}">Homepage</a></div>
 			<div class="navButton"><a href="homepage" data-th-href="@{/Leaderboard}">Leaderboard</a></div>
 			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="creation" data-th-href="@{Creation}" >Questionnaire's creation</a></div>
 			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="deletion" data-th-href="@{deletion}" >Questionnaire's deletion</a></div>
 			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="inspection" data-th-href="@{inspection}" >Inspection</a></div>
+			<div class="navButton"><a href="homepage" data-th-href="@{/changeNickname}" data-th-utext='${lang.getString("navigationNickname")}'>Change username</a></div>
 			<div class="navButton logout"><a href="logout" data-th-href="@{/logout}">Logout</a></div>
-	</nav>
-	</div>
-	
-	<div class="mytable" align="left">
-   	<h1 data-th-utext='${userNick + "&#39s answer"}' align="center">nickname</h1>
-	<br><br><br><br><br><br>
-	<h2><a data-th-href="@{/inspection(selector=1,idQuestionnaire=${questionnaireId})}">Back to list of submissions</a></h2>
-	<h2>Product Answers (Mandatory)</h2>
-	<table>
-	 	<tr>
-    	<th>Question</th>
-   		<th>Answers</th>
- 		</tr>
- 		<tr data-th-each="question : ${questions.keySet()}">
- 			<td data-th-utext='${question.getQuestion()}'>QuestionText</td>
-			<td>	
+		</nav>
+		<div class="content">
+			<div class="mytable" align="left">
+			   	<h1 data-th-utext='${userNick + "&#39s answer"}' align="center">nickname</h1>
+				<h2><a data-th-href="@{/inspection(selector=1,idQuestionnaire=${questionnaireId})}">Back to list of submissions</a></h2>
+				<h2>Product Answers (Mandatory)</h2>
 				<table>
-				<tr data-th-each="userAnswer : ${questions.get(question)}">
-				<td  data-th-utext='${userAnswer}'>AnswerText</td>
-				</tr>
+				 	<tr>
+			    	<th>Question</th>
+			   		<th>Answers</th>
+			 		</tr>
+			 		<tr data-th-each="question : ${questions.keySet()}">
+			 			<td data-th-utext='${question.getQuestion()}'>QuestionText</td>
+						<td>	
+							<table>
+							<tr data-th-each="userAnswer : ${questions.get(question)}">
+							<td  data-th-utext='${userAnswer}'>AnswerText</td>
+							</tr>
+							</table>
+						</td>
+					</tr>
 				</table>
-			</td>
-		</tr>
-	</table>
-	
-<h2 data-th-if="${age==null && sex==null && expertise==null}">User did not provide responses to personal answers</h2>
-<div data-th-if="${!(age==null && sex==null && expertise==null)}">
-	<h2>Personal Answers</h2>
-		<table>
-		<tr>
-    	<th>Question</th>
-   		<th>Answers</th>
- 		</tr>
- 		<tr data-th-if="${age!=null}">
- 			<td>Age</td> 
- 			<td data-th-utext='${age}'>userAge</td>
-		</tr>
-		<tr data-th-if="${sex!=null}">
- 			<td>Sex</td> 
- 			<td data-th-utext='${sex}'>userSex</td>
-		</tr>
-		<tr data-th-if="${expertise!=null}">
- 			<td>Expertise</td> 
- 			<td data-th-utext='${expertise}'>userExpertise</td>
-		</tr>
-	</table>
-</div>
-</div>
+				
+				<h2 data-th-if="${age==null && sex==null && expertise==null}">User did not provide responses to personal answers</h2>
+				<div data-th-if="${!(age==null && sex==null && expertise==null)}">
+					<h2>Personal Answers</h2>
+						<table>
+						<tr>
+				    	<th>Question</th>
+				   		<th>Answers</th>
+				 		</tr>
+				 		<tr data-th-if="${age!=null}">
+				 			<td>Age</td> 
+				 			<td data-th-utext='${age}'>userAge</td>
+						</tr>
+						<tr data-th-if="${sex!=null}">
+				 			<td>Sex</td> 
+				 			<td data-th-utext='${sex}'>userSex</td>
+						</tr>
+						<tr data-th-if="${expertise!=null}">
+				 			<td>Expertise</td> 
+				 			<td data-th-utext='${expertise}'>userExpertise</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

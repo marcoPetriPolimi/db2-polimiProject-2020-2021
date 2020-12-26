@@ -3,6 +3,7 @@ package web.controllers;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -23,13 +24,12 @@ import utils.userInfo.UserPersonalInfo;
 @WebServlet("/userSubmission")
 public class GetUserSubmission extends HttpThymeleafServlet {
 	private static final long serialVersionUID = 1L;
-	
-	private QuestionnaireAdminService qas;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		ResourceBundle lang = findLanguage(req);
 
-		 qas = (QuestionnaireAdminService) req.getSession().getAttribute("QuestionnaireAdminService");
+		QuestionnaireAdminService qas = (QuestionnaireAdminService) req.getSession().getAttribute("QuestionnaireAdminService");
 
 		if(qas == null){
 	          // EJB is not present in the HTTP session
@@ -52,6 +52,7 @@ public class GetUserSubmission extends HttpThymeleafServlet {
 		String path = "UserSubmission";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
+		ctx.setVariable("lang", lang);
 		ctx.setVariable("questions", userAnswers);
 		ctx.setVariable("questionnaireId", qas.getSelectedQuestionnaireId().intValue());
 		ctx.setVariable("userNick", nickname);

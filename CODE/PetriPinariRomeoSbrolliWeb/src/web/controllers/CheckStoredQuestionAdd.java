@@ -17,14 +17,10 @@ import services.QuestionnaireCreationService;
 @WebServlet("/AddStoredQuestion")
 public class CheckStoredQuestionAdd extends HttpThymeleafServlet {
 	private static final long serialVersionUID = 1L;
-	private QuestionnaireCreationService qcs;
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-		
-		
-		 qcs = (QuestionnaireCreationService) req.getSession().getAttribute("QuestionnaireCreationService");
+		QuestionnaireCreationService qcs = (QuestionnaireCreationService) req.getSession().getAttribute("QuestionnaireCreationService");
 			
 			if(qcs == null){
 		          // EJB is not present in the HTTP session
