@@ -33,41 +33,34 @@ public class CheckQuestionnaireCreation extends HttpThymeleafServlet {
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-		
-		
-		 qcs = (QuestionnaireCreationService) req.getSession().getAttribute("QuestionnaireCreationService");
+		qcs = (QuestionnaireCreationService) req.getSession().getAttribute("QuestionnaireCreationService");
 			
-			if(qcs == null){
-		          // EJB is not present in the HTTP session
-		          // so let's fetch a new one from the container
-		          try {
-		            InitialContext ic = new InitialContext();
-		            qcs = (QuestionnaireCreationService) 
-		             ic.lookup("java:global/PetriPinariRomeoSbrolliWeb/QuestionnaireCreationService");
-
-		            // put EJB in HTTP session for future servlet calls
-		            req.getSession().setAttribute(
-		              "QuestionnaireCreationService", 
-		              qcs);
-
-		          } catch (NamingException e) {
-		            throw new ServletException(e);
-		          }
-		    }
-		
-
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			Date presDate= null;
+		if(qcs == null){
+			// EJB is not present in the HTTP session
+			// so let's fetch a new one from the container
 			try {
-				presDate = (Date) sdf.parse(req.getParameter("date"));
-			} catch (ParseException e) {
-				e.printStackTrace();
+				InitialContext ic = new InitialContext();
+				qcs = (QuestionnaireCreationService) 
+				ic.lookup("java:global/PetriPinariRomeoSbrolliWeb/QuestionnaireCreationService");
+
+				// put EJB in HTTP session for future servlet calls
+				req.getSession().setAttribute("QuestionnaireCreationService", qcs);
+			} catch (NamingException e) {
+				throw new ServletException(e);
 			}
+		}
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date presDate= null;
+		try {
+			presDate = (Date) sdf.parse(req.getParameter("date"));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 			
-			HttpSession session = req.getSession();
-			User user = (User) session.getAttribute("user");
-			qcs.createQuestionnaire(user.getId(), StringEscapeUtils.escapeJava(req.getParameter("name")),presDate,(Integer)Integer.parseInt(req.getParameter("chosenProd")));
+		HttpSession session = req.getSession();
+		User user = (User) session.getAttribute("user");
+		qcs.createQuestionnaire(user.getId(), StringEscapeUtils.escapeJava(req.getParameter("name")),presDate,(Integer)Integer.parseInt(req.getParameter("chosenProd")));
 		
 		String ctxpath = getServletContext().getContextPath();
 		req.getSession().removeAttribute("QuestionnaireCreationService");

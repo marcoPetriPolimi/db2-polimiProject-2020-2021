@@ -54,24 +54,24 @@
 
 	<filter-mapping>
 		<filter-name>UserFilter</filter-name>
-		<url-pattern>/homepage</url-pattern>
-		<url-pattern>/changeNickname</url-pattern>
-		<url-pattern>/productReview</url-pattern>
-		<url-pattern>/Leaderboard</url-pattern>
-		<url-pattern>/questionnaireResponse</url-pattern>
-		<url-pattern>/greetings</url-pattern>
-		<url-pattern>/deletion</url-pattern>
-		<url-pattern>/logout</url-pattern>
-		<url-pattern>/Creation</url-pattern>
-		<url-pattern>/logout</url-pattern>
-		<url-pattern>/CreateQuestion</url-pattern>
-		<url-pattern>/CreateQuestionnairet</url-pattern>
 		<url-pattern>/AddStoredQuestion</url-pattern>
-		<url-pattern>/DeleteQuestion</url-pattern>
+		<url-pattern>/AddProduct</url-pattern>
+		<url-pattern>/changeNickname</url-pattern>
+		<url-pattern>/CheckNickname</url-pattern>
+		<url-pattern>/Creation</url-pattern>
+		<url-pattern>/CreateQuestion</url-pattern>
+		<url-pattern>/CreateQuestionnaire</url-pattern>
+		<url-pattern>/deletion</url-pattern>
 		<url-pattern>/DeleteQuestionnaire</url-pattern>
+		<url-pattern>/DeleteQuestion</url-pattern>
+		<url-pattern>/greetings</url-pattern>
+		<url-pattern>/homepage</url-pattern>
 		<url-pattern>/inspection</url-pattern>
+		<url-pattern>/Leaderboard</url-pattern>
+		<url-pattern>/logout</url-pattern>
+		<url-pattern>/productReview</url-pattern>
+		<url-pattern>/questionnaireResponse</url-pattern>
 		<url-pattern>/userSubmission</url-pattern>
-		<url-pattern>/AddProduct</url-pattern>	
 	</filter-mapping>
 
 	<filter-mapping>
@@ -100,27 +100,64 @@
 	<filter-mapping>
 		<filter-name>QuestionnaireOfTheDayFilter</filter-name>
 		<url-pattern>/questionnaireResponse</url-pattern>
-		<url-pattern>/CheckQuestionnaireResponse</url-pattern>
+	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>EJBQuestionnaireFilter</filter-name>
+		<url-pattern>/AddStoredQuestion</url-pattern>
+		<url-pattern>/AddProduct</url-pattern>
+		<url-pattern>/changeNickname</url-pattern>
+		<url-pattern>/CheckNickname</url-pattern>
+		<url-pattern>/Creation</url-pattern>
+		<url-pattern>/CreateQuestion</url-pattern>
+		<url-pattern>/CreateQuestionnaire</url-pattern>
+		<url-pattern>/deletion</url-pattern>
+		<url-pattern>/DeleteQuestionnaire</url-pattern>
+		<url-pattern>/DeleteQuestion</url-pattern>
+		<url-pattern>/greetings</url-pattern>
+		<url-pattern>/homepage</url-pattern>
+		<url-pattern>/inspection</url-pattern>
+		<url-pattern>/Leaderboard</url-pattern>
+		<url-pattern>/logout</url-pattern>
+		<url-pattern>/productReview</url-pattern>
+		<url-pattern>/userSubmission</url-pattern>
 	</filter-mapping>
 	
 	<filter-mapping>
 		<filter-name>EJBCreationFilter</filter-name>
+		<url-pattern>/changeNickname</url-pattern>
+		<url-pattern>/CheckNickname</url-pattern>
 		<url-pattern>/deletion</url-pattern>
-		<url-pattern>/logout</url-pattern>
-		<url-pattern>/inspection</url-pattern>
-		<url-pattern>/userSubmission</url-pattern>
+		<url-pattern>/DeleteQuestionnaire</url-pattern>
+		<url-pattern>/greetings</url-pattern>
 		<url-pattern>/homepage</url-pattern>
+		<url-pattern>/inspection</url-pattern>
 		<url-pattern>/Leaderboard</url-pattern>
+		<url-pattern>/logout</url-pattern>
+		<url-pattern>/productReview</url-pattern>
+		<url-pattern>/questionnaireResponse</url-pattern>
+		<url-pattern>/userSubmission</url-pattern>
 	</filter-mapping>
 		
 	<filter-mapping>
 		<filter-name>EJBAdminFilter</filter-name>
-		<url-pattern>/deletion</url-pattern>
-		<url-pattern>/logout</url-pattern>
+		<url-pattern>/AddStoredQuestion</url-pattern>
+		<url-pattern>/AddProduct</url-pattern>
+		<url-pattern>/changeNickname</url-pattern>
+		<url-pattern>/CheckNickname</url-pattern>
 		<url-pattern>/Creation</url-pattern>
+		<url-pattern>/CreateQuestion</url-pattern>
+		<url-pattern>/CreateQuestionnaire</url-pattern>
+		<url-pattern>/deletion</url-pattern>
+		<url-pattern>/DeleteQuestionnaire</url-pattern>
+		<url-pattern>/DeleteQuestion</url-pattern>
+		<url-pattern>/DeleteQuestionnaire</url-pattern>
+		<url-pattern>/greetings</url-pattern>
 		<url-pattern>/homepage</url-pattern>
 		<url-pattern>/Leaderboard</url-pattern>
-		<url-pattern>/AddProduct</url-pattern>
+		<url-pattern>/logout</url-pattern>
+		<url-pattern>/productReview</url-pattern>
+		<url-pattern>/questionnaireResponse</url-pattern>
 	</filter-mapping>
 
 	<!-- ****************************

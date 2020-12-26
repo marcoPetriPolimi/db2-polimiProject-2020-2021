@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
@@ -12,7 +13,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "OffensiveWord", schema = "db2_project")
-@NamedQuery(name = "OffensiveWord.findByWord", query = "SELECT w FROM OffensiveWord w WHERE w.word = ?1")
+@NamedQueries(value = {
+		@NamedQuery(name = "OffensiveWord.findByWord", query = "SELECT w FROM OffensiveWord w WHERE w.word = ?1"),
+		@NamedQuery(name = "OffensiveWord.findAllWords", query = "SELECT w FROM OffensiveWord w")
+})
 public class OffensiveWord {
 	@Id
 	@GeneratedValue

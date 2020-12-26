@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -26,6 +28,9 @@ import utils.Const;
 @Entity
 @Table(name = "submission", schema = "db2_project",
 	uniqueConstraints = @UniqueConstraint(columnNames={"questionnaireId","userId"}))
+@NamedQueries(value = {
+		@NamedQuery(name = "Submission.findByNameAndQuestionnaire", query = "SELECT s FROM Submission s WHERE s.userSender.id = ?1 AND s.submissionQuestionnaire.id = ?2")
+})
 public class Submission implements Serializable {
 	private static final long serialVersionUID = Const.EJBVersion;
 	

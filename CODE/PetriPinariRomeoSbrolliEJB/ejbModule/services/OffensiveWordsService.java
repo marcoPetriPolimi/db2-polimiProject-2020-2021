@@ -23,4 +23,10 @@ public class OffensiveWordsService {
 		
 		return offensiveWords.stream().anyMatch((offWord) -> offWord.getWord().toUpperCase().equals(word.toUpperCase()));
 	}
+	
+	public List<OffensiveWord> getAllBadWords() {
+		List<OffensiveWord> offensiveWords = em.createNamedQuery("OffensiveWord.findAllWords", OffensiveWord.class).getResultList();
+		
+		return offensiveWords;
+	}
 }

@@ -23,7 +23,7 @@ public class ProductAnswer implements Serializable{
 	
 	@ManyToOne
 	@JoinColumn(name = "questionId")
-	private Question questionId;
+	private Question question;
 	
 	@ManyToOne
 	@JoinColumn(name = "submissionId")
@@ -34,7 +34,7 @@ public class ProductAnswer implements Serializable{
 	public ProductAnswer() {}
 	
 	public ProductAnswer(Question question,String word) {
-		this.questionId = question;
+		this.question = question;
 		this.word = word;
 	}
 	
@@ -46,8 +46,8 @@ public class ProductAnswer implements Serializable{
 		this.submission = submission;
 	}
 	
-	public void setQuestionId(Question questionId) {
-		this.questionId = questionId;
+	public void setQuestionId(Question question) {
+		this.question = question;
 	}
 	
 	public void setWord(String word) {
@@ -63,7 +63,7 @@ public class ProductAnswer implements Serializable{
 	 ********************/
 	
 	public Question getQuestionId() {
-		return questionId;
+		return question;
 	}
 
 

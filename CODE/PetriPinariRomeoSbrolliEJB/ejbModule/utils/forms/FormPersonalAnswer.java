@@ -19,14 +19,14 @@ public class FormPersonalAnswer {
 	 * 		SETTERS		*
 	 ********************/
 	public void setExpertise(int expertise) throws IllegalArgumentException {
-		if (expertise <= 0 || expertise >= 4) {
+		if (expertise <= 0 || expertise >= 3) {
 			throw new IllegalArgumentException();
 		}
 		
 		this.expertise = expertise;
 	}
 	public void setAge(int age) throws IllegalArgumentException {
-		if (age < 0 || age > 150) {
+		if (age < 0 || age > 130) {
 			throw new IllegalArgumentException();
 		}
 		

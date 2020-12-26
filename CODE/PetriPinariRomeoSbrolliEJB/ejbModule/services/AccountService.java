@@ -112,4 +112,10 @@ public class AccountService {
 			throw new UserCredentialsException();
 		}
 	}
+	
+	public void banUser(int userId) {
+		User bannedUser = em.find(User.class, userId);
+		
+		bannedUser.setBlocked(true);
+	}
 }

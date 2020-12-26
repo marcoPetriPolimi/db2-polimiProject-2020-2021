@@ -60,7 +60,6 @@ public class GetHomepage extends HttpThymeleafServlet {
 			e.printStackTrace();
 		}
 		
-		
 		webContext.setVariable("lang", lang);
 		webContext.setVariable("user", user);
 		thymeleaf.process(page,webContext,resp.getWriter());
@@ -73,17 +72,21 @@ public class GetHomepage extends HttpThymeleafServlet {
 	
 	private void putQuestionnaireOfTheDay(WebContext webContext) throws Exception {
 		Questionnaire dailyQuestionnaire = QDS.getQuestionnaireOfTheDay();
+		
 		if(dailyQuestionnaire != null) {
-			
 			List<Question> questions = QDS.getQuestions(dailyQuestionnaire);
 			List<String> questionsString = new ArrayList<String>();
-			for(Question q : questions) {
-			questionsString.add(q.getQuestion());
-			}
 			String message = null;
 			Map<String,String> reviews = RS.getProductReviews(dailyQuestionnaire.getProduct().getId());
-			if (reviews.keySet().isEmpty()) message = "Currently there are no reviews on this product :(";
-			else message = "Users' reviews on this product";
+			
+			for(Question q : questions) {
+				questionsString.add(q.getQuestion());
+			}
+			if (reviews.keySet().isEmpty()) {
+				message = "Currently there are no reviews on this product :(";
+			} else {
+				message = "Users' reviews on this product";
+			}
 			
 			webContext.setVariable("questionnaire", dailyQuestionnaire.getName());
 			webContext.setVariable("questionsString", questionsString);

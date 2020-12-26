@@ -106,7 +106,7 @@ div.mainPanel > div.questionnaireResponse > form > div.question {
 	text-align: center;
 }
 
-div.mainPanel > div.questionnaireResponse > form > div.question > hr {
+div.mainPanel > div.questionnaireResponse > form > div.question > hr, div.mainPanel > div.questionnaireResponse > form > hr {
 	/* positioning and margin */
 	margin-top: 20px;
 	margin-bottom: 20px;
@@ -134,6 +134,7 @@ div.mainPanel {
 	/* positioning and margin */
 	position: relative;
 	top: 150px;
+	margin-bottom: 300px;
 	/* dimensions and padding */
 	padding: 0px;
 	width: 1000px;

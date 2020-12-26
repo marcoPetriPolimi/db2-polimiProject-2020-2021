@@ -34,4 +34,7 @@ public class Const {
 	// error messages before having instantiated the correct lang
 	public static final String unavailableException = "Can't find database driver";
 	public static final String sqlException = "Can't load database";
+	
+	// db values
+	public static final int answersMaxLength = 50;
 }

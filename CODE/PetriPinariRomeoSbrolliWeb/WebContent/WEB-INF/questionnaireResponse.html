@@ -22,32 +22,62 @@
 			<!-- page's content -->
 			<h2 data-th-utext='${questionnaireName}'>Name of the questionnaire</h2>
 			
-			<form>
-				<div data-th-each="question : ${questions}" class="question">
-					<p class="questionText" data-th-utext="${question.getQuestion()}">Question 1</p>
+			<!-- THIS SECTION IS VIEWED WHEN THE USER WANT TO SUBMIT QUESTIONNAIRE PRODUCT'S ANSWERS -->
+			<div data-th-if="${section} == 1">
+				<form method="POST" action="questionnaireResponse">
+					<div data-th-each="question, questStat : ${questions}" class="question">
+						<p class="questionText" data-th-utext="${question.getQuestion()}">Question 1</p>
+						
+						<!-- parsing of the checkbox -->
+						<span data-th-if="${question.getType()} == 1" data-th-each="answer, ansStat : ${question.getQuestionAnswers()}">
+							<input type="checkbox" data-th-id='${"ch_"+ansStat.index}' data-th-name='${"check_"+questStat.index}' data-th-value='${answer.getAnswerText()}'/>
+							<label data-th-for='${"ch_"+ansStat.index}' data-th-utext="${answer.getAnswerText()}">Response 1</label><br/>
+						</span>
+						
+						<!-- parsing of the selects -->
+						<select data-th-if="${question.getType()} == 2" data-th-name='${"sele_"+questStat.index}' required>
+							<option value="" default>Select a response...</option>
+							<option data-th-value='${answer.getAnswerText()}' data-th-each="answer, ansStat : ${question.getQuestionAnswers()}" data-th-utext="${answer.getAnswerText()}">Response 1</option>
+						</select>
+						
+						<!-- parsing of the strings -->
+						<input data-th-if="${question.getType()} == 3" data-th-name='${"text_"+questStat.index}' type="text" placeholder="Write here the response" required/>
+						
+						<!-- parsing of the comments -->
+						<textarea data-th-if="${question.getType()} == 4" data-th-name='${"comm_"+questStat.index}' placeholder="Write here the response" required></textarea>
+						<hr data-th-if="${questStat.index} < ${questStat.size}-1"/>
+					</div>
 					
-					<!-- parsing of the checkbox -->
-					<span data-th-if="${question.getType()} == 1" data-th-each="answer : ${question.getQuestionAnswers()}">
-						<input type="checkbox" data-th-id="${ch_+answer.indexOf​(answer)}" data-th-name="${check_+questions.indexOf​(question)}" data-th-value="${ch_+answer.indexOf​(answer)}"/>
-						<label data-th-for="${ch_+answer.indexOf​(answer)}" data-th-utext="${answer.getAnswerText()}">Response 1</label><br/>
-					</span>
+					<input type="submit" name="product" value="Next" data-th-value='${lang.getString("questRespGoNext")}'/>
+				</form>
+			</div>
+			
+			<!-- THIS SECTION IS VIEWED WHEN THE USER WANT TO SUBMIT QUESTIONNAIRE PERSONAL ANSWERS -->
+			<div data-th-if="${section} == 2">
+				<form method="POST">
+					<select name="sex">
+						<option value="none" default data-th-utext='${lang.getString("questRespSex")}'>You can specify sex...</option>
+						<option value="M">Male</option>
+						<option value="F">Female</option>
+						<option value="U">Undefined</option>
+					</select>
+					<hr>
 					
-					<!-- parsing of the selects -->
-					<select data-th-if="${question.getType()} == 2" data-th-name="${sele_+questions.indexOf​(question)}">
-						<option value="none" default>Select a response...</option>
-						<option data-th-value="${sl_+answer.indexOf​(answer)}" data-th-each="answer : ${question.getQuestionAnswers()}" data-th-utext="${answer.getAnswerText()}">Response 1</option>
+					<input type="number" name="age" placeholder="You can write here your age" data-th-placeholder='${lang.getString("questRespAge")}'/>
+					<hr>
+					
+					<select name="expertise">
+						<option value="none" default data-th-utext='${lang.getString("questRespExp")}'>You can specify expertise level...</option>
+						<option value="L">Low</option>
+						<option value="M">Medium</option>
+						<option value="H">High</option>
 					</select>
 					
-					<!-- parsing of the strings -->
-					<input data-th-if="${question.getType()} == 3" data-th-name="${text_+questions.indexOf​(question)}" type="text" placeholder="Write here the response"/>
-					
-					<!-- parsing of the comments -->
-					<textarea data-th-if="${question.getType()} == 4" data-th-name="${comm_+questions.indexOf​(question)}" placeholder="Write here the response"></textarea>
-					<hr data-th-if="${questions.indexOf​(question)} < ${questions.size()}-1"/>
-				</div>
-				
-				<input type="submit" name="product" value="Submit" data-th-value='${lang.getString("questRespSubmitProduct")}'/>
-			</form>
+					<input type="submit" name="submission" value="Back" formaction="questionnaireResponse?sub=b" data-th-value='${lang.getString("questRespGoBack")}'/>
+					<input type="submit" name="submission" value="Cancel" formaction="questionnaireResponse?sub=c" data-th-value='${lang.getString("questRespCancel")}'/>
+					<input type="submit" name="submission" value="Submit" formaction="questionnaireResponse?sub=s" data-th-value='${lang.getString("questRespSubmit")}'/>
+				</form>
+			</div>
 		</div>
 	</div>
 </body>
