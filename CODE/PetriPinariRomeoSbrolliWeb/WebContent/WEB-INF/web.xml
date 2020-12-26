@@ -77,7 +77,6 @@
 		<url-pattern>/Creation</url-pattern>
 		<url-pattern>/deletion</url-pattern>
 		<url-pattern>/Leaderboard</url-pattern>
-		<url-pattern>/logout</url-pattern>
 		<url-pattern>/CreateQuestion</url-pattern>
 		<url-pattern>/CreateQuestionnaire</url-pattern>
 		<url-pattern>/AddStoredQuestion</url-pattern>

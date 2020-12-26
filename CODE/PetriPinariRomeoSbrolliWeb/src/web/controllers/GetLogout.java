@@ -17,6 +17,7 @@ public class GetLogout extends HttpThymeleafServlet {
 		HttpSession session = req.getSession(false);
 		
 		if (session != null) {
+			cleanSession(session);
 			session.invalidate();
 		}
 		resp.sendRedirect("index");
