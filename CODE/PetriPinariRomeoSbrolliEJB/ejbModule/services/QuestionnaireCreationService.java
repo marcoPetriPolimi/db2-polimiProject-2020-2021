@@ -9,6 +9,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import database.PossibleAnswer;
@@ -136,16 +137,21 @@ public class QuestionnaireCreationService {
 	}
 	
 	public boolean addProduct(String name, byte[] imgByteArray) {
+
+		try {
 		Product prod= em
 				.createQuery("SELECT p "
 						+ "FROM Product p "
 						+ "WHERE p.name=:pName",Product.class)
 				.setParameter("pName", name)
 				.getSingleResult();
-		if (prod.getName().equals(name)) return false;
-		Product newProd= new Product(imgByteArray, name);
-		em.persist(newProd);
-		return true;
+		}
+		catch (NoResultException e) {
+			Product newProd= new Product(imgByteArray, name);
+			em.persist(newProd);
+			return true;
+		}
+		return false;
 
 	}
 	
