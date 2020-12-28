@@ -47,7 +47,6 @@ public class checkProduct extends HttpThymeleafServlet {
 	    }
 		String name= StringEscapeUtils.escapeJava(req.getParameter("pname"));
 		Part imgFile = req.getPart("pimg");
-		System.out.println(imgFile);
 		InputStream imgContent = imgFile.getInputStream();
 		byte[] imgByteArray = ImageUtils.readImage(imgContent);
 		if (name == null | imgByteArray.length == 0) {

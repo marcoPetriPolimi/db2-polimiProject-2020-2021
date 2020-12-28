@@ -6,13 +6,14 @@ import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import database.Product;
 import database.Review;
 import database.User;
 import exceptions.ProductException;
-import exceptions.UserException;
+import exceptions.ReviewAlreadyPresentException;
 
 /*
  * @author Giorgio Romeo
@@ -40,16 +41,26 @@ public class ReviewService {
 		return productReviews.stream().collect(Collectors.toMap(a -> (String) a[0], a -> (String) a[1]));
 	}
 
-	public void addProductReview(int UserId, int productId, String productReview) throws ProductException, UserException {
+	public void addProductReview(User user, Product product, String productReview) throws ProductException, ReviewAlreadyPresentException{
 		
-		Product relatedProduct = em.find(Product.class, productId);
-		if (relatedProduct == null) throw new ProductException("Could not find the requested product");
+		if (product == null) throw new ProductException("Could not find the requested product");
 		
-		User relatedUser = em.find(User.class, UserId);
-		if (relatedUser == null) throw new UserException("The user does not exist");
+		try {
+			em
+			.createQuery("SELECT r.id "
+					   	 + "FROM Review r "
+						 + "WHERE r.user = :relUser AND r.product = :p ")
+			.setParameter("p", product).setParameter("relUser", user).getSingleResult();
+		}catch (NoResultException e) {
+			Review newReview = new Review(user, product, productReview);
+			em.persist(newReview);
+			return;
+		}
 		
-		Review newReview = new Review(relatedUser, relatedProduct, productReview);
-		em.persist(newReview);
+		throw new ReviewAlreadyPresentException("The user has already review the product");
+		
+		
+		
 		
 	}
 

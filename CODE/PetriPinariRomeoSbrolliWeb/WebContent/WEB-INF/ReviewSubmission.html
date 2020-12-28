@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<meta charset="ISO-8859-1">
+<title>Review Product</title>
+<link rel="stylesheet" type="text/css" href="../css/standard.css" data-th-href="@{css/standard.css}"/>
+</head>
+<body>
+	<div class="mainPanel">
+		<nav class="navigator">
+			<div class="navButton"><a href="homepage" data-th-href="@{/homepage}" >Homepage</a></div>
+			<div class="navButton"><a href="homepage" data-th-href="@{/Leaderboard}" >Leaderboard</a></div>
+			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="creation" data-th-href="@{Creation}" >Questionnaire's creation</a></div>
+			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="deletion" data-th-href="@{deletion}" >Questionnaire's deletion</a></div>
+			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="inspection" data-th-href="@{inspection}" >Inspection</a></div>
+			<div class="navButton"><a href="homepage" data-th-href="@{/changeNickname}" data-th-utext='${lang.getString("navigationNickname")}'>Change username</a></div>
+			<div class="navButton logout"><a href="logout" data-th-href="@{/logout}" >Logout</a></div>
+		</nav>
+		<div class="content">
+			<div class="mytable" align="left">
+					<h1 align="center">Product Review</h1>
+			<form action="#" data-th-action="@{/productReview}" method="GET">
+						<fieldset>
+							<p>
+								Enter the review for the product of the day: <input id ="referenceId" type="text" name="productReview" />
+							</p>
+					<input type="submit" name="submit">
+				</fieldset>
+			</form>
+			<div data-th-if='${message!=null}'><br>
+				<p data-th-utext='${message}'>message<br></p>
+			</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
