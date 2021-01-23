@@ -63,9 +63,13 @@ public class GetInspection extends HttpThymeleafServlet {
 		String publicationDate = req.getParameter("publicationDate");
 
 		String selectorAsString = req.getParameter("selector");
+		
+		String refresh_s= req.getParameter("refresh");
+		Integer refresh = (refresh_s!=null)? Integer.parseInt(refresh_s) : 0;
 
 		//if it is his first visit and the user has not input any number yet write answer and
 		if(questionnaireId == null && publicationDate == null && selectorAsString == null) {
+			System.out.println(questionnaireId + "  " + selectorAsString);
 			wrongFormat(req, resp);
 			return;
 		};
@@ -136,7 +140,7 @@ public class GetInspection extends HttpThymeleafServlet {
 		ctx.setVariable("creationDate", creationDate);
 		ctx.setVariable("presentationDate", presentationDate);
 		ctx.setVariable("user", req.getSession().getAttribute("user"));
-		setUserSubsCanc(ctx,idQuestionnaire);
+		setUserSubsCanc(ctx,idQuestionnaire,refresh);
 		thymeleaf.process(path, ctx, resp.getWriter());
 	}
 
@@ -150,10 +154,11 @@ public class GetInspection extends HttpThymeleafServlet {
 	 */
 
 
-	private void setUserSubsCanc(WebContext ctx, Integer idQuestionnaire) {
+	private void setUserSubsCanc(WebContext ctx, Integer idQuestionnaire,int refresh) {
 		if (qas.getSelectedQuestionnaireId()==null || qas.getSelectedQuestionnaireId().intValue()!=idQuestionnaire.intValue()) {
 			qas.setSelectedQuestionnaireId(idQuestionnaire);
 		}
+		if (refresh==1) qas.refreshAnswers();;
 		ctx.setVariable("userSubmitted", qas.getUserSubmissionList());
 		ctx.setVariable("userCanceled", qas.getUserCancelList());
 	}

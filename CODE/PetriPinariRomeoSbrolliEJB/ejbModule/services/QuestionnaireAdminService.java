@@ -12,8 +12,10 @@ import javax.persistence.PersistenceContext;
 import database.*;
 import utils.userInfo.UserPersonalInfo;
 
-
-
+/**
+ * This class is the EJB for the admin services.
+ * @author Cristian Sbrolli
+ */
 @Stateful
 public class QuestionnaireAdminService {
 	private Integer selectedQuestionnaireId;
@@ -55,7 +57,11 @@ public class QuestionnaireAdminService {
 	}
 
 
-
+	/**
+	 * Gets the response of a user to the current inspectioning questionnaire
+	 * @param userId the id of the user for which the response has to be returned
+	 * @return a map containing all the questions and the relative answers of the user
+	 */
 	public Map<Question, List<String>> getUserSubmission(int userId) {
 		Questionnaire quest = em.find(Questionnaire.class, selectedQuestionnaireId.intValue());
 		User user = em.find(User.class, userId);
@@ -96,11 +102,23 @@ public class QuestionnaireAdminService {
 	public List<Object[]> getUserSubmissionList() {
 		return userSubmissionList;
 	}
+	
+	/**
+	 * refreshs the answers from database
+	 */
+	public void refreshAnswers() {
+		this.setSelectedQuestionnaireId(this.selectedQuestionnaireId);
+	}
 
 	public List<Object[]> getUserCancelList() {
 		return userCancelList;
 	}
 
+	/**
+	 * Gets the user's personal answers for the current inspectioning questionnaire, if given
+	 * @param userId the id for which the search has to be done
+	 * @return a utility class containing all the user's personal info given for the current inspectioning questionnaire
+	 */
 	public UserPersonalInfo getUserInfo(int userId) {
 		try {
 		PersonalAnswer pa= em.createQuery("Select pa "

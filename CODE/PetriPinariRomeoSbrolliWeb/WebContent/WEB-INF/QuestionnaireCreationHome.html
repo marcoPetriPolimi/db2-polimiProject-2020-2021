@@ -38,6 +38,7 @@
 		<div class="content">
 			<div class="mytable" align="left">
 				<h1 align="center">Create a Questionnaire</h1>
+				<div data-th-if="${!(questions.isEmpty() && storedQuestions.isEmpty())}">
 						<h2>Questionnaire recap</h2>
 						<table>
 				 			<tr>
@@ -68,7 +69,7 @@
 							<td><a th:href="@{/DeleteQuestion(questionId=${storedQuestion.getId()},isNew=${0})}">Delete</a></td>
 							</tr>
 						</table>
-				
+				</div>
 						<h2>Add a new question</h2>
 						<form action="#" data-th-action="@{/CreateQuestion}" method="POST">
 									<fieldset>

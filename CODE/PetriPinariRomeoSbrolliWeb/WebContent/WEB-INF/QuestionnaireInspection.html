@@ -68,6 +68,7 @@ $(document).ready(function(){
 					<input type="submit" name="submit">
 				</fieldset>
 			</form>
+			<br>
 			<table data-th-if="${questionnaire!=null}">
 				<tr> 
 					<td>Questionnaire ID:</td>
@@ -102,7 +103,11 @@ $(document).ready(function(){
 			 	</tr>
 			</table>
 			<div data-th-if="${questionnaire!=null}">
+			<br>
+			<a data-th-href="@{/inspection(selector=1,idQuestionnaire=${questionnaire},refresh=1)}">Refresh lists</a>
 			<h2>Users that submitted this questionnaire</h2>
+			<div data-th-if="${userSubmitted.isEmpty()}"> None submitted this questionnaire yet! </div>
+			<div data-th-if="${!userSubmitted.isEmpty()}">
 				<table>
 			 	<tr>
 			    	<th>User Id</th>
@@ -114,7 +119,10 @@ $(document).ready(function(){
 					<td><a data-th-href="@{/userSubmission(userId=${user[0]},userNick=${user[1]})}">See Submission</a></td>
 				</tr>
 				</table>	
+			</div>
 			<h2>Users that canceled submission of this questionnaire</h2>
+			<div data-th-if="${userCanceled.isEmpty()}"> None canceled subscription of this questionnaire! </div>
+			<div data-th-if="${!userCanceled.isEmpty()}">
 				<table>
 			 	<tr>
 			    	<th>User Id</th>
@@ -125,7 +133,7 @@ $(document).ready(function(){
 					<td data-th-utext='${user[1]}'>nickname</td>
 				</tr>
 				</table>	
-			
+			</div>
 			</div>
 			</div>
 		</div>

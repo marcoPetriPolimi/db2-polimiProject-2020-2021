@@ -28,7 +28,7 @@ public class LeaderboardService {
 	 */
 	public Map<String, Integer> getGeneralLeaderboard(){
 		List<Object[]> general_users_points = em
-				.createQuery("SELECT u.nickname, u.points FROM User u ORDER BY u.points DESC", Object[].class).getResultList();
+				.createNamedQuery("User.getAllTimeLeaderBoard", Object[].class).getResultList();
 		Map<String, Integer> generalLeaderboard = new LinkedHashMap<String, Integer>();
 		for (int i = 0; i < general_users_points.size(); i++)
 			generalLeaderboard.put((String)general_users_points.get(i)[0], (Integer)general_users_points.get(i)[1]);
@@ -50,7 +50,7 @@ public class LeaderboardService {
 		List<Object[]> questionnaire_users_points = em
 				.createQuery("SELECT u.nickname, s.points "
 						   + "FROM Submission s, User u "
-						   + "WHERE s.submissionQuestionnaire.id = :qId AND u = s.userSender "
+						   + "WHERE s.submissionQuestionnaire.id = :qId AND u = s.userSender AND u.role=1 "
 						   + "ORDER BY s.points DESC", Object[].class).setParameter("qId", questionnaireId).getResultList();
 		Map<String, Integer> questionnaireLeaderboard = new LinkedHashMap<String, Integer>();
 		for (int i = 0; i < questionnaire_users_points.size(); i++)

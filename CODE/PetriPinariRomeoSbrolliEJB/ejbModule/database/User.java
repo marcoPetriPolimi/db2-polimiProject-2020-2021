@@ -29,7 +29,8 @@ import utils.Const;
 @Table(name = "user", schema = "db2_project")
 @NamedQueries(value = {
 	@NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.nickname = ?1"),
-	@NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = ?1")
+	@NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = ?1"),
+	@NamedQuery(name= "User.getAllTimeLeaderBoard", query= "SELECT u.nickname, u.points FROM User u WHERE u.role=1 ORDER BY u.points DESC")
 })
 public class User implements Serializable {
 	private static final long serialVersionUID = Const.EJBVersion;

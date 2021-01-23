@@ -1,11 +1,7 @@
 package services;
-
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import javax.ejb.LocalBean;
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
@@ -21,9 +17,9 @@ import utils.forms.FormQuestion;
 
 /**
  * Session Bean implementation class QuestionnaireCreationService
+ * @author Cristian Sbrolli
  */
 @Stateful
-@LocalBean
 public class QuestionnaireCreationService {
 
 	@PersistenceContext(unitName = "PetriPinariRomeoSbrolliEJB")
@@ -40,6 +36,11 @@ public class QuestionnaireCreationService {
         storedQuestions= new ArrayList<>();
     }
     
+    /**
+     * Add to the currently creating questionnaire a question not already present in database
+     * @param question utility class containing all the new question's info
+     * @throws IllegalArgumentException
+     */
     public void addQuestion(FormQuestion question) throws IllegalArgumentException {
     	if (question.getQuestionText() == null) {
     		throw new IllegalArgumentException();
@@ -47,6 +48,10 @@ public class QuestionnaireCreationService {
     	newQuestions.add(question);
     }
     
+    /**
+     * Method for removing a qustion added to the questionnaire being created
+     * @param questionId id of the question to remove
+     */
     public void removeQuestion(int questionId) {
     	FormQuestion toRemove=null;
     	for (FormQuestion fq: newQuestions) {
@@ -57,21 +62,18 @@ public class QuestionnaireCreationService {
     	}
     }
     
-    
-    public void modifyQuestion(FormQuestion question) {
-    	if (question.getQuestionText() == null) {
-    		throw new IllegalArgumentException();
-    		}
-    	int toModify=-1;
-    	for (FormQuestion fq: newQuestions) if (fq.getQuestion()==question.getQuestion()) toModify=newQuestions.indexOf(fq);
-    	if (toModify == -1) throw new IllegalArgumentException();
-    	newQuestions.set(toModify, question);
-    }
-    
+    /**
+     * Add to the currently creating questionnaire a question already present in database
+     * @param questionId id of the stored question to add
+     */
     public void addStoredQuestion(int questionId) {
     	storedQuestions.add(em.find(Question.class, questionId));
     }
     
+    /**
+     * Removes a selected question for the currently creating questionnaire among the ones that are already present in database
+     * @param questionId id of the stored question to remove
+     */
     public void removeStoredQuestion(int questionId){
     	Question toRemove=null;
     	for (Question q: storedQuestions) {
@@ -82,6 +84,13 @@ public class QuestionnaireCreationService {
     	}
     }
     
+    /**
+     * Create and persist the newly created questionnaire
+     * @param userId user creating the questionnaire
+     * @param name name of the questionnaire
+     * @param presDate date in which the questionnaire has to be presented to users
+     * @param productId product related to questionnaire
+     */
     public void createQuestionnaire(int userId, String name,Date presDate, int productId) {
     	questionnaire= new Questionnaire(name);
     	Product product= em.find(Product.class,	productId);
@@ -103,11 +112,13 @@ public class QuestionnaireCreationService {
     	em.merge(creator);
     }
     
+    /**
+     * Get all the stored questions from other questionnaires
+     * @return the list of all the already present questions in the database
+     */
     public List<Question> getAllStoredQuestions(){
 		List<Question> questions=  em
-				.createQuery("SELECT q "
-							+ "FROM Question q "
-							+ "ORDER BY q.id ASC",Question.class)
+				.createNamedQuery("Question.getAll",Question.class)
 				.getResultList();
 		List<Integer> alreadyStored = new ArrayList<>();
 		for (Question q: storedQuestions) alreadyStored.add(q.getId());
@@ -128,21 +139,25 @@ public class QuestionnaireCreationService {
 		return storedQuestions;
 	}
 
+	/*
+	 * Get all products present in database
+	 */
 	public List<Product> getAllProducts() {
 		return 	em
-				.createQuery("SELECT p "
-							+ "FROM Product p "
-							+ "ORDER BY p.id ASC",Product.class)
+				.createNamedQuery("Product.getAll",Product.class)
 				.getResultList();
 	}
 	
+	/**
+	 * Add a new product
+	 * @param name name of new product
+	 * @param imgByteArray image of new product
+	 * @return true if the product was not present and has been added, false if it was already present
+	 */
 	public boolean addProduct(String name, byte[] imgByteArray) {
 
 		try {
-		Product prod= em
-				.createQuery("SELECT p "
-						+ "FROM Product p "
-						+ "WHERE p.name=:pName",Product.class)
+		em.createNamedQuery("Product.getById",Product.class)
 				.setParameter("pName", name)
 				.getSingleResult();
 		}
