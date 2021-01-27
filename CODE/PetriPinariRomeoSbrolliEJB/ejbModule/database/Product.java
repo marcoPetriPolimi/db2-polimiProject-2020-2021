@@ -31,7 +31,7 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Basic(fetch=FetchType.LAZY)
+	@Basic(fetch=FetchType.LAZY) //FIXME why not eager??
 	@Lob
 	private byte[] image;
 	

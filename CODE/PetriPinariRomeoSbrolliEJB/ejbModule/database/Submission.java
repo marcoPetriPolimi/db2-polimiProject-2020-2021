@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -46,11 +48,11 @@ public class Submission implements Serializable {
 	@JoinColumn(name = "userId")
 	private User userSender;
 	
-	@OneToMany (mappedBy = "submission",  cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany (fetch = FetchType.EAGER, mappedBy = "submission",  cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductAnswer> productAnswers;
 	
-	@OneToMany (mappedBy = "submission",  cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<PersonalAnswer> personalAnswers;
+	@OneToOne (fetch = FetchType.EAGER, mappedBy = "submission", cascade = CascadeType.ALL, orphanRemoval = true)
+	private PersonalAnswer personalAnswer;
 	private int submitted;
 	/**
 	 * The points column of the database can be null, so an object is needed because a primitive type cannot be null.
@@ -76,11 +78,6 @@ public class Submission implements Serializable {
 		productAnswer.setSubmission(this);
 	}
 	
-	public void addPersonalAnswer(PersonalAnswer personalAnswer) {
-		getPersonalAnswers().add(personalAnswer);
-		personalAnswer.setSubmission(this);
-	}
-	
 	/* ******************
 	 * 		SETTERS		*
 	 ********************/
@@ -94,8 +91,8 @@ public class Submission implements Serializable {
 		this.userSender = userSender;
 	}
 
-	public void setPersonalAnswers(List<PersonalAnswer> personalAnswers) {
-		this.personalAnswers = personalAnswers;
+	public void setPersonalAnswers(PersonalAnswer personalAnswers) {
+		this.personalAnswer = personalAnswers;
 	}
 	public void setId(int id) {
 		this.id = id;
@@ -154,8 +151,8 @@ public class Submission implements Serializable {
 		return userSender;
 	}
 	
-	public List<PersonalAnswer> getPersonalAnswers() {
-		return personalAnswers;
+	public PersonalAnswer getPersonalAnswers() {
+		return personalAnswer;
 	}
 	
 }

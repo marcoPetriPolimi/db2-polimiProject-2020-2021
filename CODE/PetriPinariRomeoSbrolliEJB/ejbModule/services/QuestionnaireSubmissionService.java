@@ -191,7 +191,7 @@ public class QuestionnaireSubmissionService {
 				em.persist(productAnswers.get(i));
 			}
 			if (personalAnswer!= null) {
-				toCreate.addPersonalAnswer(personalAnswer);
+				toCreate.setPersonalAnswers(personalAnswer);;
 				em.persist(personalAnswer);
 			}
 		}

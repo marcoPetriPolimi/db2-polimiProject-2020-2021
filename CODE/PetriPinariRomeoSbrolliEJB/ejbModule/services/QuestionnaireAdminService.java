@@ -65,16 +65,12 @@ public class QuestionnaireAdminService {
 	public Map<Question, List<String>> getUserSubmission(int userId) {
 		Questionnaire quest = em.find(Questionnaire.class, selectedQuestionnaireId.intValue());
 		User user = em.find(User.class, userId);
-		List<ProductAnswer> productAnswers= em
-				.createQuery("SELECT pa "
-							+ "FROM ProductAnswer pa,Submission s "
-							+ "WHERE s.userSender = :uId AND s.submissionQuestionnaire = :qId AND s.submitted = 1 AND pa.submission.id=s.id "
-							+ "ORDER BY pa.question ASC",ProductAnswer.class)
-				.setParameter("qId",quest)
-				.setParameter("uId",user)
-				.getResultList();
+		Submission userSubmission= em.createNamedQuery("Submission.findByNameAndQuestionnaire", Submission.class)
+				.setParameter(1, userId)
+				.setParameter(2, selectedQuestionnaireId)
+				.getSingleResult();
+		List<ProductAnswer> productAnswers= userSubmission.getProductAnswers();
 		List<Question> questions= quest.getQuestions();
-
 		Map<Question, List<String>> questionAnswers= new HashMap<>();
 		for (Question q: questions) {
 			List<String> answers= new ArrayList<>();
@@ -121,12 +117,11 @@ public class QuestionnaireAdminService {
 	 */
 	public UserPersonalInfo getUserInfo(int userId) {
 		try {
-		PersonalAnswer pa= em.createQuery("Select pa "
-				+ "FROM Submission s,PersonalAnswer pa "
-				+ "WHERE pa.submission=s AND s.userSender.id=:uId AND s.submissionQuestionnaire.id=:qId",PersonalAnswer.class)
-				.setParameter("uId", userId)
-				.setParameter("qId", selectedQuestionnaireId)
-				.getSingleResult();
+		Submission userSubmission= em.createNamedQuery("Submission.findByNameAndQuestionnaire", Submission.class)
+					.setParameter(1, userId)
+					.setParameter(2, selectedQuestionnaireId)
+					.getSingleResult();
+		PersonalAnswer pa= userSubmission.getPersonalAnswers();
 		return new UserPersonalInfo(pa.getAge(),pa.getExpertise(),pa.getSex());
 		}
 		catch(NoResultException e){
