@@ -3,15 +3,24 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Congratulations</title>
+<link rel="stylesheet" type="text/css" href="../css/standard.css" data-th-href="@{css/standard.css}"/>
 </head>
 <body>
 	<div class="mainPanel">
-		<nav class="navigator">			
-			<div class="navButton"><a href="homepage" data-th-href="@{/homepage}" data-th-utext='${lang.getString("navigationHome")}'>Homepage</a></div>
+		<nav class="navigator">
+			<div class="navButton"><a href="homepage" data-th-href="@{/homepage}" >Homepage</a></div>
+			<div class="navButton"><a href="homepage" data-th-href="@{/Leaderboard}" >Leaderboard</a></div>
+			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="creation" data-th-href="@{Creation}" >Questionnaire's creation</a></div>
+			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="deletion" data-th-href="@{deletion}" >Questionnaire's deletion</a></div>
+			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="inspection" data-th-href="@{inspection}" >Inspection</a></div>
+			<div class="navButton"><a href="homepage" data-th-href="@{/changeNickname}" data-th-utext='${lang.getString("navigationNickname")}'>Change username</a></div>
+			<div class="navButton logout"><a href="logout" data-th-href="@{/logout}" >Logout</a></div>
 		</nav>
 	</div>
 	<div class="content" data-th-utext='${lang.getString("Congratz")}' >
-		
 	</div>
+	<div class="content" data-th-utext='${nickName}'>
+	</div>
+	
 </body>
 </html>
