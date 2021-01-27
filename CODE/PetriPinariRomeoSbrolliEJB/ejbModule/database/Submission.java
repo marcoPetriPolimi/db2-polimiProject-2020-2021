@@ -1,6 +1,7 @@
 package database;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -71,6 +72,7 @@ public class Submission implements Serializable {
 		this.submitted = submitted;
 		this.points = points;
 		this.date = date;
+		this.productAnswers = new ArrayList<>();
 	}
 	
 	public void addProductAnswer(ProductAnswer productAnswer) {
@@ -93,12 +95,16 @@ public class Submission implements Serializable {
 
 	public void setPersonalAnswers(PersonalAnswer personalAnswers) {
 		this.personalAnswer = personalAnswers;
+		personalAnswers.setSubmission(this);
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
 	public void setProductAnswers(List<ProductAnswer> productAnswers) {
 		this.productAnswers = productAnswers;
+		for (ProductAnswer p : productAnswers) {
+			p.setSubmission(this);
+		}
 	}
 	public void setQuestionnaire(Questionnaire submissionQuestionnaire) {
 		this.submissionQuestionnaire = submissionQuestionnaire;

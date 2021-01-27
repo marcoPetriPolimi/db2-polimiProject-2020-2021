@@ -19,7 +19,7 @@ public class FormPersonalAnswer {
 	 * 		SETTERS		*
 	 ********************/
 	public void setExpertise(int expertise) throws IllegalArgumentException {
-		if (expertise <= 0 || expertise >= 3) {
+		if (expertise < 0 || expertise > 3) {
 			throw new IllegalArgumentException();
 		}
 		

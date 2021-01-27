@@ -55,6 +55,7 @@ public class AccountService {
 	 */
 	public User findUser(int userId) {
 		User user = em.find(User.class, userId);
+		em.refresh(user);
 		return user;
 	}
 	
@@ -64,6 +65,7 @@ public class AccountService {
 		if (users.size() != 1) {
 			throw new UserException();
 		} else {
+			em.refresh(users.get(0));
 			return users.get(0);
 		}
 	}
@@ -74,6 +76,7 @@ public class AccountService {
 		if (users.size() != 1) {
 			throw new UserException();
 		} else {
+			em.refresh(users.get(0));
 			return users.get(0);
 		}
 	}
@@ -86,6 +89,7 @@ public class AccountService {
 	 */
 	public boolean login(String nickname, String password) throws UserException {
 		User user = findUser(nickname);
+		em.refresh(user);
 		
 		return user.getPassword().equals(password);
 	}

@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS ProductAnswer (
 --
 -- TABLE FOR PERSONAL ANSWERS
 -- Additional info sex: M = male, F = female, U = undefined
--- Additional info Expertise: 0 = none, 1 = low, 2 = medium, 3 = high
+-- Additional info Expertise: 1 = low, 2 = medium, 3 = high
 --
 CREATE TABLE IF NOT EXISTS PersonalAnswer (
 	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS PersonalAnswer (
 	expertise SMALLINT UNSIGNED,
 	FOREIGN KEY (submissionId) REFERENCES Submission(id) ON UPDATE CASCADE ON DELETE CASCADE,
 	CHECK(sex = 'M' OR sex = 'F' OR sex = 'U'),
-	CHECK(expertise = 0 OR expertise = 1 OR expertise = 2 OR expertise = 3)
+	CHECK(expertise = 1 OR expertise = 2 OR expertise = 3)
 ) AUTO_INCREMENT = 1;
 
 --

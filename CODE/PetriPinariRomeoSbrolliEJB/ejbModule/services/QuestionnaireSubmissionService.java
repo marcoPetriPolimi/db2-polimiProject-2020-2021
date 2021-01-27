@@ -103,7 +103,8 @@ public class QuestionnaireSubmissionService {
 			personalAnswer.setAge(answers.getAge());
 		}
 		if (answers.getExpertise() != -1) {
-			personalAnswer.setExpertise(answers.getExpertise());
+			System.out.println(answers.getExpertise());
+			personalAnswer.setExpertise(answers.getExpertise() == 0 ? null : answers.getExpertise());
 		}
 		if (answers.getSex() != 'X') {
 			personalAnswer.setSex(answers.getSex());
@@ -183,18 +184,16 @@ public class QuestionnaireSubmissionService {
 	private void submitOrCancelQuestionnaire(int userId, boolean submit) {
 		User relatedUser = em.find(User.class, userId);
 		Submission toCreate = new Submission(questionnaire,relatedUser,submit? 1 : 0,0,new Date());
-		em.persist(toCreate);
 		
 		if (submit) {
 			for (int i = 0; i < productAnswers.size(); i++) {
 				toCreate.addProductAnswer(productAnswers.get(i));
-				em.persist(productAnswers.get(i));
 			}
-			if (personalAnswer!= null) {
-				toCreate.setPersonalAnswers(personalAnswer);;
-				em.persist(personalAnswer);
+			if (personalAnswer != null) {
+				toCreate.setPersonalAnswers(personalAnswer);
 			}
 		}
+		em.persist(toCreate);
 	}
 	
 	@Remove
