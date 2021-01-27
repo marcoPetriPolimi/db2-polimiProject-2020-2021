@@ -1,12 +1,18 @@
 package database;
+import java.util.Map;
+
 import javax.persistence.Basic;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -30,6 +36,13 @@ public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
+	@ElementCollection(fetch = FetchType.LAZY)
+	@CollectionTable(name = "review",joinColumns = @JoinColumn(name="productId"))
+	@MapKeyJoinColumn(name = "userId")
+	@Column(name = "productReview")
+	private Map<User, String> reviews;
+
 	
 	@Basic(fetch=FetchType.LAZY) //FIXME why not eager??
 	@Lob
@@ -56,6 +69,10 @@ public class Product {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public Map<User, String> getReviews() {
+		return reviews;
+	}
 	
 	/* ******************
 	 * 		SETTERS		*
@@ -69,5 +86,13 @@ public class Product {
 	public String getName() {
 		return name;
 	}
-
+	
+	public void setReviews(Map<User, String> reviews) {
+		this.reviews = reviews;
+	}
+	
+	public void addReview(User user,String review) {
+		this.reviews.put(user, review);
+	}
+	
 }

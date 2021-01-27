@@ -47,7 +47,7 @@ public class GetProductReview extends HttpThymeleafServlet {
 		String productReview = req.getParameter("productReview");
 		if (productReview != null) {
 			try {
-				rs.addProductReview((User) req.getSession().getAttribute("user"), dailyProduct, productReview);
+				rs.addProductReview((User) req.getSession().getAttribute("user"), dailyProduct.getId(), productReview);
 				resp.sendRedirect("homepage");
 			} catch (ProductException e) {
 				message = "Sorry, currently there is no product available";

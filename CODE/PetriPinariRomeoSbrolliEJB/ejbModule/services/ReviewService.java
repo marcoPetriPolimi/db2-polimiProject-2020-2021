@@ -6,11 +6,9 @@ import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import database.Product;
-import database.Review;
 import database.User;
 import exceptions.ProductException;
 import exceptions.ReviewAlreadyPresentException;
@@ -32,36 +30,17 @@ public class ReviewService {
 	 * @return A map with key the user nickname and with value his review of the product 
 	 */
 	public Map<String, String> getProductReviews(int productId){
-		List<Object[]> productReviews = em
-				.createQuery("SELECT u.nickname, r.productReview "
-						   + "FROM Review r, User u "
-						   + "WHERE r.user = u AND r.product.id = :pId ",Object[].class)
-				.setParameter("pId", productId).getResultList();
-		
-		return productReviews.stream().collect(Collectors.toMap(a -> (String) a[0], a -> (String) a[1]));
+		Product prod= em.find(Product.class, productId);
+		Map<User,String> reviews= prod.getReviews();
+		return reviews.keySet().stream().collect(Collectors.toMap(u -> (String) u.getNickname(), u -> reviews.get(u)));
 	}
 
-	public void addProductReview(User user, Product product, String productReview) throws ProductException, ReviewAlreadyPresentException{
-		
-		if (product == null) throw new ProductException("Could not find the requested product");
-		
-		try {
-			em
-			.createQuery("SELECT r.id "
-					   	 + "FROM Review r "
-						 + "WHERE r.user = :relUser AND r.product = :p ")
-			.setParameter("p", product).setParameter("relUser", user).getSingleResult();
-		}catch (NoResultException e) {
-			Review newReview = new Review(user, product, productReview);
-			em.persist(newReview);
-			return;
-		}
-		
-		throw new ReviewAlreadyPresentException("The user has already review the product");
-		
-		
-		
-		
+	public void addProductReview(User user, int productId, String productReview) throws ProductException, ReviewAlreadyPresentException{
+		Product prod= em.find(Product.class, productId);
+		if (prod == null) throw new ProductException("Could not find the requested product");
+		if (prod.getReviews().keySet().stream().map(u -> u.getId()).collect(Collectors.toList()).contains(user.getId()))
+			throw new ReviewAlreadyPresentException("The user has already review the product");
+		else prod.addReview(user, productReview);		
 	}
 
 }
