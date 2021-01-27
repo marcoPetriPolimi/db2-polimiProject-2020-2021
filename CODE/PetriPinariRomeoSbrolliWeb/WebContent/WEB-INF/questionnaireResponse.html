@@ -20,7 +20,7 @@
 		</nav>
 		<div class="questionnaireResponse content">
 			<!-- page's content -->
-			<h2 data-th-utext='${questionnaireName}'>Name of the questionnaire</h2>
+			<h2 align="center" data-th-utext='${questionnaireName}'>Name of the questionnaire</h2>
 			
 			<!-- THIS SECTION IS VIEWED WHEN THE USER WANT TO SUBMIT QUESTIONNAIRE PRODUCT'S ANSWERS -->
 			<div data-th-if="${section} == 1">
@@ -47,7 +47,7 @@
 						<textarea data-th-if="${question.getType()} == 4" data-th-name='${"comm_"+questStat.index}' placeholder="Write here the response" required></textarea>
 						<hr data-th-if="${questStat.index} < ${questStat.size}-1"/>
 					</div>
-					
+					<br>
 					<input type="submit" name="product" value="Next" data-th-value='${lang.getString("questRespGoNext")}'/>
 				</form>
 			</div>

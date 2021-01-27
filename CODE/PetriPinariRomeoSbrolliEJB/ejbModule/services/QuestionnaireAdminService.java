@@ -123,8 +123,9 @@ public class QuestionnaireAdminService {
 		try {
 		PersonalAnswer pa= em.createQuery("Select pa "
 				+ "FROM Submission s,PersonalAnswer pa "
-				+ "WHERE pa.submission=s AND s.userSender.id=:uId ",PersonalAnswer.class)
+				+ "WHERE pa.submission=s AND s.userSender.id=:uId AND s.submissionQuestionnaire.id=:qId",PersonalAnswer.class)
 				.setParameter("uId", userId)
+				.setParameter("qId", selectedQuestionnaireId)
 				.getSingleResult();
 		return new UserPersonalInfo(pa.getAge(),pa.getExpertise(),pa.getSex());
 		}
