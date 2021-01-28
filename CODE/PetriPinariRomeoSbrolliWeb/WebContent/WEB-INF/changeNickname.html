@@ -11,7 +11,7 @@
 	<div class="mainPanel">
 		<nav class="navigator">
 			<div class="navButton"><a href="homepage" data-th-href="@{/homepage}" data-th-utext='${lang.getString("navigationHome")}'>Homepage</a></div>
-			<div class="navButton"><a href="homepage" data-th-href="@{/Leaderboard}" data-th-utext='${lang.getString("navigationLeaderboard")}'>Leaderboard</a></div>
+			<div class="navButton" data-th-if="${user.getRole() == 1}"><a href="homepage" data-th-href="@{/Leaderboard}" data-th-utext='${lang.getString("navigationLeaderboard")}'>Leaderboard</a></div>
 			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="creation" data-th-href="@{Creation}" data-th-utext='${lang.getString("navigationCreation")}'>Questionnaire's creation</a></div>
 			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="deletion" data-th-href="@{deletion}" data-th-utext='${lang.getString("navigationDeletion")}'>Questionnaire's deletion</a></div>
 			<div class="navButton" data-th-if="${user.getRole() == 2}"><a href="inspection" data-th-href="@{inspection}" data-th-utext='${lang.getString("navigationInspection")}'>Inspection</a></div>
