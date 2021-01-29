@@ -23,6 +23,9 @@ import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 import utils.Const;
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.REFRESH;
+import static javax.persistence.CascadeType.REMOVE;
 
 /**
  * This class is the EJB for the submission database class.
@@ -49,10 +52,10 @@ public class Submission implements Serializable {
 	@JoinColumn(name = "userId")
 	private User userSender;
 	
-	@OneToMany (fetch = FetchType.EAGER, mappedBy = "submission",  cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany (fetch = FetchType.LAZY, mappedBy = "submission",  cascade = { PERSIST, REMOVE }, orphanRemoval = true)
 	private List<ProductAnswer> productAnswers;
 	
-	@OneToOne (fetch = FetchType.EAGER, mappedBy = "submission", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(mappedBy = "submission", cascade = CascadeType.ALL, orphanRemoval = true)
 	private PersonalAnswer personalAnswer;
 	private int submitted;
 	/**

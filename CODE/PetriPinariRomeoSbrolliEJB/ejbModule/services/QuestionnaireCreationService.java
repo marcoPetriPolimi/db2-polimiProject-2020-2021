@@ -96,7 +96,7 @@ public class QuestionnaireCreationService {
     	Product product= em.find(Product.class,	productId);
     	questionnaire.setProduct(product);
     	User creator= em.find(User.class, userId);
-    	creator.addQuestionnaire(questionnaire);
+    	questionnaire.setCreator(creator);
     	questionnaire.setPresDate(presDate);
     	for (FormQuestion fq: newQuestions) {
     		Question newQuestion = new Question(fq.getQuestionText(),fq.getType());

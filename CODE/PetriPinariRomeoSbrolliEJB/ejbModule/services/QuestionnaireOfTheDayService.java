@@ -108,22 +108,6 @@ public class QuestionnaireOfTheDayService {
 	}
 
 	/**
-	 * Require one question based on its ID
-	 */
-	//FIXME non si può semplicemente prendere la question con la find sul suo ID???
-	public Question getQuestion(int questionnaireId, int questionId) throws QuestionnaireException {
-
-		Questionnaire questionnaire = em.find(Questionnaire.class, questionnaireId);
-		
-		List<Question> questions = questionnaire.getQuestions();
-		
-		for (Question q: questions) {
-			if (q.getId()==questionId) return q;
-		}
-		return null;
-	}
-
-	/**
 	 * get all related questions to one questionnaire
 	 */
 	public List<Question> getQuestions(int questionnaireId) throws QuestionnaireException {

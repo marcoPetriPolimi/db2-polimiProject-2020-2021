@@ -20,10 +20,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "possibleAnswer", schema = "db2_project")
 public class PossibleAnswer implements Serializable {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	@Id

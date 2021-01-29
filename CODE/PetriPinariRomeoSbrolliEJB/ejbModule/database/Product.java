@@ -44,7 +44,7 @@ public class Product {
 	private Map<User, String> reviews;
 
 	
-	@Basic(fetch=FetchType.LAZY) //FIXME why not eager??
+	@Basic(fetch=FetchType.EAGER)
 	@Lob
 	private byte[] image;
 	
@@ -94,5 +94,4 @@ public class Product {
 	public void addReview(User user,String review) {
 		this.reviews.put(user, review);
 	}
-	
 }
