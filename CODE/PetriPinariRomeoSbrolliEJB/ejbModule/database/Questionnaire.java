@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,12 +15,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import utils.Const;
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.DETACH;
+import static javax.persistence.CascadeType.REFRESH;
 
 /**
  * This class is the EJB for the Questionnaire database table.
@@ -48,9 +50,6 @@ public class Questionnaire implements Serializable{
 	@Column(unique=true)
 	private String name;
 
-	@OneToMany (mappedBy = "submissionQuestionnaire", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Submission> submissions;
-
 	@ManyToOne
 	@JoinColumn(name= "product")
 	private Product product;
@@ -59,7 +58,7 @@ public class Questionnaire implements Serializable{
 	@JoinColumn(name = "creatorId")
 	private User creator;
 	
-	@ManyToMany ( cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+	@ManyToMany ( cascade = { PERSIST, MERGE }, fetch = FetchType.EAGER)
 	@JoinTable(name="inclusion",
 	joinColumns=@JoinColumn(name="questionnaireId"),
 	inverseJoinColumns=@JoinColumn(name="questionId"))
@@ -100,11 +99,6 @@ public class Questionnaire implements Serializable{
 		this.name = name;
 	}
 	
-	
-	public void setSubmissions(List<Submission> submissions) {
-		this.submissions = submissions;
-	}
-	
 	public void setProduct(Product product) {
 		this.product = product;
 	}
@@ -130,10 +124,6 @@ public class Questionnaire implements Serializable{
 	
 	public String getName() {
 		return name;
-	}
-
-	public List<Submission> getSubmissions() {
-		return submissions;
 	}
 	
 	public Product getProduct() {

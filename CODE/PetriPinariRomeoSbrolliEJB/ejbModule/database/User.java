@@ -55,15 +55,6 @@ public class User implements Serializable {
 	private boolean blocked;
 	private int role;
 	
-	@OneToMany(mappedBy = "creator",  cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Questionnaire> questionnaires;
-	
-	/**
-	 * Reverse relationship for the 1:N relationship with the submissions.
-	 */
-	@OneToMany(mappedBy="userSender")
-	private Collection<Submission> submissions;
-	
 	public User() {
 	}
 	public User(String nickname, String password, String email, Date registration, Integer points, boolean blocked, int role) {
@@ -76,26 +67,12 @@ public class User implements Serializable {
 		this.role			= role;
 	}
 	
-	
-	public void addQuestionnaire(Questionnaire questionnaire) {
-		getQuestionnaires().add(questionnaire);
-		questionnaire.setCreator(this);
-	}
-	
 	/* ******************
 	 * 		SETTERS		*
 	 ********************/
 	
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public void setQuestionnaires(List<Questionnaire> questionnaires) {
-		this.questionnaires = questionnaires;
-	}
-
-	public void setSubmissions(Collection<Submission> submissions) {
-		this.submissions = submissions;
 	}
 	
 	public void setNickname(String nickname) {
@@ -128,14 +105,6 @@ public class User implements Serializable {
 	
 	public int getId() {
 		return id;
-	}
-	
-	public List<Questionnaire> getQuestionnaires() {
-		return questionnaires;
-	}
-	
-	public Collection<Submission> getSubmissions() {
-		return submissions;
 	}
 	
 	public String getNickname() {

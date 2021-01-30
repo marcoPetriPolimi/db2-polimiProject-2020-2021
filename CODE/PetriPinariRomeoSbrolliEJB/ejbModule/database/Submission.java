@@ -23,6 +23,9 @@ import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 import utils.Const;
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.REFRESH;
+import static javax.persistence.CascadeType.REMOVE;
 
 /**
  * This class is the EJB for the submission database class.
@@ -36,23 +39,23 @@ import utils.Const;
 })
 public class Submission implements Serializable {
 	private static final long serialVersionUID = Const.EJBVersion;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "questionnaireId")
 	private Questionnaire submissionQuestionnaire;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "userId")
 	private User userSender;
-	
-	@OneToMany (mappedBy = "submission",  cascade = CascadeType.ALL, orphanRemoval = true)
+
+	@OneToMany (fetch = FetchType.LAZY, mappedBy = "submission",  cascade = { PERSIST, REMOVE }, orphanRemoval = true)
 	private List<ProductAnswer> productAnswers;
-	
-	@OneToOne (mappedBy = "submission", cascade = CascadeType.ALL, orphanRemoval = true)
+
+	@OneToOne(mappedBy = "submission", cascade = CascadeType.ALL, orphanRemoval = true)
 	private PersonalAnswer personalAnswer;
 	private int submitted;
 	/**
@@ -64,7 +67,7 @@ public class Submission implements Serializable {
 	 */
 	@Temporal(TemporalType.DATE)
 	private Date date;
-	
+
 	public Submission() {}
 	public Submission(Questionnaire submissionQuestionnaire, User userSender, int submitted, Integer points, Date date) {
 		this.submissionQuestionnaire = submissionQuestionnaire;
@@ -74,16 +77,16 @@ public class Submission implements Serializable {
 		this.date = date;
 		this.productAnswers = new ArrayList<>();
 	}
-	
+
 	public void addProductAnswer(ProductAnswer productAnswer) {
 		getProductAnswers().add(productAnswer);
 		productAnswer.setSubmission(this);
 	}
-	
+
 	/* ******************
 	 * 		SETTERS		*
 	 ********************/
-	
+
 
 	public void setSubmissionQuestionnaire(Questionnaire submissionQuestionnaire) {
 		this.submissionQuestionnaire = submissionQuestionnaire;
@@ -121,7 +124,7 @@ public class Submission implements Serializable {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	
+
 	/* ******************
 	 * 		GETTERS		*
 	 ********************/
@@ -140,25 +143,25 @@ public class Submission implements Serializable {
 	public Date getDate() {
 		return date;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public List<ProductAnswer> getProductAnswers() {
 		return productAnswers;
 	}
-	
+
 	public Questionnaire getSubmissionQuestionnaire() {
 		return submissionQuestionnaire;
 	}
-	
+
 	public User getUserSender() {
 		return userSender;
 	}
-	
+
 	public PersonalAnswer getPersonalAnswers() {
 		return personalAnswer;
 	}
-	
+
 }
