@@ -45,11 +45,11 @@ CREATE TABLE IF NOT EXISTS Questionnaire (
 	creatorId INT UNSIGNED,
 	name VARCHAR(50) NOT NULL,
 	date DATE NOT NULL,
-    presDate DATE NOT NULL,
+	presDate DATE NOT NULL,
 	product INT UNSIGNED NOT NULL,
 	UNIQUE KEY(name),
-    UNIQUE KEY(presDate),
-    FOREIGN KEY(creatorId) REFERENCES User(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	UNIQUE KEY(presDate),
+	FOREIGN KEY(creatorId) REFERENCES User(id) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY(product) REFERENCES Product(id) ON UPDATE CASCADE ON DELETE CASCADE
 ) AUTO_INCREMENT = 1;
 
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS Submission (
 	submitted BOOL NOT NULL,
 	points INT UNSIGNED NOT NULL,
 	date DATETIME NOT NULL,
-    UNIQUE KEY(questionnaireId,userId),
+	UNIQUE KEY(questionnaireId,userId),
 	FOREIGN KEY (questionnaireId) REFERENCES Questionnaire(id) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY (userId) REFERENCES User(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS Inclusion (
 	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 	questionnaireId INT UNSIGNED,
 	questionId INT UNSIGNED,
-    UNIQUE KEY(questionnaireId,questionId),
+	UNIQUE KEY(questionnaireId,questionId),
 	FOREIGN KEY (questionnaireId) REFERENCES Questionnaire(id) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY (questionId) REFERENCES Question(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -164,7 +164,7 @@ CREATE TABLE IF NOT EXISTS UserLog (
 	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 	userId INT UNSIGNED,
 	datetime TIMESTAMP NOT NULL,
-    FOREIGN KEY(userId) REFERENCES User(id) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY(userId) REFERENCES User(id) ON UPDATE CASCADE ON DELETE CASCADE
 ) AUTO_INCREMENT = 1;
 
 
@@ -183,14 +183,14 @@ BEFORE INSERT ON Questionnaire
 FOR EACH ROW
 BEGIN
 	DECLARE isAdmin INT;
-    
-    	SELECT role into isAdmin FROM User WHERE id = NEW.creatorId;
-    	
+	
+		SELECT role into isAdmin FROM User WHERE id = NEW.creatorId;
+		
 	IF (isAdmin <> 2) THEN
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Only admins can create questionnaires';
 	END IF;
 END$$
-    
+	
 DELIMITER ;
 
 DELIMITER $$
@@ -263,22 +263,22 @@ BEFORE UPDATE ON User
 FOR EACH ROW
 BEGIN
 		DECLARE iteration INT DEFAULT 1; 
-        DECLARE offence VARCHAR(50);
-        DECLARE potentialOffence VARCHAR(50);
+		DECLARE offence VARCHAR(50);
+		DECLARE potentialOffence VARCHAR(50);
 		DECLARE max_id INTEGER default 0;
-        
-        SELECT LCASE(new.nickname) INTO potentialOffence; 
-        SELECT LCASE(word) INTO offence FROM offensiveWord WHERE offensiveWord.id = 1;
+		
+		SELECT LCASE(new.nickname) INTO potentialOffence; 
+		SELECT LCASE(word) INTO offence FROM offensiveWord WHERE offensiveWord.id = 1;
 		SELECT MAX(id) INTO max_id FROM offensiveWord;
-        
-        LABEL1: WHILE (iteration <= max_id) DO
+		
+		LABEL1: WHILE (iteration <= max_id) DO
 					IF ( LOCATE(offence, potentialOffence) <> 0 ) THEN -- function locate is position sensitive
 						SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Nickname should not contain offensive words. -UPD473';
 					END IF;
-                    
-                    SET iteration = iteration + 1;
-                    SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = iteration;
-                    
+					
+					SET iteration = iteration + 1;
+					SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = iteration;
+					
 				END WHILE LABEL1;
 END$$
 
@@ -293,22 +293,22 @@ BEFORE INSERT ON user
 FOR EACH ROW
 BEGIN
 		DECLARE iteration INT DEFAULT 1; 
-        DECLARE offence VARCHAR(50);
-        DECLARE potentialOffence VARCHAR(50);
+		DECLARE offence VARCHAR(50);
+		DECLARE potentialOffence VARCHAR(50);
 		DECLARE max_id INTEGER default 0;
-        
-        SELECT LCASE(new.nickname) INTO potentialOffence; 
-        SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = 1;
+		
+		SELECT LCASE(new.nickname) INTO potentialOffence; 
+		SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = 1;
 		SELECT MAX(id) INTO max_id FROM offensiveWord;
-        
-        LABEL1: WHILE (iteration <= max_id) DO
+		
+		LABEL1: WHILE (iteration <= max_id) DO
 					IF ( LOCATE(offence, potentialOffence) <> 0 ) THEN -- function locate is position sensitive
 						SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Nicknames should not contain offensive words. -1N53R7';
 					END IF;
-                    
-                    SET iteration = iteration + 1;
-                    SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = iteration;
-                    
+					
+					SET iteration = iteration + 1;
+					SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = iteration;
+					
 				END WHILE LABEL1;
 END$$
 
@@ -324,22 +324,22 @@ BEFORE INSERT ON question
 FOR EACH ROW
 BEGIN
 		DECLARE iteration INT DEFAULT 1; 
-        DECLARE offence VARCHAR(50);
-        DECLARE potentialOffence VARCHAR(50);
+		DECLARE offence VARCHAR(50);
+		DECLARE potentialOffence VARCHAR(50);
 		DECLARE max_id INTEGER default 0;
-        
-        SELECT LCASE(new.question) INTO potentialOffence; 
-        SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = 1;
+		
+		SELECT LCASE(new.question) INTO potentialOffence; 
+		SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = 1;
 		SELECT MAX(id) INTO max_id FROM offensiveWord;
-        
-        LABEL1: WHILE (iteration <= max_id) DO
+		
+		LABEL1: WHILE (iteration <= max_id) DO
 					IF ( LOCATE(offence, potentialOffence) <> 0 ) THEN -- function locate is position sensitive
 						SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Questions should not contain offensive words. Check specifications.';
 					END IF;
-                    
-                    SET iteration = iteration + 1;
-                    SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = iteration;
-                    
+					
+					SET iteration = iteration + 1;
+					SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = iteration;
+					
 				END WHILE LABEL1;
 END$$
 
@@ -355,22 +355,22 @@ BEFORE INSERT ON review
 FOR EACH ROW
 BEGIN
 		DECLARE iteration INT DEFAULT 1; 
-        DECLARE offence VARCHAR(50);
-        DECLARE potentialOffence VARCHAR(50);
+		DECLARE offence VARCHAR(50);
+		DECLARE potentialOffence VARCHAR(50);
 		DECLARE max_id INTEGER  default 0;
-        
-        SELECT LCASE(new.productReview) INTO potentialOffence; 
-        SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = 1;
+		
+		SELECT LCASE(new.productReview) INTO potentialOffence; 
+		SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = 1;
 		SELECT MAX(id) INTO max_id FROM offensiveWord;
-        
-        LABEL1: WHILE (iteration <= max_id) DO
+		
+		LABEL1: WHILE (iteration <= max_id) DO
 					IF ( LOCATE(offence, potentialOffence) <> 0 ) THEN -- function locate is position sensitive
 						SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Review must not contain offensive words.';
 					END IF;
-                    
-                    SET iteration = iteration + 1;
-                    SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = iteration;
-                    
+					
+					SET iteration = iteration + 1;
+					SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = iteration;
+					
 				END WHILE LABEL1;
 END$$
 
@@ -388,19 +388,19 @@ BEGIN
 	DECLARE offence VARCHAR(50);
 	DECLARE potentialOffence VARCHAR(50);
 	DECLARE max_id INTEGER default 0;
-        
-        SELECT LCASE(new.word) INTO potentialOffence; 
-        SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = 1;
+		
+		SELECT LCASE(new.word) INTO potentialOffence; 
+		SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = 1;
 		SELECT MAX(id) INTO max_id FROM offensiveWord;
-        
-        LABEL1: WHILE (iteration <= max_id) DO
+		
+		LABEL1: WHILE (iteration <= max_id) DO
 					IF ( LOCATE(offence, potentialOffence) <> 0 ) THEN -- function locate is position sensitive
 						SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Answers must not contain offensive words.';
 					END IF;
-                    
-                    SET iteration = iteration + 1;
-                    SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = iteration;
-                    
+					
+					SET iteration = iteration + 1;
+					SELECT LCASE(word) INTO offence FROM offensiveWord where offensiveWord.id = iteration;
+					
 				END WHILE LABEL1;
 END$$
 
@@ -413,15 +413,15 @@ CREATE TRIGGER UpdatePointsOnInsertOnProductAnswer
 AFTER INSERT ON productanswer
 FOR EACH ROW
 BEGIN
-    DECLARE numOfAnswerToSameQuestion INT;
-    SELECT COUNT(*) into numOfAnswerToSameQuestion
-    FROM productanswer 
-    WHERE questionId=new.questionId AND submissionId=new.submissionId;
+	DECLARE numOfAnswerToSameQuestion INT;
+	SELECT COUNT(*) into numOfAnswerToSameQuestion
+	FROM productanswer 
+	WHERE questionId=new.questionId AND submissionId=new.submissionId;
 	IF (numOfAnswerToSameQuestion=1) THEN
 	UPDATE Submission
-    	SET points = points + 1
+		SET points = points + 1
 	WHERE id= new.submissionId;
-    END IF;
+	END IF;
 END$$
 
 DELIMITER ;
@@ -435,17 +435,17 @@ FOR EACH ROW
 BEGIN
 	DECLARE pointsToAdd INT DEFAULT 0;
 	IF (new.age IS NOT NULL) THEN
-    SET pointsToAdd=pointsToAdd+2;
+	SET pointsToAdd=pointsToAdd+2;
 	END IF;
-    IF (new.expertise IS NOT NULL) THEN
-    SET pointsToAdd=pointsToAdd+2;
+	IF (new.expertise IS NOT NULL) THEN
+	SET pointsToAdd=pointsToAdd+2;
 	END IF;
-    IF (new.sex IS NOT NULL) THEN
-    SET pointsToAdd=pointsToAdd+2;
+	IF (new.sex IS NOT NULL) THEN
+	SET pointsToAdd=pointsToAdd+2;
 	END IF;
-    IF (pointsToAdd<>0) THEN
+	IF (pointsToAdd<>0) THEN
 	UPDATE Submission
-    SET points = points + pointsToAdd
+	SET points = points + pointsToAdd
 	WHERE id= new.submissionId;
 	END IF;
 END$$
@@ -460,7 +460,7 @@ AFTER DELETE ON submission
 FOR EACH ROW
 BEGIN
 	UPDATE user
-    SET points = points - OLD.points
+	SET points = points - OLD.points
 	WHERE id= old.userId;
 END$$
 
@@ -475,7 +475,7 @@ FOR EACH ROW
 BEGIN
 IF (new.points <> old.points) THEN
 	UPDATE user
-    SET points = points + (NEW.points - OLD.points)
+	SET points = points + (NEW.points - OLD.points)
 	WHERE id= old.userId;
 END IF;
 END$$
@@ -493,7 +493,7 @@ IF ((SELECT COUNT(*)
 	FROM inclusion
 	WHERE questionId= OLD.questionId)=0) THEN
 	DELETE FROM question
-    WHERE id=OLD.questionId;
+	WHERE id=OLD.questionId;
 END IF;
 END$$
 
