@@ -18,10 +18,10 @@ import utils.userInfo.UserPersonalInfo;
  */
 @Stateful
 public class QuestionnaireAdminService {
+	/* THIS EJB MANAGES THE INSPECTION PAGE */
 	private Integer selectedQuestionnaireId;
 	private List<Object[]> userSubmissionList;
 	private List<Object[]> userCancelList;
-
 
 	@PersistenceContext(unitName = "PetriPinariRomeoSbrolliEJB")
 	private EntityManager em;
@@ -33,11 +33,11 @@ public class QuestionnaireAdminService {
 	}
 
 	/**
-	 * Gets the users that submitted or canceled a questionnaire
-	*@param questionnaireId Id of the questionnaire
-	*@param submitted True to get Users that submitted, False to get Users that canceled the submission
-	*@return A map with key the user Id and with value his nickname
-	*/
+	 * Gets the users that submitted or cancelled a questionnaire
+	 *@param questionnaireId Id of the questionnaire
+	 *@param submitted True to get Users that submitted, False to get Users that cancelled the submission
+	 *@return A map with key the user Id and with value his nickname
+	 */
 	public void getQuestionnaireUserList(boolean submitted){
 		@SuppressWarnings("unchecked")
 		List<Object[]> answers= em
@@ -50,8 +50,7 @@ public class QuestionnaireAdminService {
 				.getResultList();
 		if (submitted) {
 			userSubmissionList = answers;
-		}
-		else {
+		} else {
 			userCancelList = answers;
 		}
 	}
@@ -100,7 +99,7 @@ public class QuestionnaireAdminService {
 	}
 	
 	/**
-	 * refreshs the answers from database
+	 * refreshes the answers from database
 	 */
 	public void refreshAnswers() {
 		this.setSelectedQuestionnaireId(this.selectedQuestionnaireId);
@@ -117,12 +116,12 @@ public class QuestionnaireAdminService {
 	 */
 	public UserPersonalInfo getUserInfo(int userId) {
 		try {
-		Submission userSubmission= em.createNamedQuery("Submission.findByNameAndQuestionnaire", Submission.class)
-					.setParameter(1, userId)
-					.setParameter(2, selectedQuestionnaireId)
-					.getSingleResult();
-		PersonalAnswer pa= userSubmission.getPersonalAnswers();
-		return new UserPersonalInfo(pa.getAge(),pa.getExpertise(),pa.getSex());
+			Submission userSubmission= em.createNamedQuery("Submission.findByNameAndQuestionnaire", Submission.class)
+						.setParameter(1, userId)
+						.setParameter(2, selectedQuestionnaireId)
+						.getSingleResult();
+			PersonalAnswer pa= userSubmission.getPersonalAnswers();
+			return new UserPersonalInfo(pa.getAge(),pa.getExpertise(),pa.getSex());
 		}
 		catch(NoResultException e){
 			return new UserPersonalInfo();

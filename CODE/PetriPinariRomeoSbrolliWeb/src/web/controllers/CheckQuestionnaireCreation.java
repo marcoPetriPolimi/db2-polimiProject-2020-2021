@@ -59,8 +59,7 @@ public class CheckQuestionnaireCreation extends HttpThymeleafServlet {
 			
 		HttpSession session = req.getSession();
 		User user = (User) session.getAttribute("user");
-		user = qcs.createQuestionnaire(user.getId(), StringEscapeUtils.escapeJava(req.getParameter("name")),presDate,(Integer)Integer.parseInt(req.getParameter("chosenProd")));
-		session.setAttribute("user", user);
+		qcs.createQuestionnaire(user.getId(), StringEscapeUtils.escapeJava(req.getParameter("name")),presDate,(Integer)Integer.parseInt(req.getParameter("chosenProd")));
 		String ctxpath = getServletContext().getContextPath();
 		req.getSession().removeAttribute("QuestionnaireCreationService");
 		qcs.remove();

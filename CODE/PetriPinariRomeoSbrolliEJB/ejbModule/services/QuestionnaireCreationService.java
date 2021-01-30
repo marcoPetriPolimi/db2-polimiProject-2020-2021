@@ -44,7 +44,7 @@ public class QuestionnaireCreationService {
     public void addQuestion(FormQuestion question) throws IllegalArgumentException {
     	if (question.getQuestionText() == null) {
     		throw new IllegalArgumentException();
-    		}
+    	}
     	newQuestions.add(question);
     }
     
@@ -91,7 +91,7 @@ public class QuestionnaireCreationService {
      * @param presDate date in which the questionnaire has to be presented to users
      * @param productId product related to questionnaire
      */
-    public User createQuestionnaire(int userId, String name,Date presDate, int productId) {
+    public void createQuestionnaire(int userId, String name,Date presDate, int productId) {
     	questionnaire= new Questionnaire(name);
     	Product product= em.find(Product.class,	productId);
     	questionnaire.setProduct(product);
@@ -109,7 +109,7 @@ public class QuestionnaireCreationService {
     	for (Question question: storedQuestions) {
     		questionnaire.addQuestion(question);
     	}    	
-    	return em.merge(creator);
+    	em.merge(questionnaire);
     }
     
     /**
