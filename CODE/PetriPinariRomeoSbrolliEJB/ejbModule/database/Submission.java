@@ -49,10 +49,10 @@ public class Submission implements Serializable {
 	@JoinColumn(name = "userId")
 	private User userSender;
 	
-	@OneToMany (fetch = FetchType.EAGER, mappedBy = "submission",  cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany (mappedBy = "submission",  cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductAnswer> productAnswers;
 	
-	@OneToOne (fetch = FetchType.EAGER, mappedBy = "submission", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne (mappedBy = "submission", cascade = CascadeType.ALL, orphanRemoval = true)
 	private PersonalAnswer personalAnswer;
 	private int submitted;
 	/**

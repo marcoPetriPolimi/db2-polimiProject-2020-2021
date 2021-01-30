@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import database.User;
+import database.UserLog;
 import exceptions.UserAlreadyPresentEmailException;
 import exceptions.UserAlreadyPresentNicknameException;
 import exceptions.UserCredentialsException;
@@ -121,5 +122,10 @@ public class AccountService {
 		User bannedUser = em.find(User.class, userId);
 		
 		bannedUser.setBlocked(true);
+	}
+
+	public void addLogin(User user) {
+		UserLog log = new UserLog(user,new Date());
+		em.persist(log);
 	}
 }

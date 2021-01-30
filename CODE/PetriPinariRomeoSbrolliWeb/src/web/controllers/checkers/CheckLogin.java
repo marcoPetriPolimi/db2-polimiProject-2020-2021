@@ -36,7 +36,7 @@ public class CheckLogin extends HttpThymeleafServlet {
 		WebContext webContext = new WebContext(req,resp,context);
 		String page = "index";
 		
-		User user;
+		User user= null;
 		HttpSession session = req.getSession();
 		
 		String errorMessage = "";
@@ -74,6 +74,7 @@ public class CheckLogin extends HttpThymeleafServlet {
 		}
 		
 		if (login) {
+			accountService.addLogin(user);
 			resp.sendRedirect("homepage");
 		} else {
 			webContext.setVariable("lang", lang);

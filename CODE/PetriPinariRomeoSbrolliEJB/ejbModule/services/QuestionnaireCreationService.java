@@ -157,7 +157,7 @@ public class QuestionnaireCreationService {
 	public boolean addProduct(String name, byte[] imgByteArray) {
 
 		try {
-		em.createNamedQuery("Product.getById",Product.class)
+		em.createNamedQuery("Product.getByName",Product.class)
 				.setParameter("pName", name)
 				.getSingleResult();
 		}

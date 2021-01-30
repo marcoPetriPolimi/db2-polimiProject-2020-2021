@@ -28,7 +28,7 @@ import utils.Const;
 @Table(name = "product", schema = "db2_project")
 @NamedQueries(value = {
 		@NamedQuery(name="Product.getAll", query="SELECT p FROM Product p"),
-		@NamedQuery(name="Product.getById", query="SELECT p FROM Product p WHERE p.name=:pName")
+		@NamedQuery(name="Product.getByName", query="SELECT p FROM Product p WHERE p.name=:pName")
 	})
 public class Product {
 	private static final long serialVersionUID = Const.EJBVersion;
