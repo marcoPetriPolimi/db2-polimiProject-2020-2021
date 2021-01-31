@@ -27,6 +27,7 @@ public class QuestionnaireCreationService {
 	private Questionnaire questionnaire;
 	private List<FormQuestion> newQuestions; //questions defined by the creator of this questionnaire
 	private List<Question> storedQuestions; //old questions already in the database from previous questionnaires
+	private int questionProgressiveNumber;
 	
     /**
      * Default constructor. 
@@ -34,6 +35,7 @@ public class QuestionnaireCreationService {
     public QuestionnaireCreationService() {
         newQuestions= new ArrayList<>();
         storedQuestions= new ArrayList<>();
+        questionProgressiveNumber=0;
     }
     
     /**
@@ -128,7 +130,7 @@ public class QuestionnaireCreationService {
 		}
     
 	public int getNextQuestionId() {
-		return newQuestions.size();
+		return questionProgressiveNumber++;
 	}
 
 	public List<FormQuestion> getFormQuestions() {
