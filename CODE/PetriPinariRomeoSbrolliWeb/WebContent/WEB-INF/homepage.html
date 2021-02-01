@@ -20,8 +20,9 @@
 		</nav>
 		<div class="content">
 			<!-- page's content -->
-			<div>
-				<table data-th-if="${questionnaire!=null}">
+			<div data-th-if="${questionnaire==null}">No questionnaire for today :(</div>
+			<div data-th-if="${questionnaire!=null}">
+				<table>
 					<tr>
 						<th data-th-utext='${lang.getString("QuestionnaireName")}'>Questionnaire Name:</th>
 						<td data-th-utext='${questionnaire}'> </td>

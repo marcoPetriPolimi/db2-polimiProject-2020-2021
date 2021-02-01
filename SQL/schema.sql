@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS User (
 CREATE TABLE IF NOT EXISTS Product (
 	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 	name VARCHAR(50) NOT NULL,
-	image BLOB NOT NULL,
+	image LONGBLOB NOT NULL,
 	UNIQUE KEY(name)
 ) AUTO_INCREMENT = 1;
 
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS Submission (
 	points INT UNSIGNED NOT NULL,
 	date DATETIME NOT NULL,
 	UNIQUE KEY(questionnaireId,userId),
-	FOREIGN KEY (questionnaireId) REFERENCES Questionnaire(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY (questionnaireId) REFERENCES Questionnaire(id) ON UPDATE CASCADE ON DELETE SET NULL,
 	FOREIGN KEY (userId) REFERENCES User(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -461,7 +461,21 @@ FOR EACH ROW
 BEGIN
 	UPDATE user
 	SET points = points - OLD.points
-	WHERE id= old.userId;
+	WHERE id= OLD.userId;
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
+-- needed instead of cascade delete for causing trigger on points to fire
+-- @author CRISTIAN
+CREATE TRIGGER DeleteSubmissionsOnDeleteQuestionnaire
+AFTER DELETE ON questionnaire
+FOR EACH ROW
+BEGIN
+DELETE FROM submission
+WHERE questionnaireId IS NULL;
 END$$
 
 DELIMITER ;
